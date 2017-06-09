@@ -1,14 +1,17 @@
 package pe.app.com.demo;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -22,11 +25,14 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
+import com.roger.catloadinglibrary.CatLoadingView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import pe.app.com.demo.conexion.Singleton;
+import pe.app.com.demo.entity.Respuesta;
 import pe.app.com.demo.entity.Usuario;
+import pe.app.com.demo.tools.GenericAlerts;
 
 import static pe.app.com.demo.tools.GenericTools.GET_PASS;
 import static pe.app.com.demo.tools.GenericTools.GET_USER;
@@ -40,6 +46,8 @@ public class LoginActivity extends AppCompatActivity {
     Context ctx;
     private static final String TAG = LoginActivity.class.getSimpleName();
     Gson gson = new Gson();
+    GenericAlerts alertas = new GenericAlerts();
+    CatLoadingView mCarga;
 
     //COMPONENTES
     @Bind(R.id.txtUsuario)
@@ -56,8 +64,6 @@ public class LoginActivity extends AppCompatActivity {
     FloatingActionButton registrarUsuario;
 
     //CONEXIONES
-    private Singleton singleton;
-    protected RequestQueue fRequestQueue;
 
     //VARIABLES
     String Usuario;
@@ -72,6 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         ctx = this;
+        mCarga = new CatLoadingView();
 
         btnIngresar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,21 +128,40 @@ public class LoginActivity extends AppCompatActivity {
 
         final String url = URL_APP + BASE_URL + BASE_LOGIN + GET_USER + usu + GET_PASS + pass;
 
+        inicioProgreso();
+
         StringRequest respuestaLogin = new StringRequest(Request.Method.GET,url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String Response) {
 
-                        if(Response.equals("null")) {
+                        if(Response!=null) {
+                            try {
+                                Usuario usuario = gson.fromJson(Response, Usuario.class);
+                                if(usuario.getNombres()!=null) {
+                                    guardarDatos(usuario.getNombreUsuario(), usuario.getPassword());
+                                    mCarga.dismiss();
+                                    startActivity(new Intent(ctx, MenuPrincipalActivity.class));
+                                }else{
+                                    Respuesta respuesta = gson.fromJson(Response,Respuesta.class);
+                                    mCarga.dismiss();
+                                    alertas.mensajeInfo("Fallo Login",respuesta.getMensaje(),ctx);
+                                }
+                            }catch (Exception e){
+                                e.printStackTrace();
+                                mCarga.dismiss();
+                                alertas.mensajeInfo("Fallo Login","None",ctx);
+                            }
                         }else{
-                            Usuario usuario = gson.fromJson(Response.toString(), Usuario.class);
-                            guardarDatos(usuario.getNombreUsuario(),usuario.getPassword());
+
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError e) {
                 e.printStackTrace();
+                mCarga.dismiss();
+                alertas.mensajeInfo("Fallo Login","Error Desconocido",ctx);
             }
         });
 
@@ -151,8 +177,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public Action getIndexApiAction() {
         Thing object = new Thing.Builder()
-                .setName("Login Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
+                .setName("Login Page")
                 .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
                 .build();
         return new Action.Builder(Action.TYPE_VIEW)
@@ -175,5 +200,9 @@ public class LoginActivity extends AppCompatActivity {
 
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
+    }
+
+    public void inicioProgreso(){
+        mCarga.show(getSupportFragmentManager(), "");
     }
 }

@@ -6,6 +6,10 @@
 
     <string name="action_settings">Settings</string>
 
+    <!--INICIO UTILITARIOS-->
+    <string name="cargando">Cargando</string>
+    <!--FIN UTILITARIOS-->
+
     <!--INICIO PANTALLA LOGIN-->
     <string name="ingresar">Ingresar</string>
     <string name="ingresarFb">Ingresar con tu Facebook</string>
