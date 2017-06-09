@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">AppDemo</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!--INICIO PANTALLA LOGIN-->
+    <string name="ingresar">Ingresar</string>
+    <string name="ingresarFb">Ingresar con tu Facebook</string>
+    <string name="usuario">Usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="version_app">AppName v1.0</string>
+    <!--FIN PANTALLA LOGIN-->
+
+    <!--FIN PANTALLA LOGIN-->
+    <string name="solicitudesCliente">Solicitudes</string>
+    <string name="historialCliente">Historial</string>
+    <!--FIN PANTALLA LOGIN-->
+
+    <!--INICIO NAVIGATION DRAWER-->
+    <string name="miPerfil">Mi Perfil</string>
+    <string name="buscarServicios">Buscar Servicios</string>
+    <string name="historial">Historial</string>
+    <string name="cerrarSesion">Cerrar Sesiòn</string>
+    <string name="ayuda">Ayuda</string>
+    <string name="acerca">Acerca</string>
+    <string name="otros">Otros</string>
+    <!--FIN NAVIGATION DRAWER-->
+
+</resources>
