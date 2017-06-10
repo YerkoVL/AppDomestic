@@ -33,8 +33,9 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/imagen"
             android:text="Juan Perez"
+            android:textStyle="bold"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/black" />
+            android:textColor="@color/colorAccent" />
 
         <TextView
             android:id="@+id/descripcion"
@@ -63,9 +64,8 @@
             android:layout_alignLeft="@+id/reputacion"
             android:layout_alignStart="@+id/reputacion"
             android:layout_below="@+id/descripcion"
-            android:text="27"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="?colorPrimary" />
+            android:text="4.2"
+            android:textAppearance="?android:attr/textAppearanceSmall"/>
 
         <RatingBar
             android:id="@+id/rating"
@@ -79,7 +79,7 @@
             android:isIndicator="true"
             android:paddingTop="8dp"
             android:progressTint="#FDDB39"
-            android:rating="4"
+            android:rating="4.2"
             android:secondaryProgressTint="#FDDB39" />
     </RelativeLayout>
 
@@ -130,12 +130,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_ubicacion"/>
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_ubicacion" />
 
-        <TextView
+            <TextView
             android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

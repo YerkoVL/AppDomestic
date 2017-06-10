@@ -10,10 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * Created by Yerko on 04/06/2017.
- */
-public class datosFragmento extends Fragment {
+public class datosBusqueda extends Fragment {
 
     View view;
     ViewPager viewPager;
@@ -38,19 +35,19 @@ public class datosFragmento extends Fragment {
     }
     private class deslizarAdaptador extends FragmentPagerAdapter {
 
-        final  String tabs[]={"Solicitudes", "Historial"};
+        final  String tabs[]={"Resultados", "Mapa"};
 
         public deslizarAdaptador(android.support.v4.app.FragmentManager fm) {
             super(fm);
         }
 
         @Override
-        public android.support.v4.app.Fragment getItem(int position) {
+        public Fragment getItem(int position) {
 
             if(position==0){
-                return new contenidoFragmento();
+                return new ContenidoResultadoBusqueda();
             }else{
-                return new Fragment();
+                return new ResultadoMapa();
             }
         }
 

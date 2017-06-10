@@ -1,22 +1,18 @@
 package pe.app.com.demo;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
@@ -48,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
     Gson gson = new Gson();
     GenericAlerts alertas = new GenericAlerts();
     CatLoadingView mCarga;
+    Context mCtx;
 
     //COMPONENTES
     @Bind(R.id.txtUsuario)
@@ -78,6 +75,7 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         ctx = this;
+        mCtx = this;
         mCarga = new CatLoadingView();
 
         btnIngresar.setOnClickListener(new View.OnClickListener() {
@@ -144,13 +142,13 @@ public class LoginActivity extends AppCompatActivity {
                                     startActivity(new Intent(ctx, MenuPrincipalActivity.class));
                                 }else{
                                     Respuesta respuesta = gson.fromJson(Response,Respuesta.class);
-                                    mCarga.dismiss();
                                     alertas.mensajeInfo("Fallo Login",respuesta.getMensaje(),ctx);
+                                    mCarga.dismiss();
                                 }
                             }catch (Exception e){
                                 e.printStackTrace();
-                                mCarga.dismiss();
                                 alertas.mensajeInfo("Fallo Login","None",ctx);
+                                mCarga.dismiss();
                             }
                         }else{
 
@@ -200,6 +198,13 @@ public class LoginActivity extends AppCompatActivity {
 
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
+    }
+
+    public void actualizarSP(){
+        SharedPreferences prefs = mCtx.getSharedPreferences("busquedaServicios",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("valor", "NO");
+        editor.commit();
     }
 
     public void inicioProgreso(){

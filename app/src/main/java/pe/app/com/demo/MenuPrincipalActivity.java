@@ -1,6 +1,8 @@
 package pe.app.com.demo;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,6 +18,9 @@ import butterknife.ButterKnife;
 public class MenuPrincipalActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    SharedPreferences sharedPreferences;
+    Context mCtx;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +28,8 @@ public class MenuPrincipalActivity extends AppCompatActivity
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mCtx = this;
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -32,7 +39,11 @@ public class MenuPrincipalActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        asignarFragment(new datosFragmento());
+        if(validarRealizoBusqueda()) {
+            asignarFragment(new datosBusqueda());
+        }else{
+            asignarFragment(new datosInicioCliente());
+        }
     }
 
     @Override
@@ -74,12 +85,13 @@ public class MenuPrincipalActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.ic_mi_perfil) {
-            asignarFragment(new datosFragmento());
+            asignarFragment(new PerfilActivity());
         } else if (id == R.id.ic_search) {
-
+            asignarFragment(new BuscarServicios());
         } else if (id == R.id.ic_history) {
-
+            asignarFragment(new datosInicioCliente());
         } else if (id == R.id.ic_sign_out) {
+            actualizarSP();
             startActivity(new Intent(getApplicationContext(),LoginActivity.class));
         } else if (id == R.id.ic_ayuda) {
 
@@ -99,5 +111,33 @@ public class MenuPrincipalActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+    }
+
+    public void actualizarSP(){
+        SharedPreferences prefs = mCtx.getSharedPreferences("busquedaServicios",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("valor", "NO");
+        editor.commit();
+    }
+
+    public Boolean validarRealizoBusqueda(){
+        boolean valor;
+
+        try {
+        sharedPreferences = getSharedPreferences("busquedaServicios", mCtx.MODE_PRIVATE);
+        String valorRecuperado = sharedPreferences.getString("valor", null);
+
+            if(valorRecuperado.equals("SI")){
+                valor = true;
+            }else{
+                valor = false;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            valor = false;
+        }
+
+        return valor;
     }
 }

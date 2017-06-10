@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <service android:name="com.mapbox.mapboxsdk.telemetry.TelemetryService" />
 
     <application
         android:allowBackup="true"
@@ -26,10 +27,17 @@
             </intent-filter>
         </activity>
         <activity android:name=".RegistroActivity" />
-        <activity android:name=".PerfilActivity"></activity>
+        <activity android:name=".PerfilActivity" />
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <activity android:name=".ContenidoSolicitudes" />
+        <activity android:name=".ContenidoHistorial" />
+        <activity android:name=".BuscarServicios" />
+        <activity android:name=".ResultadoMapa" />
+        <activity android:name=".ContenidoResultadoBusqueda"></activity>
     </application>
 
 </manifest>
