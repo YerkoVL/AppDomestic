@@ -35,8 +35,8 @@
 
         <activity android:name=".ContenidoSolicitudes" />
         <activity android:name=".ContenidoHistorial" />
-        <activity android:name=".BuscarServicios" />
-        <activity android:name=".ResultadoMapa" />
+        <activity android:name=".ContenidoBuscarServicios" />
+        <activity android:name=".ContenidoResultadoMapa" />
         <activity android:name=".ContenidoResultadoBusqueda"></activity>
     </application>
 

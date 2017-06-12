@@ -47,9 +47,6 @@ public class SolicitudAdapter extends RecyclerView.Adapter<SolicitudAdapter.View
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()){
-                            case R.id.menu_SolicitudesVerPersonal:
-                                Toast.makeText(mCtx,"Ver Personal",Toast.LENGTH_SHORT).show();
-                                break;
                             case R.id.menu_SolicitudesVerDetalle:
                                 Toast.makeText(mCtx,"Ver Detalle",Toast.LENGTH_SHORT).show();
                                 break;

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.view.View;
@@ -58,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
     Button btnIngresarFb;
 
     @Bind(R.id.btnfab)
-    FloatingActionButton registrarUsuario;
+    Button registrarUsuario;
 
     //CONEXIONES
 

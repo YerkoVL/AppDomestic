@@ -9,6 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/colorFondoDefault"
     tools:context="pe.app.com.demo.LoginActivity">
 
     <LinearLayout
@@ -20,9 +21,10 @@
         android:layout_alignParentStart="true">
 
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:src="@drawable/ic_logo"
+            android:layout_gravity="center"
             android:id="@+id/imageView2" />
 
         <LinearLayout
@@ -131,13 +133,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/version_app"/>
 
-            <android.support.design.widget.FloatingActionButton
+            <Button
                 android:id="@+id/btnfab"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="bottom|end"
                 android:layout_margin="@dimen/fab_margin"
-                app:srcCompat="@android:drawable/ic_input_add" />
+                android:background="@drawable/ic_add_user"/>
 
         </LinearLayout>
 

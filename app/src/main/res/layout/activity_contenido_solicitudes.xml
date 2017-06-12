@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="#FFFFFF"
+    android:background="@color/colorFondoDefault"
     tools:context="pe.app.com.demo.ContenidoSolicitudes">
 
     <android.support.v7.widget.RecyclerView

@@ -45,7 +45,8 @@
             android:layout_alignStart="@+id/nombre"
             android:layout_below="@+id/nombre"
             android:text="Servicios: Albañil, Gasfiteria"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:visibility="gone"/>
 
         <ImageView
             android:id="@+id/reputacion"

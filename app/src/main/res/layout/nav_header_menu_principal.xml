@@ -26,6 +26,6 @@
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="Demo"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:id="@+id/nombreUsuario" />
+        android:id="@+id/nvgtdNombreUsuario" />
 
 </LinearLayout>

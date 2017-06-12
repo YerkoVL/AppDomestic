@@ -4,26 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="pe.app.com.demo.BuscarServicios">
+    android:background="@color/colorFondoDefault"
+    tools:context="pe.app.com.demo.ContenidoBuscarServicios">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/tituloServicio"
-            android:layout_marginStart="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="BUSQUEDA DE SERVICIO"/>
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <TextView
             android:id="@+id/datoServicio"
+            android:layout_marginTop="20dp"
             android:layout_marginStart="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="DATOS DE SERVICIO"/>
+            android:text="DATOS DE SERVICIO"
+            android:textSize="@dimen/textoTitulo"
+            android:textStyle="bold"
+            android:gravity="center"/>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -36,9 +36,11 @@
                 android:layout_height="wrap_content"
                 android:text="Fecha de Inicio: "/>
 
-            <EditText
-                android:id="@+id/txtFechaInicio"
-                android:hint="DÍA/MES/AÑO"
+            <Button
+                android:id="@+id/btnFechaInicio"
+                android:text="Establecer"
+                android:layout_marginStart="10dp"
+                android:background="@color/colorAccent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -46,6 +48,7 @@
 
         <LinearLayout
             android:orientation="horizontal"
+            android:layout_marginTop="10dp"
             android:layout_marginStart="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -55,11 +58,13 @@
                 android:layout_height="wrap_content"
                 android:text="Fecha de Fin: "/>
 
-            <EditText
-                android:id="@+id/txtFechaFin"
-                android:hint="DÍA/MES/AÑO"
+            <Button
+                android:id="@+id/btnFechaFin"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:background="@color/colorAccent"
+                android:text="Establecer" />
 
         </LinearLayout>
 
@@ -132,6 +137,8 @@
             android:id="@+id/btnBuscarServicios"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:textColor="@color/colorFondoDefault"
             android:text="BUSCAR"/>
 
     </LinearLayout>

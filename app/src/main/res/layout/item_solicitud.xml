@@ -33,7 +33,7 @@
                         android:layout_height="wrap_content"
                         android:text="Fecha Solicitud"
                         android:textSize="@dimen/textoTitulo"
-                        android:textColor="@color/colorAccent"
+                        android:textColor="@color/colorTexto"
                         android:textStyle="bold"/>
 
                     <TextView
@@ -43,7 +43,7 @@
                         android:text="Fecha de Solicitud"
                         android:layout_marginStart="10dp"
                         android:textSize="@dimen/textoDescripcion"
-                        android:textColor="@color/colorAccent"/>
+                        android:textColor="@color/colorTexto"/>
 
                 </LinearLayout>
 
@@ -58,7 +58,7 @@
                         android:layout_height="wrap_content"
                         android:text="Servicio"
                         android:textSize="@dimen/textoTitulo"
-                        android:textColor="@color/colorAccent"
+                        android:textColor="@color/colorTexto"
                         android:textStyle="bold"/>
 
                     <TextView
@@ -68,7 +68,7 @@
                         android:text="Descripcion de servicio correspondiente"
                         android:layout_marginStart="10dp"
                         android:textSize="@dimen/textoDescripcion"
-                        android:textColor="@color/colorAccent"/>
+                        android:textColor="@color/colorTexto"/>
 
                 </LinearLayout>
 
@@ -83,7 +83,7 @@
                         android:layout_height="wrap_content"
                         android:text="Fecha Inicio"
                         android:textSize="@dimen/textoTitulo"
-                        android:textColor="@color/colorAccent"
+                        android:textColor="@color/colorTexto"
                         android:textStyle="bold"/>
 
                     <TextView
@@ -93,7 +93,7 @@
                         android:text="Fecha de Inicio"
                         android:layout_marginStart="10dp"
                         android:textSize="@dimen/textoDescripcion"
-                        android:textColor="@color/colorAccent"/>
+                        android:textColor="@color/colorTexto"/>
                     <TextView
                         android:id="@+id/fechaFin"
                         android:layout_width="wrap_content"

@@ -95,7 +95,7 @@
                         android:id="@+id/diasEstimados"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Dias Estimados:"
+                        android:text="Fecha Inicio:"
                         android:textSize="@dimen/textoTitulo"
                         android:textStyle="bold"
                         android:textAppearance="?android:attr/textAppearanceSmall" />
@@ -119,7 +119,7 @@
                         android:id="@+id/finServicio"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Finaliza el :"
+                        android:text="Fecha fin :"
                         android:textSize="@dimen/textoTitulo"
                         android:textStyle="bold"
                         android:textAppearance="?android:attr/textAppearanceSmall" />

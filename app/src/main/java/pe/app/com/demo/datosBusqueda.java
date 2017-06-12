@@ -31,6 +31,8 @@ public class datosBusqueda extends Fragment {
             }
         });
 
+
+
         return view;
     }
     private class deslizarAdaptador extends FragmentPagerAdapter {
@@ -47,7 +49,7 @@ public class datosBusqueda extends Fragment {
             if(position==0){
                 return new ContenidoResultadoBusqueda();
             }else{
-                return new ResultadoMapa();
+                return new ContenidoResultadoMapa();
             }
         }
 
@@ -61,5 +63,6 @@ public class datosBusqueda extends Fragment {
             return tabs[position];
         }
     }
+
 }
 
