@@ -7,9 +7,38 @@
     <string name="action_settings">Settings</string>
 
     <!--INICIO UTILITARIOS-->
-    <string name="cargando">Cargando</string>
     <string name="accesToken">sk.eyJ1IjoieWVya292ZXJhbGV6YW1hIiwiYSI6ImNqM3JuMnQ4ZDAxZGMycG82aXprOXRmN28ifQ.fEbW8AqTRbDqQu0zaCdu3Q</string>
     <!--FIN UTILITARIOS-->
+    
+    <!--INICIO GENERALES-->
+    <string name="nombres">Nombres</string>
+    <string name="apellidos">Apellidos</string>
+    <string name="direccion">Dirección</string>
+    <string name="distrito">Distrito</string>
+    <string name="email">Email</string>
+    <string name="telefono">Telefono</string>
+    <string name="dni">DNI</string>
+    <string name="finalizar">Finalizar</string>
+    <string name="fechaSolicitud">Fecha de Solicitud</string>
+    <string name="fechaInicio">Fecha de Inicio</string>
+    <string name="fechaFin">Fecha de Fin</string>
+    <string name="descripcion">Descripción</string>
+    <string name="pendiente">Pendiente</string>
+    <string name="servicios">Servicios</string>
+    <string name="establecer">Establecer</string>
+    <string name="cargando">Cargando...</string>
+    <string name="registrar">Registrar</string>
+    <string name="buscar">Buscar</string>
+    <!--FIN GENERALES-->
+
+    <!--INICIO MENUS-->
+    <string name="verDetalle">Ver Detalle</string>
+    <string name="verContacto">Ver Contacto</string>
+    <string name="verUbicacion">Ver Ubicacion</string>
+    <string name="verHistorialTrabajos">Ver Historial de Trabajos</string>
+    <string name="enviarSolicitud">Enviar Solicitud</string>
+    <string name="cancelar">Cancelar</string>
+    <!--FIN MENUS-->
 
     <!--INICIO PANTALLA LOGIN-->
     <string name="ingresar">Ingresar</string>
@@ -34,5 +63,14 @@
     <string name="acerca">Acerca</string>
     <string name="otros">Otros</string>
     <!--FIN NAVIGATION DRAWER-->
+
+    <!--INICIO PANTALLA BUSCAR SERVICIOS-->
+    <string name="tituloBuscarServicios">Datos de Servicio</string>
+    <!--FIN PANTALLA BUSCAR SERVICIOS-->
+
+    <!--INICIO PANTALLA REGISTRO USUARIO-->
+    <string name="tituloRegistroUsuario">Datos Personales</string>
+    <string name="subirFoto">Subir Foto</string>
+    <!--FIN PANTALLA REGISTRO USUARIO-->
 
 </resources>

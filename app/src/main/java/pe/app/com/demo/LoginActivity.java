@@ -1,5 +1,6 @@
 package pe.app.com.demo;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,7 +21,6 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
-import com.roger.catloadinglibrary.CatLoadingView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = LoginActivity.class.getSimpleName();
     Gson gson = new Gson();
     GenericAlerts alertas = new GenericAlerts();
-    CatLoadingView mCarga;
+    ProgressDialog progressDialog = null;
     Context mCtx;
 
     //COMPONENTES
@@ -75,7 +75,8 @@ public class LoginActivity extends AppCompatActivity {
 
         ctx = this;
         mCtx = this;
-        mCarga = new CatLoadingView();
+
+        progressDialog = new ProgressDialog(mCtx);
 
         btnIngresar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,7 +126,8 @@ public class LoginActivity extends AppCompatActivity {
 
         final String url = URL_APP + BASE_URL + BASE_LOGIN + GET_USER + usu + GET_PASS + pass;
 
-        inicioProgreso();
+        progressDialog.show();
+        progressDialog.setContentView(R.layout.content_progress_action);
 
         StringRequest respuestaLogin = new StringRequest(Request.Method.GET,url,
                 new Response.Listener<String>() {
@@ -137,17 +139,17 @@ public class LoginActivity extends AppCompatActivity {
                                 Usuario usuario = gson.fromJson(Response, Usuario.class);
                                 if(usuario.getNombres()!=null) {
                                     guardarDatos(usuario.getNombreUsuario(), usuario.getPassword());
-                                    mCarga.dismiss();
+                                    progressDialog.dismiss();
                                     startActivity(new Intent(ctx, MenuPrincipalActivity.class));
                                 }else{
                                     Respuesta respuesta = gson.fromJson(Response,Respuesta.class);
                                     alertas.mensajeInfo("Fallo Login",respuesta.getMensaje(),ctx);
-                                    mCarga.dismiss();
+                                    progressDialog.dismiss();
                                 }
                             }catch (Exception e){
                                 e.printStackTrace();
                                 alertas.mensajeInfo("Fallo Login","None",ctx);
-                                mCarga.dismiss();
+                                progressDialog.dismiss();
                             }
                         }else{
 
@@ -157,7 +159,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError e) {
                 e.printStackTrace();
-                mCarga.dismiss();
+                progressDialog.dismiss();
                 alertas.mensajeInfo("Fallo Login","Error Desconocido",ctx);
             }
         });
@@ -204,9 +206,5 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("valor", "NO");
         editor.commit();
-    }
-
-    public void inicioProgreso(){
-        mCarga.show(getSupportFragmentManager(), "");
     }
 }

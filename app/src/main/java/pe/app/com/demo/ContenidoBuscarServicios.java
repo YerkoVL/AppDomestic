@@ -14,17 +14,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import ir.hamsaa.persiandatepicker.Listener;
-import ir.hamsaa.persiandatepicker.PersianDatePickerDialog;
-import ir.hamsaa.persiandatepicker.util.PersianCalendar;
-
 public class ContenidoBuscarServicios extends Fragment{
 
     Button busqueda;
     Button fechaInicio;
     Button fechaFin;
-
-    private PersianDatePickerDialog picker;
 
     Context mCtx;
 
@@ -40,14 +34,14 @@ public class ContenidoBuscarServicios extends Fragment{
         fechaInicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showCalendar(view);
+
             }
         });
 
         fechaFin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showCalendar(view);
+
             }
         });
 
@@ -68,35 +62,5 @@ public class ContenidoBuscarServicios extends Fragment{
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("valor", "SI");
         editor.commit();
-    }
-
-    public void showCalendar(View v) {
-
-        PersianCalendar initDate = new PersianCalendar();
-        initDate.setPersianDate(2017, 3, 13);
-
-        Typeface face= Typeface.createFromAsset(mCtx.getAssets(),"iamplayer.ttf");
-
-        picker = new PersianDatePickerDialog(mCtx)
-                .setPositiveButtonString("Aceptar")
-                .setNegativeButton("Cancelar")
-                .setTodayButton("Hoy")
-                .setTodayButtonVisible(true)
-                .setInitDate(initDate)
-                .setTypeFace(face)
-                .setActionTextColor(Color.GRAY)
-                .setListener(new Listener() {
-                    @Override
-                    public void onDateSelected(PersianCalendar persianCalendar) {
-                        Toast.makeText(mCtx, persianCalendar.getPersianYear() + "/" + persianCalendar.getPersianMonth() + "/" + persianCalendar.getPersianDay(), Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onDisimised() {
-
-                    }
-                });
-
-        picker.show();
     }
 }

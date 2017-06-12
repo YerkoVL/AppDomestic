@@ -1,5 +1,6 @@
 package pe.app.com.demo;
 
+import android.app.ProgressDialog;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -10,11 +11,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import pe.app.com.demo.adapters.SolicitudAdapter;
+import pe.app.com.demo.conexion.Singleton;
 import pe.app.com.demo.entity.Solicitud;
+import pe.app.com.demo.tools.GenericAlerts;
+import pe.app.com.demo.tools.GenericTools;
+
+import static android.content.ContentValues.TAG;
+import static pe.app.com.demo.tools.GenericTools.GET_USER;
+import static pe.app.com.demo.tools.GenericTools.URL_APP;
+import static pe.app.com.demo.tools.GenericUrls.BASE_CONSULTA_SOLICITUDES;
+import static pe.app.com.demo.tools.GenericUrls.BASE_URL;
 
 public class ContenidoSolicitudes extends Fragment {
 
@@ -22,6 +42,10 @@ public class ContenidoSolicitudes extends Fragment {
     private SolicitudAdapter solicitudAdapter;
     private List<Solicitud> solicitudList;
 
+    ProgressDialog progressDialog = null;
+    Gson gson = new Gson();
+    GenericAlerts alertas = new GenericAlerts();
+    GenericTools tools = new GenericTools();
     Context mCtx;
 
     @Nullable
@@ -37,55 +61,64 @@ public class ContenidoSolicitudes extends Fragment {
         recyclerView.setHasFixedSize(true);
 
         recyclerView.setLayoutManager(linearLayoutManager);
+        progressDialog = new ProgressDialog(mCtx);
 
         solicitudList = new ArrayList<>();
 
-        cargaRecyclerSolicitudes();
+        obtenerSolicitudes("demo");
 
         return rootView;
 
     }
 
-    public void cargaRecyclerSolicitudes(){
-        //for (int i = 1; i <= 5; i++) {
-        Solicitud solicitud = new Solicitud(
-                "06/06/2017",
-                "Pintar la fachada de casa y empastado",
-                "22/06/2017",
-                "28/06/2017");
-        solicitudList.add(solicitud);
+    public void obtenerSolicitudes(String nomUsuario) {
 
-        Solicitud solicitud1 = new Solicitud(
-                "05/06/2017",
-                "Pintar la sala y comedor de casa",
-                "19/06/2017",
-                "23/06/2017");
-        solicitudList.add(solicitud1);
+        final String url = URL_APP + BASE_URL + BASE_CONSULTA_SOLICITUDES + GET_USER + nomUsuario;
 
-        Solicitud solicitud2 = new Solicitud(
-                "07/06/2017",
-                "Pintar la cocina de la casa y patio",
-                "21/06/2017",
-                "22/06/2017");
-        solicitudList.add(solicitud2);
+        progressDialog.show();
+        progressDialog.setContentView(R.layout.content_progress_action);
 
-        Solicitud solicitud3 = new Solicitud(
-                "09/06/2017",
-                "Pintar la cocina de la casa y patio",
-                "20/06/2017",
-                "25/06/2017");
-        solicitudList.add(solicitud3);
+        JsonArrayRequest respuestaSolicitud = new JsonArrayRequest(url,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
 
-        Solicitud solicitud4 = new Solicitud(
-                "10/06/2017",
-                "Pintar la fachada de casa de Juan y cobertor",
-                "10/06/2017",
-                "15/06/2017");
-        solicitudList.add(solicitud4);
+                        try {
+                            for (int i = 0; i < response.length(); i++) {
 
-        //}
+                                JSONObject object = (JSONObject) response.get(i);
 
-        solicitudAdapter = new SolicitudAdapter(solicitudList,mCtx);
-        recyclerView.setAdapter(solicitudAdapter);
+                                Solicitud solicitud = new Solicitud(
+                                        tools.validarNulos(object.getString("Id")),
+                                                tools.validarNulos(object.getString("FechaInicio")),
+                                                        tools.validarNulos(object.getString("FechaFin")),
+                                                                tools.validarNulos(object.getString("Servicio")),
+                                                                        tools.validarNulos(object.getString("Calificacion")),
+                                                                                tools.validarNulos(object.getString("FechaSolicitud")),
+                                                                                        tools.validarNulos(object.getString("Rubro")),
+                                                                                                tools.validarNulos(object.getString("IdEstado")),
+                                                                                                        tools.validarNulos(object.getString("Desc_Estado")));
+
+                                solicitudList.add(solicitud);
+                            }
+
+                            solicitudAdapter = new SolicitudAdapter(solicitudList, mCtx);
+                            recyclerView.setAdapter(solicitudAdapter);
+                            progressDialog.dismiss();
+
+                        } catch (JSONException e) {
+                            progressDialog.dismiss();
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                progressDialog.dismiss();
+            }
+        });
+
+        Singleton.getInstance(mCtx).addToRequestQueue(respuestaSolicitud);
     }
 }

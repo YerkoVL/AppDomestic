@@ -3,14 +3,14 @@
 
     <item
         android:id="@+id/menu_HistorialFinalizar"
-        android:title="Finalizar" />
+        android:title="@string/finalizar" />
 
     <item
         android:id="@+id/menu_HistorialVerDetalle"
-        android:title="Ver Detalle" />
+        android:title="@string/verDetalle" />
 
     <item
         android:id="@+id/menu_HistorialCancelar"
-        android:title="Cancelar" />
+        android:title="@string/cancelar" />
 
 </menu>

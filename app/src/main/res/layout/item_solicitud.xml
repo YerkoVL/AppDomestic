@@ -31,7 +31,7 @@
                         android:id="@+id/fechaSolicitud"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Fecha Solicitud"
+                        android:text="@string/fechaSolicitud"
                         android:textSize="@dimen/textoTitulo"
                         android:textColor="@color/colorTexto"
                         android:textStyle="bold"/>
@@ -40,7 +40,7 @@
                         android:id="@+id/txtFechaSolicitud"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Fecha de Solicitud"
+                        android:text="DD/MM/YY"
                         android:layout_marginStart="10dp"
                         android:textSize="@dimen/textoDescripcion"
                         android:textColor="@color/colorTexto"/>
@@ -56,7 +56,7 @@
                         android:id="@+id/servicio"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Servicio"
+                        android:text="@string/servicios"
                         android:textSize="@dimen/textoTitulo"
                         android:textColor="@color/colorTexto"
                         android:textStyle="bold"/>
@@ -81,7 +81,7 @@
                         android:id="@+id/fechaInicio"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Fecha Inicio"
+                        android:text="@string/fechaInicio"
                         android:textSize="@dimen/textoTitulo"
                         android:textColor="@color/colorTexto"
                         android:textStyle="bold"/>
@@ -90,28 +90,36 @@
                         android:id="@+id/txtFechaInicio"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Fecha de Inicio"
+                        android:text="DD/MM/YY"
                         android:layout_marginStart="10dp"
                         android:textSize="@dimen/textoDescripcion"
                         android:textColor="@color/colorTexto"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
                     <TextView
                         android:id="@+id/fechaFin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Fecha Inicio"
-                        android:layout_marginStart="10dp"
+                        android:text="@string/fechaFin"
                         android:textSize="@dimen/textoTitulo"
-                        android:textColor="@color/colorAccent"
+                        android:textColor="@color/colorTexto"
                         android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/txtFechaFin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Fecha de Fin"
+                        android:text="DD/MM/YY"
                         android:layout_marginStart="10dp"
-                        android:textSize="@dimen/textoDescripcion"
-                        android:textColor="@color/colorAccent"/>
+                        android:textColor="@color/colorTexto"
+                        android:textSize="@dimen/textoDescripcion"/>
+
                 </LinearLayout>
 
                 <TextView

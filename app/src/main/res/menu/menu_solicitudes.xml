@@ -3,10 +3,10 @@
 
     <item
         android:id="@+id/menu_SolicitudesVerDetalle"
-        android:title="Ver Detalle" />
+        android:title="@string/verDetalle" />
 
     <item
         android:id="@+id/menu_SolicitudesCancelar"
-        android:title="Cancelar" />
+        android:title="@string/cancelar" />
 
 </menu>

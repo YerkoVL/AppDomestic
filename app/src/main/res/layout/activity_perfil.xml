@@ -80,7 +80,7 @@
             android:isIndicator="true"
             android:paddingTop="8dp"
             android:progressTint="#FDDB39"
-            android:rating="4.2"
+            android:rating="1"
             android:secondaryProgressTint="#FDDB39" />
     </RelativeLayout>
 
@@ -102,9 +102,15 @@
 
             <TextView
                 android:layout_marginTop="15dp"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Calle : Los Alisos #345 - SJM"/>
+                android:text="@string/direccion"/>
+
+            <TextView
+                android:id="@+id/direccionUsuario"
+                android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
 
@@ -120,9 +126,15 @@
 
             <TextView
                 android:layout_marginTop="15dp"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="DNI : 658954578"/>
+                android:text="@string/dni"/>
+
+            <TextView
+                android:id="@+id/dniUsuario"
+                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
@@ -139,27 +151,27 @@
 
             <TextView
             android:layout_marginTop="15dp"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ver Ubicaciòn"/>
+            android:text="@string/verUbicacion"/>
 
     </LinearLayout>
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_notes"/>
+                android:src="@drawable/ic_notes" />
 
             <TextView
-                android:layout_marginTop="15dp"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ver Historial de Trabajos"/>
+                android:layout_marginTop="15dp"
+                android:text="@string/verHistorialTrabajos" />
 
         </LinearLayout>
 
