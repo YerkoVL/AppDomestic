@@ -14,8 +14,8 @@
     <dimen name="grid_item_image_size">90dp</dimen>
 
     <dimen name="textoTituloHeader">15dp</dimen>
-    <dimen name="textoTitulo">13dp</dimen>
+    <dimen name="textoTitulo">15dp</dimen>
     <dimen name="textoTituloPantalla">20dp</dimen>
-    <dimen name="textoDescripcion">12dp</dimen>
+    <dimen name="textoDescripcion">13dp</dimen>
     <dimen name="textoOpcion">20dp</dimen>
 </resources>

@@ -22,7 +22,11 @@ import pe.app.com.demo.comunicators.ComunicadorFragment;
 
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_AFIRMACION;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_BUSQUEDA_SERVICIO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_FRAGMENT;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_ID_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_NEGACION;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_NOMBRE_COMPLETO_USUARIO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_PERSONAL;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_VALOR_BUSQUEDA_SERVICIO;
 
@@ -31,7 +35,9 @@ public class MenuPrincipalActivity extends AppCompatActivity
 
     SharedPreferences sharedPreferences;
     Context mCtx;
-    ContenidoResultadoBusqueda contenidoResultadoBusqueda;
+
+    String nomUsuario;
+    int idUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +61,8 @@ public class MenuPrincipalActivity extends AppCompatActivity
         View hView = navigationView.getHeaderView(0);
         TextView nombreUsuario = (TextView) hView.findViewById(R.id.nvgtdNombreUsuario);
 
-        nombreUsuario.setText("MARIO MORALES");
+        obtenerDatosUsuario();
+        nombreUsuario.setText(nomUsuario);
 
         if(validarRealizoBusqueda()) {
             asignarFragment(new datosBusqueda());
@@ -103,19 +110,25 @@ public class MenuPrincipalActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if(id == R.id.ic_house){
-            asignarFragment(new datosInicioCliente());
             getSupportActionBar().setTitle("Inicio");
+            eliminarPreferenciasFragmentos();
+            asignarFragment(new datosInicioCliente());
         } else if (id == R.id.ic_mi_perfil) {
             getSupportActionBar().setTitle("Perfil Usuario");
+            eliminarPreferenciasPersonal();
+            eliminarPreferenciasFragmentos();
             asignarFragment(new PerfilActivity());
         } else if (id == R.id.ic_search) {
             getSupportActionBar().setTitle("Búsqueda de servicios");
+            eliminarPreferenciasFragmentos();
             asignarFragment(new ContenidoBuscarServicios());
         } else if (id == R.id.ic_history) {
             getSupportActionBar().setTitle("Historial");
+            eliminarPreferenciasFragmentos();
             asignarFragment(new datosInicioCliente());
         } else if (id == R.id.ic_sign_out) {
             actualizarSP();
+            eliminarPreferenciasFragmentos();
             startActivity(new Intent(getApplicationContext(),LoginActivity.class));
         } else if (id == R.id.ic_ayuda) {
 
@@ -138,6 +151,16 @@ public class MenuPrincipalActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+    }
+
+    public void eliminarPreferenciasFragmentos() {
+        SharedPreferences preferenciasFragmentos = getSharedPreferences(PREFERENCIA_FRAGMENT, MODE_PRIVATE);
+        preferenciasFragmentos.edit().clear().commit();
+    }
+
+    public void eliminarPreferenciasPersonal() {
+        SharedPreferences preferenciasFragmentos = getSharedPreferences(PREFERENCIA_PERSONAL, MODE_PRIVATE);
+        preferenciasFragmentos.edit().clear().commit();
     }
 
     public void actualizarSP(){
@@ -171,10 +194,16 @@ public class MenuPrincipalActivity extends AppCompatActivity
         return valor;
     }
 
+    public void obtenerDatosUsuario(){
+        SharedPreferences preferencia = mCtx.getSharedPreferences(PREFERENCIA_USUARIO,Context.MODE_PRIVATE);
+        idUsuario = preferencia.getInt(PREFERENCIA_ID_USUARIO,0);
+        nomUsuario = preferencia.getString(PREFERENCIA_NOMBRE_COMPLETO_USUARIO,"");
+    }
+
     @Override
     public void comunicarBusquedaConResultado(String rubros) {
         List<android.support.v4.app.Fragment> fragmentList =  getSupportFragmentManager().getFragments();
-        contenidoResultadoBusqueda = (ContenidoResultadoBusqueda) fragmentList.get(0);
-        contenidoResultadoBusqueda.recibirListaRubros(rubros);
+        //contenidoResultadoBusqueda = (ContenidoResultadoBusqueda) fragmentList.get(0);
+        //contenidoResultadoBusqueda.recibirListaRubros(rubros);
     }
 }

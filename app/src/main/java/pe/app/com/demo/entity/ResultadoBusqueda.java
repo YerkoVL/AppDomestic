@@ -1,7 +1,6 @@
 package pe.app.com.demo.entity;
 
 public class ResultadoBusqueda {
-
     private String Id;
     private String IdTipoDocumento;
     private String TipoDocumento;
@@ -13,7 +12,7 @@ public class ResultadoBusqueda {
     private String Direccion;
     private String NombreUsuario;
     private String Password;
-    private String Servicios;
+    private String Servicio;
     private String Latitud;
     private String Longitud;
     private String IdPerfil;
@@ -24,13 +23,13 @@ public class ResultadoBusqueda {
     private String Bienvenida;
     private String Atenciones;
     private Float rating;
-    private int imagen;
+    private String imagen;
     private String IdEstado;
     private String Desc_Estado;
 
-    public ResultadoBusqueda() {}
+    public ResultadoBusqueda(){}
 
-    public ResultadoBusqueda(String id, String idTipoDocumento, String tipoDocumento, String nroDocumento, String nombres, String apellidos, String correo, String telefono, String direccion, String nombreUsuario, String password, String servicios, String latitud, String longitud, String idPerfil, String perfil, String idDistrito, String distrito, String fechaLogueo, String bienvenida, String atenciones, Float rating, int imagen, String idEstado, String desc_Estado) {
+    public ResultadoBusqueda(String id, String idTipoDocumento, String tipoDocumento, String nroDocumento, String nombres, String apellidos, String correo, String telefono, String direccion, String nombreUsuario, String password, String servicio, String latitud, String longitud, String idPerfil, String perfil, String idDistrito, String distrito, String fechaLogueo, String bienvenida, String atenciones, Float rating, String imagen, String idEstado, String desc_Estado) {
         Id = id;
         IdTipoDocumento = idTipoDocumento;
         TipoDocumento = tipoDocumento;
@@ -42,7 +41,7 @@ public class ResultadoBusqueda {
         Direccion = direccion;
         NombreUsuario = nombreUsuario;
         Password = password;
-        Servicios = servicios;
+        Servicio = servicio;
         Latitud = latitud;
         Longitud = longitud;
         IdPerfil = idPerfil;
@@ -146,12 +145,12 @@ public class ResultadoBusqueda {
         Password = password;
     }
 
-    public String getServicios() {
-        return Servicios;
+    public String getServicio() {
+        return Servicio;
     }
 
-    public void setServicios(String servicios) {
-        Servicios = servicios;
+    public void setServicio(String servicio) {
+        Servicio = servicio;
     }
 
     public String getLatitud() {
@@ -234,11 +233,11 @@ public class ResultadoBusqueda {
         this.rating = rating;
     }
 
-    public int getImagen() {
+    public String getImagen() {
         return imagen;
     }
 
-    public void setImagen(int imagen) {
+    public void setImagen(String imagen) {
         this.imagen = imagen;
     }
 

@@ -33,6 +33,8 @@ import pe.app.com.demo.tools.GenericTools;
 
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_AFIRMACION;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_BUSQUEDA_SERVICIO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_FRAGMENT;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_FRAGMENT_RUBROS;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_ID_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_VALOR_BUSQUEDA_SERVICIO;
@@ -95,10 +97,10 @@ public class ContenidoBuscarServicios extends Fragment{
             @Override
             public void onDateSet(DatePicker datePicker, int anio, int mes, int dia) {
                 anio = datePicker.getYear();
-                mes = datePicker.getMonth();
+                mes = datePicker.getMonth() + 1;
                 dia = datePicker.getDayOfMonth();
 
-                String nuevaFecha = dia + "/" + tools.checkearDigito(mes) + "/" + anio;
+                String nuevaFecha = tools.checkearDigito(dia) + "/" + tools.checkearDigito(mes) + "/" + anio;
 
                 fechaFin.setText(nuevaFecha);
 
@@ -112,7 +114,7 @@ public class ContenidoBuscarServicios extends Fragment{
                 mes = datePicker.getMonth() + 1;
                 dia = datePicker.getDayOfMonth();
 
-                String nuevaFecha = dia + "/" + tools.checkearDigito(mes) + "/" + anio;
+                String nuevaFecha = tools.checkearDigito(dia) + "/" + tools.checkearDigito(mes) + "/" + anio;
 
                 fechaInicio.setText(nuevaFecha);
 
@@ -151,7 +153,7 @@ public class ContenidoBuscarServicios extends Fragment{
 
     public void validarDatosEnviar(){
         String fechaInicioSolicitud = fechaInicio.getText().toString();
-        String fechaFinSolicitud = fechaInicio.getText().toString();
+        String fechaFinSolicitud = fechaFin.getText().toString();
         String serviciosSolicitud = obtenerServicios();
         String rubrosSolicitud = obtenerRubros();
 
@@ -161,7 +163,10 @@ public class ContenidoBuscarServicios extends Fragment{
                     if(!rubrosSolicitud.equals("")){
                         inicioBusqueda(idUsuario, fechaInicioSolicitud,fechaFinSolicitud,serviciosSolicitud,rubrosSolicitud);
                         actualizarSP();
-                        comunicacion.comunicarBusquedaConResultado(rubrosSolicitud);
+                        //ACONDICIONADO PARA FRAGMENTOS
+                        guardarPreferenciaFragment(rubrosSolicitud);
+                        //comunicacion.comunicarBusquedaConResultado(rubrosSolicitud);
+
                     }else{
                         alertas.mensajeInfo("Error","Debe seleccionar rubros",mCtx);
                     }
@@ -278,9 +283,14 @@ public class ContenidoBuscarServicios extends Fragment{
         idUsuario = preferencia.getInt(PREFERENCIA_ID_USUARIO,0);
     }
 
+    public void guardarPreferenciaFragment(String listaRubro) {
+        SharedPreferences.Editor editor = mCtx.getSharedPreferences(PREFERENCIA_FRAGMENT, Context.MODE_PRIVATE).edit();
+        editor.putString(PREFERENCIA_FRAGMENT_RUBROS, listaRubro);
+        editor.commit();
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
     }
 }

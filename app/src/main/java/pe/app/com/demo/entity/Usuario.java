@@ -20,13 +20,15 @@ public class Usuario {
     private String Distrito;
     private String FechaLogueo;
     private String Bienvenida;
+    private Float rating;
+    private String imagen;
+    private String SERVICIO;
     private int IdEstado;
     private String Desc_Estado;
 
-    public Usuario() {
-    }
+    public Usuario() {}
 
-    public Usuario(int id, int idTipoDocumento, String tipoDocumento, String nroDocumento, String nombres, String apellidos, String correo, String telefono, String direccion, String nombreUsuario, String password, String latitud, String longitud, int idPerfil, String perfil, int idDistrito, String distrito, String fechaLogueo, String bienvenida, int idEstado, String desc_Estado) {
+    public Usuario(int id, int idTipoDocumento, String tipoDocumento, String nroDocumento, String nombres, String apellidos, String correo, String telefono, String direccion, String nombreUsuario, String password, String latitud, String longitud, int idPerfil, String perfil, int idDistrito, String distrito, String fechaLogueo, String bienvenida, Float rating, String imagen, String SERVICIO, int idEstado, String desc_Estado) {
         Id = id;
         IdTipoDocumento = idTipoDocumento;
         TipoDocumento = tipoDocumento;
@@ -46,6 +48,9 @@ public class Usuario {
         Distrito = distrito;
         FechaLogueo = fechaLogueo;
         Bienvenida = bienvenida;
+        this.rating = rating;
+        this.imagen = imagen;
+        this.SERVICIO = SERVICIO;
         IdEstado = idEstado;
         Desc_Estado = desc_Estado;
     }
@@ -200,6 +205,30 @@ public class Usuario {
 
     public void setBienvenida(String bienvenida) {
         Bienvenida = bienvenida;
+    }
+
+    public Float getRating() {
+        return rating;
+    }
+
+    public void setRating(Float rating) {
+        this.rating = rating;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
+
+    public String getSERVICIO() {
+        return SERVICIO;
+    }
+
+    public void setSERVICIO(String SERVICIO) {
+        this.SERVICIO = SERVICIO;
     }
 
     public int getIdEstado() {

@@ -29,11 +29,16 @@ import pe.app.com.demo.entity.Respuesta;
 import pe.app.com.demo.entity.Usuario;
 import pe.app.com.demo.tools.GenericAlerts;
 
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_DIRECCION;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_NRO_DOCUMENTO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_BUSQUEDA_SERVICIO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_DNI_PERSONAL;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_ID_USUARIO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_IMAGEN_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_LATITUD_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_LONGITUD_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_NEGACION;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_RATING_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_NOMBRE_COMPLETO_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_NOMBRE_USUARIO;
@@ -155,8 +160,9 @@ public class LoginActivity extends AppCompatActivity {
                                 Usuario usuario = gson.fromJson(Response, Usuario.class);
                                 if(usuario.getNombres()!=null) {
                                     guardarDatos(usuario.getId(),usuario.getNombreUsuario(), usuario.getPassword(),
+                                                 usuario.getNroDocumento(), usuario.getDireccion(),
                                                  usuario.getNombres() + " " + usuario.getApellidos(), usuario.getLatitud(),
-                                                 usuario.getLongitud());
+                                                 usuario.getLongitud() , String.valueOf(usuario.getRating()) , usuario.getImagen());
                                     progressDialog.dismiss();
                                     startActivity(new Intent(mCtx, MenuPrincipalActivity.class));
                                 }else{
@@ -187,14 +193,18 @@ public class LoginActivity extends AppCompatActivity {
         Singleton.getInstance(this).addToRequestQueue(respuestaLogin);
     }
 
-    public void guardarDatos(int idUsuario, String usuario, String password, String nombreCompleto, String latitud, String longitud) {
+    public void guardarDatos(int idUsuario, String usuario, String password, String nroDocUsu , String dirUsua, String nombreCompleto, String latitud, String longitud, String rating, String imagen) {
         SharedPreferences.Editor editor = getSharedPreferences(PREFERENCIA_USUARIO, MODE_PRIVATE).edit();
         editor.putInt(PREFERENCIA_ID_USUARIO, idUsuario);
         editor.putString(PREFERENCIA_NOMBRE_USUARIO, usuario);
         editor.putString(PREFERENCIA_PASS_USUARIO, password);
         editor.putString(PREFERENCIA_NOMBRE_COMPLETO_USUARIO, nombreCompleto);
+        editor.putString(OBJETO_NRO_DOCUMENTO,nroDocUsu);
+        editor.putString(OBJETO_DIRECCION, dirUsua);
         editor.putString(PREFERENCIA_LATITUD_USUARIO, latitud);
         editor.putString(PREFERENCIA_LONGITUD_USUARIO, longitud);
+        editor.putString(PREFERENCIA_RATING_USUARIO, rating);
+        editor.putString(PREFERENCIA_IMAGEN_USUARIO, imagen);
         editor.commit();
     }
 

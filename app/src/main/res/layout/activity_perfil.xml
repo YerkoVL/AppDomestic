@@ -10,79 +10,89 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="pe.app.com.demo.PerfilActivity">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/inicial"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:padding="@dimen/activity_horizontal_margin">
 
-        <ImageView
-            android:id="@+id/imagen"
-            android:layout_width="@dimen/grid_item_image_size"
-            android:src="@drawable/avatar_n3"
-            android:layout_height="@dimen/grid_item_image_size"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/activity_horizontal_margin" />
-
-        <TextView
-            android:id="@+id/nombre"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/imagen"
-            android:text="Juan Perez"
-            android:textStyle="bold"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/colorAccent" />
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/descripcion"
+            <ImageView
+                android:id="@+id/imagenUsuario"
+                android:layout_width="@dimen/grid_item_image_size"
+                android:src="@drawable/ic_photo_defaulth"
+                android:layout_height="@dimen/grid_item_image_size"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/activity_horizontal_margin" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/nombre"
-            android:layout_alignStart="@+id/nombre"
-            android:layout_below="@+id/nombre"
-            android:text="Servicios: Albañil, Gasfiteria"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:visibility="gone"/>
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/reputacion"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignLeft="@+id/descripcion"
-            android:layout_alignStart="@+id/descripcion"
-            android:layout_below="@+id/descripcion"
-            android:src="@android:drawable/ic_dialog_map"/>
+            <TextView
+                android:id="@+id/txtNombreUsuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Juan Perez"
+                android:textStyle="bold"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorAccent" />
 
-        <TextView
-            android:id="@+id/precio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_alignLeft="@+id/reputacion"
-            android:layout_alignStart="@+id/reputacion"
-            android:layout_below="@+id/descripcion"
-            android:text="4.2"
-            android:textAppearance="?android:attr/textAppearanceSmall"/>
+            <TextView
+                android:id="@+id/txtDescripcionServicios"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Servicios: Albañil, Gasfiteria"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:visibility="gone"/>
 
-        <RatingBar
-            android:id="@+id/rating"
-            style="?android:attr/ratingBarStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/precio"
-            android:layout_below="@+id/precio"
-            android:layout_gravity="center_horizontal"
-            android:clickable="true"
-            android:isIndicator="true"
-            android:paddingTop="8dp"
-            android:progressTint="#FDDB39"
-            android:rating="1"
-            android:secondaryProgressTint="#FDDB39" />
-    </RelativeLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/reputacion"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@android:drawable/ic_dialog_map"/>
+
+                <TextView
+                    android:id="@+id/txtReputacion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:text="4.2"
+                    android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+            </LinearLayout>
+
+            <RatingBar
+                android:id="@+id/rating"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:clickable="true"
+                android:isIndicator="true"
+                android:paddingTop="8dp"
+                android:progressTint="#FDDB39"
+                android:rating="1"
+                android:secondaryProgressTint="#FDDB39" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_below="@+id/inicial"
@@ -107,9 +117,10 @@
                 android:text="@string/direccion"/>
 
             <TextView
-                android:id="@+id/direccionUsuario"
+                android:id="@+id/txtDireccionUsuario"
                 android:layout_marginTop="15dp"
-                android:layout_width="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>
@@ -131,8 +142,9 @@
                 android:text="@string/dni"/>
 
             <TextView
-                android:id="@+id/dniUsuario"
+                android:id="@+id/txtDniUsuario"
                 android:layout_marginTop="15dp"
+                android:layout_marginStart="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

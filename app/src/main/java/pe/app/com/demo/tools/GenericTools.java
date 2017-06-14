@@ -20,7 +20,7 @@ public class GenericTools {
     final public String validarNulos(String valor){
 
         if(valor.equals(null)){
-            valor = "";
+            valor = " ";
         }
 
         return valor;

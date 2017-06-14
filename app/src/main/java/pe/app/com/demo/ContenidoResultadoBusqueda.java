@@ -30,8 +30,36 @@ import pe.app.com.demo.entity.ResultadoBusqueda;
 import pe.app.com.demo.tools.GenericTools;
 
 import static android.content.ContentValues.TAG;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_APELLIDOS;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_ATENCIONES;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_BIENVENIDA;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_CORREO;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_DESC_ESTADO;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_DIRECCION;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_DISTRITO;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_FECHA_LOGEO;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_ID;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_ID_DISTRITO;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_ID_ESTADO;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_ID_PERFIL;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_ID_TIPO_DOCUMENTO;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_IMAGEN;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_LATITUD;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_LONGITUD;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_NOMBRES;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_NOMBRE_USUARIO;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_NRO_DOCUMENTO;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_PASS_USUARIO;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_PERFIL;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_RATING;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_SERVICIO;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_TELEFONO;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_TIPO_DOCUMENTO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_FRAGMENT;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_FRAGMENT_RUBROS;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_ID_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_NOMBRE_USUARIO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_PASS_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_USUARIO;
 import static pe.app.com.demo.tools.GenericTools.GET_CONTINUO;
 import static pe.app.com.demo.tools.GenericTools.GET_ID_USER;
@@ -74,6 +102,7 @@ public class ContenidoResultadoBusqueda extends Fragment {
 
         resultadoBusquedaList = new ArrayList<>();
 
+        obtenerPreferenciasFragment();
         obtenerDatosUsuario();
         obtenerRespuestaBusqueda();
 
@@ -99,10 +128,34 @@ public class ContenidoResultadoBusqueda extends Fragment {
 
                                 JSONObject object = (JSONObject) response.get(i);
 
-                                //ResultadoBusqueda solicitud = new ResultadoBusqueda(
-                                //       tools.validarNulos(object.getString()));
+                                ResultadoBusqueda resultadoBusqueda = new ResultadoBusqueda(
+                                        tools.validarNulos(object.getString(OBJETO_ID)),
+                                        tools.validarNulos(object.getString(OBJETO_ID_TIPO_DOCUMENTO)),
+                                        tools.validarNulos(object.getString(OBJETO_TIPO_DOCUMENTO)),
+                                        tools.validarNulos(object.getString(OBJETO_NRO_DOCUMENTO)),
+                                        tools.validarNulos(object.getString(OBJETO_NOMBRES)),
+                                        tools.validarNulos(object.getString(OBJETO_APELLIDOS)),
+                                        tools.validarNulos(object.getString(OBJETO_CORREO)),
+                                        tools.validarNulos(object.getString(OBJETO_TELEFONO)),
+                                        tools.validarNulos(object.getString(OBJETO_DIRECCION)),
+                                        tools.validarNulos(object.getString(OBJETO_NOMBRE_USUARIO)),
+                                        tools.validarNulos(object.getString(OBJETO_PASS_USUARIO)),
+                                        tools.validarNulos(object.getString(OBJETO_PASS_USUARIO)),//OBJETO_SERVICIO
+                                        tools.validarNulos(object.getString(OBJETO_LATITUD)),
+                                        tools.validarNulos(object.getString(OBJETO_LONGITUD)),
+                                        tools.validarNulos(object.getString(OBJETO_ID_PERFIL)),
+                                        tools.validarNulos(object.getString(OBJETO_PERFIL)),
+                                        tools.validarNulos(object.getString(OBJETO_ID_DISTRITO)),
+                                        tools.validarNulos(object.getString(OBJETO_DISTRITO)),
+                                        tools.validarNulos(object.getString(OBJETO_FECHA_LOGEO)),
+                                        tools.validarNulos(object.getString(OBJETO_BIENVENIDA)),
+                                        tools.validarNulos(object.getString(OBJETO_ATENCIONES)),
+                                        Float.valueOf(tools.validarNulos(object.getString(OBJETO_RATING)+ "f")),
+                                        tools.validarNulos(object.getString(OBJETO_IMAGEN)),
+                                        tools.validarNulos(object.getString(OBJETO_ID_ESTADO)),
+                                        tools.validarNulos(object.getString(OBJETO_DESC_ESTADO)));
 
-                                //resultadoBusquedaList.add(solicitud);
+                                resultadoBusquedaList.add(resultadoBusqueda);
                             }
 
                             resultadoBusquedaAdapter = new ResultadoBusquedaAdapter(resultadoBusquedaList,mCtx);
@@ -129,6 +182,11 @@ public class ContenidoResultadoBusqueda extends Fragment {
         SharedPreferences preferencia = mCtx.getSharedPreferences(PREFERENCIA_USUARIO,Context.MODE_PRIVATE);
         idUsuario = preferencia.getInt(PREFERENCIA_ID_USUARIO,0);
         nombreUsuario = preferencia.getString(PREFERENCIA_NOMBRE_USUARIO,"");
+    }
+
+    public void obtenerPreferenciasFragment(){
+        SharedPreferences preferencia = mCtx.getSharedPreferences(PREFERENCIA_FRAGMENT,Context.MODE_PRIVATE);
+        rubrosLista = preferencia.getString(PREFERENCIA_FRAGMENT_RUBROS,"");
     }
 
     @Override
