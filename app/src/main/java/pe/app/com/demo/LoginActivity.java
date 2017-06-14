@@ -29,6 +29,8 @@ import pe.app.com.demo.entity.Respuesta;
 import pe.app.com.demo.entity.Usuario;
 import pe.app.com.demo.tools.GenericAlerts;
 
+import static pe.app.com.demo.tools.GenericTools.GET_CONTINUO;
+import static pe.app.com.demo.tools.GenericTools.GET_INICIO;
 import static pe.app.com.demo.tools.GenericTools.GET_PASS;
 import static pe.app.com.demo.tools.GenericTools.GET_USER;
 import static pe.app.com.demo.tools.GenericTools.URL_APP;
@@ -124,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void validarDatos(final String usu, final String pass) {
 
-        final String url = URL_APP + BASE_URL + BASE_LOGIN + GET_USER + usu + GET_PASS + pass;
+        final String url = URL_APP + BASE_URL + BASE_LOGIN + GET_INICIO +GET_USER + usu + GET_CONTINUO + GET_PASS + pass;
 
         progressDialog.show();
         progressDialog.setContentView(R.layout.content_progress_action);

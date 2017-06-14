@@ -28,9 +28,20 @@ import pe.app.com.demo.adapters.SolicitudAdapter;
 import pe.app.com.demo.conexion.Singleton;
 import pe.app.com.demo.entity.Solicitud;
 import pe.app.com.demo.tools.GenericAlerts;
+import pe.app.com.demo.tools.GenericEstructure;
 import pe.app.com.demo.tools.GenericTools;
 
 import static android.content.ContentValues.TAG;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_ID;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_ID_ESTADO;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_CALIFICACION;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_DESC_ESTADO;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_FECHA_FIN;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_FECHA_INICIO;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_FECHA_SOLICITUD;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_RUBRO;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_SERVICIO;
+import static pe.app.com.demo.tools.GenericTools.GET_INICIO;
 import static pe.app.com.demo.tools.GenericTools.GET_USER;
 import static pe.app.com.demo.tools.GenericTools.URL_APP;
 import static pe.app.com.demo.tools.GenericUrls.BASE_CONSULTA_SOLICITUDES;
@@ -73,7 +84,7 @@ public class ContenidoSolicitudes extends Fragment {
 
     public void obtenerSolicitudes(String nomUsuario) {
 
-        final String url = URL_APP + BASE_URL + BASE_CONSULTA_SOLICITUDES + GET_USER + nomUsuario;
+        final String url = URL_APP + BASE_URL + BASE_CONSULTA_SOLICITUDES + GET_INICIO + GET_USER + nomUsuario;
 
         progressDialog.show();
         progressDialog.setContentView(R.layout.content_progress_action);
@@ -89,15 +100,15 @@ public class ContenidoSolicitudes extends Fragment {
                                 JSONObject object = (JSONObject) response.get(i);
 
                                 Solicitud solicitud = new Solicitud(
-                                        tools.validarNulos(object.getString("Id")),
-                                                tools.validarNulos(object.getString("FechaInicio")),
-                                                        tools.validarNulos(object.getString("FechaFin")),
-                                                                tools.validarNulos(object.getString("Servicio")),
-                                                                        tools.validarNulos(object.getString("Calificacion")),
-                                                                                tools.validarNulos(object.getString("FechaSolicitud")),
-                                                                                        tools.validarNulos(object.getString("Rubro")),
-                                                                                                tools.validarNulos(object.getString("IdEstado")),
-                                                                                                        tools.validarNulos(object.getString("Desc_Estado")));
+                                        tools.validarNulos(object.getString(OBJETO_ID)),
+                                                tools.validarNulos(object.getString(OBJETO_FECHA_INICIO)),
+                                                        tools.validarNulos(object.getString(OBJETO_FECHA_FIN)),
+                                                                tools.validarNulos(object.getString(OBJETO_SERVICIO)),
+                                                                        tools.validarNulos(object.getString(OBJETO_CALIFICACION)),
+                                                                                tools.validarNulos(object.getString(OBJETO_FECHA_SOLICITUD)),
+                                                                                        tools.validarNulos(object.getString(OBJETO_RUBRO)),
+                                                                                                tools.validarNulos(object.getString(OBJETO_ID_ESTADO)),
+                                                                                                        tools.validarNulos(object.getString(OBJETO_DESC_ESTADO)));
 
                                 solicitudList.add(solicitud);
                             }

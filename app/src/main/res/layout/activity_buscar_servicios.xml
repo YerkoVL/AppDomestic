@@ -37,13 +37,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/fechaInicio"/>
 
-            <Button
-                android:id="@+id/btnFechaInicio"
-                android:text="@string/establecer"
-                android:layout_marginStart="10dp"
-                android:background="@color/colorAccent"
+            <EditText
+                android:id="@+id/edtFechaInicio"
+                android:layout_marginStart="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:hint="Ingrese Fecha"/>
 
         </LinearLayout>
 
@@ -59,31 +58,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/fechaFin"/>
 
-            <Button
-                android:id="@+id/btnFechaFin"
+            <EditText
+                android:id="@+id/edtFechaFin"
+                android:layout_marginStart="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:background="@color/colorAccent"
-                android:text="@string/establecer" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_marginStart="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/distrito"/>
-
-            <Spinner
-                android:id="@+id/spnDistrito"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:hint="Ingrese Fecha"/>
 
         </LinearLayout>
 
@@ -113,24 +93,22 @@
             android:layout_height="wrap_content">
 
             <CheckBox
+                android:id="@+id/chkPintor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Pintor"/>
 
             <CheckBox
+                android:id="@+id/chkAlbañil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Albañil" />
+
+            <CheckBox
+                android:id="@+id/chkGasfitero"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Gasfitero"/>
-
-            <CheckBox
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Albañil"/>
-
-            <CheckBox
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Otro"/>
 
         </LinearLayout>
 
@@ -138,6 +116,7 @@
             android:id="@+id/btnBuscarServicios"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:background="@color/colorAccent"
             android:textColor="@color/colorFondoDefault"
             android:text="@string/buscar"/>
