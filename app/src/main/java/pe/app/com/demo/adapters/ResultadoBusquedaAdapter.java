@@ -39,7 +39,7 @@ public class ResultadoBusquedaAdapter extends RecyclerView.Adapter<ResultadoBusq
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final ResultadoBusqueda resultadoBusqueda = resultadoBusquedaList.get(position);
         Glide.with(holder.imgViewSolucionador.getContext()).load(resultadoBusqueda.getImagen()).into(holder.imgViewSolucionador);
-        holder.textViewNombre.setText(resultadoBusqueda.getNombre());
+        holder.textViewNombre.setText(resultadoBusqueda.getNombres() + " " + resultadoBusqueda.getApellidos());
         holder.textViewServicio.setText(resultadoBusqueda.getServicios());
         holder.textViewAtenciones.setText(resultadoBusqueda.getAtenciones());
         holder.rtbViewReputacion.setRating(resultadoBusqueda.getRating());

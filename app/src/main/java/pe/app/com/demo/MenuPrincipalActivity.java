@@ -15,13 +15,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.List;
+
 import butterknife.ButterKnife;
+import pe.app.com.demo.comunicators.ComunicadorFragment;
+
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_AFIRMACION;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_BUSQUEDA_SERVICIO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_NEGACION;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_USUARIO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_VALOR_BUSQUEDA_SERVICIO;
 
 public class MenuPrincipalActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,ComunicadorFragment {
 
     SharedPreferences sharedPreferences;
     Context mCtx;
+    ContenidoResultadoBusqueda contenidoResultadoBusqueda;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +133,7 @@ public class MenuPrincipalActivity extends AppCompatActivity
             android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_menu_principal,fragmento);
             ft.commit();
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -130,9 +141,12 @@ public class MenuPrincipalActivity extends AppCompatActivity
     }
 
     public void actualizarSP(){
-        SharedPreferences prefs = mCtx.getSharedPreferences("busquedaServicios",Context.MODE_PRIVATE);
+        SharedPreferences preferenciasGenerales = getSharedPreferences(PREFERENCIA_USUARIO, MODE_PRIVATE);
+        preferenciasGenerales.edit().clear().commit();
+
+        SharedPreferences prefs = mCtx.getSharedPreferences(PREFERENCIA_BUSQUEDA_SERVICIO,Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("valor", "NO");
+        editor.putString(PREFERENCIA_VALOR_BUSQUEDA_SERVICIO, PREFERENCIA_NEGACION);
         editor.commit();
     }
 
@@ -140,10 +154,10 @@ public class MenuPrincipalActivity extends AppCompatActivity
         boolean valor;
 
         try {
-        sharedPreferences = getSharedPreferences("busquedaServicios", mCtx.MODE_PRIVATE);
-        String valorRecuperado = sharedPreferences.getString("valor", null);
+        sharedPreferences = getSharedPreferences(PREFERENCIA_BUSQUEDA_SERVICIO, mCtx.MODE_PRIVATE);
+        String valorRecuperado = sharedPreferences.getString(PREFERENCIA_VALOR_BUSQUEDA_SERVICIO, null);
 
-            if(valorRecuperado.equals("SI")){
+            if(valorRecuperado.equals(PREFERENCIA_AFIRMACION)){
                 valor = true;
             }else{
                 valor = false;
@@ -155,5 +169,12 @@ public class MenuPrincipalActivity extends AppCompatActivity
         }
 
         return valor;
+    }
+
+    @Override
+    public void comunicarBusquedaConResultado(String rubros) {
+        List<android.support.v4.app.Fragment> fragmentList =  getSupportFragmentManager().getFragments();
+        contenidoResultadoBusqueda = (ContenidoResultadoBusqueda) fragmentList.get(0);
+        contenidoResultadoBusqueda.recibirListaRubros(rubros);
     }
 }

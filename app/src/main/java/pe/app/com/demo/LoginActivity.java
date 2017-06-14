@@ -29,6 +29,16 @@ import pe.app.com.demo.entity.Respuesta;
 import pe.app.com.demo.entity.Usuario;
 import pe.app.com.demo.tools.GenericAlerts;
 
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_BUSQUEDA_SERVICIO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_ID_USUARIO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_LATITUD_USUARIO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_LONGITUD_USUARIO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_NEGACION;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_USUARIO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_NOMBRE_COMPLETO_USUARIO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_NOMBRE_USUARIO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_PASS_USUARIO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_VALOR_BUSQUEDA_SERVICIO;
 import static pe.app.com.demo.tools.GenericTools.GET_CONTINUO;
 import static pe.app.com.demo.tools.GenericTools.GET_INICIO;
 import static pe.app.com.demo.tools.GenericTools.GET_PASS;
@@ -40,7 +50,6 @@ import static pe.app.com.demo.tools.GenericUrls.BASE_URL;
 public class LoginActivity extends AppCompatActivity {
 
     //SISTEMA
-    Context ctx;
     private static final String TAG = LoginActivity.class.getSimpleName();
     Gson gson = new Gson();
     GenericAlerts alertas = new GenericAlerts();
@@ -75,7 +84,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-        ctx = this;
         mCtx = this;
 
         progressDialog = new ProgressDialog(mCtx);
@@ -85,6 +93,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Usuario = txtUsuario.getText().toString();
                 Password = txtPassword.getText().toString();
+
+                actualizarSP();
 
                 if (validarTexto()) {
                     validarDatos(Usuario, Password);
@@ -102,11 +112,15 @@ public class LoginActivity extends AppCompatActivity {
         registrarUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent pasarMenu = new Intent(ctx.getApplicationContext(), RegistroActivity.class);
-                startActivity(pasarMenu);
+                startActivity( new Intent(mCtx.getApplicationContext(), RegistroActivity.class));
             }
         });
+
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+        if(validarSesionActiva()){
+            startActivity( new Intent(mCtx.getApplicationContext(), MenuPrincipalActivity.class));
+        }
     }
 
     public Boolean validarTexto() {
@@ -116,10 +130,10 @@ public class LoginActivity extends AppCompatActivity {
             if (!Password.equals("")) {
                 valor = true;
             } else {
-                Toast.makeText(ctx, "Ingrese Password", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mCtx, "Ingrese Password", Toast.LENGTH_SHORT).show();
             }
         } else {
-            Toast.makeText(ctx, "Ingrese Usuario", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mCtx, "Ingrese Usuario", Toast.LENGTH_SHORT).show();
         }
         return valor;
     }
@@ -140,21 +154,25 @@ public class LoginActivity extends AppCompatActivity {
                             try {
                                 Usuario usuario = gson.fromJson(Response, Usuario.class);
                                 if(usuario.getNombres()!=null) {
-                                    guardarDatos(usuario.getNombreUsuario(), usuario.getPassword());
+                                    guardarDatos(usuario.getId(),usuario.getNombreUsuario(), usuario.getPassword(),
+                                                 usuario.getNombres() + " " + usuario.getApellidos(), usuario.getLatitud(),
+                                                 usuario.getLongitud());
                                     progressDialog.dismiss();
-                                    startActivity(new Intent(ctx, MenuPrincipalActivity.class));
+                                    startActivity(new Intent(mCtx, MenuPrincipalActivity.class));
                                 }else{
                                     Respuesta respuesta = gson.fromJson(Response,Respuesta.class);
-                                    alertas.mensajeInfo("Fallo Login",respuesta.getMensaje(),ctx);
+                                    alertas.mensajeInfo("Fallo Login",respuesta.getMensaje(),mCtx);
                                     progressDialog.dismiss();
                                 }
                             }catch (Exception e){
                                 e.printStackTrace();
-                                alertas.mensajeInfo("Fallo Login","None",ctx);
+                                alertas.mensajeInfo("Fallo Login","None",mCtx);
                                 progressDialog.dismiss();
                             }
                         }else{
-
+                            Respuesta respuesta = gson.fromJson(Response,Respuesta.class);
+                            alertas.mensajeInfo("Fallo Login",respuesta.getMensaje(),mCtx);
+                            progressDialog.dismiss();
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -162,17 +180,21 @@ public class LoginActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError e) {
                 e.printStackTrace();
                 progressDialog.dismiss();
-                alertas.mensajeInfo("Fallo Login","Error Desconocido",ctx);
+                alertas.mensajeInfo("Fallo Login","Error Desconocido",mCtx);
             }
         });
 
         Singleton.getInstance(this).addToRequestQueue(respuestaLogin);
     }
 
-    public void guardarDatos(String usuario, String password) {
-        SharedPreferences.Editor editor = getSharedPreferences("MyPref", MODE_PRIVATE).edit();
-        editor.putString("nombreUsuario", usuario);
-        editor.putString("password", password);
+    public void guardarDatos(int idUsuario, String usuario, String password, String nombreCompleto, String latitud, String longitud) {
+        SharedPreferences.Editor editor = getSharedPreferences(PREFERENCIA_USUARIO, MODE_PRIVATE).edit();
+        editor.putInt(PREFERENCIA_ID_USUARIO, idUsuario);
+        editor.putString(PREFERENCIA_NOMBRE_USUARIO, usuario);
+        editor.putString(PREFERENCIA_PASS_USUARIO, password);
+        editor.putString(PREFERENCIA_NOMBRE_COMPLETO_USUARIO, nombreCompleto);
+        editor.putString(PREFERENCIA_LATITUD_USUARIO, latitud);
+        editor.putString(PREFERENCIA_LONGITUD_USUARIO, longitud);
         editor.commit();
     }
 
@@ -204,9 +226,22 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void actualizarSP(){
-        SharedPreferences prefs = mCtx.getSharedPreferences("busquedaServicios",Context.MODE_PRIVATE);
+        SharedPreferences prefs = mCtx.getSharedPreferences(PREFERENCIA_BUSQUEDA_SERVICIO,Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("valor", "NO");
+        editor.putString(PREFERENCIA_VALOR_BUSQUEDA_SERVICIO, PREFERENCIA_NEGACION);
         editor.commit();
+    }
+
+    public Boolean validarSesionActiva(){
+        boolean valor = false;
+
+        SharedPreferences preferencia = mCtx.getSharedPreferences(PREFERENCIA_USUARIO,Context.MODE_PRIVATE);
+        String validarTexto = preferencia.getString(PREFERENCIA_NOMBRE_USUARIO,null);
+
+        if(validarTexto!=null){
+            valor = true;
+        }
+
+        return valor;
     }
 }

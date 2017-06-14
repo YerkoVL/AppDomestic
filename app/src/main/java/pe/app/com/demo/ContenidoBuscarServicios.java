@@ -1,6 +1,7 @@
 package pe.app.com.demo;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,23 +12,64 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
+
 import java.util.Calendar;
-import java.util.Locale;
+
+import pe.app.com.demo.comunicators.ComunicadorFragment;
+import pe.app.com.demo.conexion.Singleton;
+import pe.app.com.demo.entity.Respuesta;
+import pe.app.com.demo.entity.ResultadoInsercionSolicitud;
+import pe.app.com.demo.tools.GenericAlerts;
+import pe.app.com.demo.tools.GenericTools;
+
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_AFIRMACION;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_BUSQUEDA_SERVICIO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_ID_USUARIO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_USUARIO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_VALOR_BUSQUEDA_SERVICIO;
+import static pe.app.com.demo.tools.GenericTools.GET_COMAS;
+import static pe.app.com.demo.tools.GenericTools.GET_CONTINUO;
+import static pe.app.com.demo.tools.GenericTools.GET_ESPACIO;
+import static pe.app.com.demo.tools.GenericTools.GET_FECHA_FIN;
+import static pe.app.com.demo.tools.GenericTools.GET_FECHA_INICIO;
+import static pe.app.com.demo.tools.GenericTools.GET_ID_USER;
+import static pe.app.com.demo.tools.GenericTools.GET_INICIO;
+import static pe.app.com.demo.tools.GenericTools.GET_RUBROS;
+import static pe.app.com.demo.tools.GenericTools.GET_SERVICIO;
+import static pe.app.com.demo.tools.GenericTools.URL_APP;
+import static pe.app.com.demo.tools.GenericUrls.BASE_INSERTAR_SOLICITUD;
+import static pe.app.com.demo.tools.GenericUrls.BASE_URL;
 
 public class ContenidoBuscarServicios extends Fragment{
 
     Button busqueda;
+    EditText descripcionServicio;
     EditText fechaInicio;
     EditText fechaFin;
+    CheckBox pintorCheck;
+    CheckBox albanilCheck;
+    CheckBox gasfiteroCheck;
 
     Context mCtx;
 
+    GenericTools tools = new GenericTools();
+    GenericAlerts alertas = new GenericAlerts();
+    Gson gson = new Gson();
+
+    int idUsuario=0;
+
     Calendar miCalendario = Calendar.getInstance();
+    ProgressDialog progressDialog = null;
+    ComunicadorFragment comunicacion;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_buscar_servicios, container, false);
@@ -37,6 +79,14 @@ public class ContenidoBuscarServicios extends Fragment{
         busqueda = (Button)rootView.findViewById(R.id.btnBuscarServicios);
         fechaInicio = (EditText) rootView.findViewById(R.id.edtFechaInicio);
         fechaFin = (EditText) rootView.findViewById(R.id.edtFechaFin);
+        descripcionServicio = (EditText) rootView.findViewById(R.id.edtDescripcionServicios);
+        pintorCheck = (CheckBox) rootView.findViewById(R.id.chkPintor);
+        albanilCheck = (CheckBox) rootView.findViewById(R.id.chkAlbañil);
+        gasfiteroCheck = (CheckBox) rootView.findViewById(R.id.chkGasfitero);
+
+        progressDialog = new ProgressDialog(mCtx);
+
+        comunicacion = (ComunicadorFragment) getActivity();
 
         fechaInicio.setFocusableInTouchMode(false);
         fechaFin.setFocusableInTouchMode(false);
@@ -48,7 +98,9 @@ public class ContenidoBuscarServicios extends Fragment{
                 mes = datePicker.getMonth();
                 dia = datePicker.getDayOfMonth();
 
-                fechaFin.setText(dia + "/" + mes + "/" + anio);
+                String nuevaFecha = dia + "/" + tools.checkearDigito(mes) + "/" + anio;
+
+                fechaFin.setText(nuevaFecha);
 
             }
         };
@@ -57,10 +109,12 @@ public class ContenidoBuscarServicios extends Fragment{
             @Override
             public void onDateSet(DatePicker datePicker, int anio, int mes, int dia) {
                 anio = datePicker.getYear();
-                mes = datePicker.getMonth();
+                mes = datePicker.getMonth() + 1;
                 dia = datePicker.getDayOfMonth();
 
-                fechaInicio.setText(dia + "/" + mes + "/" + anio);
+                String nuevaFecha = dia + "/" + tools.checkearDigito(mes) + "/" + anio;
+
+                fechaInicio.setText(nuevaFecha);
 
             }
         };
@@ -86,27 +140,147 @@ public class ContenidoBuscarServicios extends Fragment{
         busqueda.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //buscarServicios();
-                actualizarSP();
-                startActivity(new Intent(mCtx,MenuPrincipalActivity.class));
+                validarDatosEnviar();
             }
         });
+
+        obtenerDatosUsuario();
 
         return rootView;
     }
 
+    public void validarDatosEnviar(){
+        String fechaInicioSolicitud = fechaInicio.getText().toString();
+        String fechaFinSolicitud = fechaInicio.getText().toString();
+        String serviciosSolicitud = obtenerServicios();
+        String rubrosSolicitud = obtenerRubros();
+
+        if(!fechaInicioSolicitud.equals("")){
+            if(!fechaFinSolicitud.equals("")){
+                if(!serviciosSolicitud.equals("")){
+                    if(!rubrosSolicitud.equals("")){
+                        inicioBusqueda(idUsuario, fechaInicioSolicitud,fechaFinSolicitud,serviciosSolicitud,rubrosSolicitud);
+                        actualizarSP();
+                        comunicacion.comunicarBusquedaConResultado(rubrosSolicitud);
+                    }else{
+                        alertas.mensajeInfo("Error","Debe seleccionar rubros",mCtx);
+                    }
+                }else{
+                    alertas.mensajeInfo("Error","Debe ingresar descripcion",mCtx);
+                }
+            }else{
+                alertas.mensajeInfo("Error","Debe ingresar Fecha Fin",mCtx);
+            }
+        }else{
+            alertas.mensajeInfo("Error","Debe ingresar Fecha Inicio",mCtx);
+        }
+    }
+
     public void actualizarSP(){
-        SharedPreferences prefs = mCtx.getSharedPreferences("busquedaServicios",Context.MODE_PRIVATE);
+        SharedPreferences prefs = mCtx.getSharedPreferences(PREFERENCIA_BUSQUEDA_SERVICIO,Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("valor", "SI");
+        editor.putString(PREFERENCIA_VALOR_BUSQUEDA_SERVICIO, PREFERENCIA_AFIRMACION);
         editor.commit();
     }
 
-    private void actualizarFecha(EditText textoEditar) {
+    public void inicioBusqueda(int idUsuario,String fechaInicio, String fechaFin, String servicios, String rubros) {
 
-        String myFormat = "MM/dd/yy"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        final String url = URL_APP + BASE_URL + BASE_INSERTAR_SOLICITUD + GET_INICIO + GET_ID_USER + idUsuario + GET_CONTINUO +
+                           GET_FECHA_INICIO + fechaInicio + GET_CONTINUO + GET_FECHA_FIN + fechaFin +  GET_CONTINUO + GET_SERVICIO + servicios +
+                           GET_CONTINUO + GET_RUBROS + rubros;
 
-        textoEditar.setText(sdf.format(miCalendario.getTime()));
+        progressDialog.show();
+        progressDialog.setContentView(R.layout.content_progress_action);
+
+        StringRequest respuestaInsercion = new StringRequest(Request.Method.GET,url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String Response) {
+
+                        if(Response!=null) {
+                            try {
+                                ResultadoInsercionSolicitud resultadoInsercionSolicitud = gson.fromJson(Response, ResultadoInsercionSolicitud.class);
+                                if(resultadoInsercionSolicitud.getId()!= null) {
+                                    progressDialog.dismiss();
+                                    startActivity(new Intent(mCtx,MenuPrincipalActivity.class));
+                                }else{
+                                    Respuesta respuesta = gson.fromJson(Response,Respuesta.class);
+                                    alertas.mensajeInfo("Fallo Insertar",respuesta.getMensaje(),mCtx);
+                                    progressDialog.dismiss();
+                                }
+                            }catch (Exception e){
+                                e.printStackTrace();
+                                alertas.mensajeInfo("Fallo Insertar","None",mCtx);
+                                progressDialog.dismiss();
+                            }
+                        }else{
+                            Respuesta respuesta = gson.fromJson(Response,Respuesta.class);
+                            alertas.mensajeInfo("Fallo Insertar",respuesta.getMensaje(),mCtx);
+                            progressDialog.dismiss();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError e) {
+                e.printStackTrace();
+                progressDialog.dismiss();
+                alertas.mensajeInfo("Fallo Insertar","Error Desconocido",mCtx);
+            }
+        });
+
+        Singleton.getInstance(mCtx).addToRequestQueue(respuestaInsercion);
+    }
+
+    public String obtenerServicios(){
+        String serviciosFinales = "";
+
+        String serviciosPreFinal = descripcionServicio.getText().toString();
+        serviciosFinales = serviciosPreFinal.replace(" ",GET_ESPACIO);
+
+        tools.validarNulos(serviciosFinales);
+        return serviciosFinales;
+    }
+
+    public String obtenerRubros(){
+        String rubrosFinales = "";
+
+        if(pintorCheck.isChecked()){
+            rubrosFinales = rubrosFinales + "1";
+            if(albanilCheck.isChecked()){
+                rubrosFinales = rubrosFinales + GET_COMAS + "2" ;
+                if(gasfiteroCheck.isChecked()){
+                    rubrosFinales = rubrosFinales + GET_COMAS + "3";
+                }
+            }else{
+                if(gasfiteroCheck.isChecked()){
+                    rubrosFinales = rubrosFinales + GET_COMAS + "3";
+                }
+            }
+        }else{
+            if(albanilCheck.isChecked()){
+                rubrosFinales = rubrosFinales + "2";
+                if(gasfiteroCheck.isChecked()){
+                    rubrosFinales = rubrosFinales + GET_COMAS + "3";
+                }
+            }else{
+                if(gasfiteroCheck.isChecked()){
+                    rubrosFinales = rubrosFinales + "3";
+                }
+            }
+        }
+
+        tools.validarNulos(rubrosFinales);
+        return rubrosFinales;
+    }
+
+    public void obtenerDatosUsuario(){
+        SharedPreferences preferencia = mCtx.getSharedPreferences(PREFERENCIA_USUARIO,Context.MODE_PRIVATE);
+        idUsuario = preferencia.getInt(PREFERENCIA_ID_USUARIO,0);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
     }
 }

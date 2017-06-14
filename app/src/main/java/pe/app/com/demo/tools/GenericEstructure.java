@@ -13,4 +13,19 @@ public class GenericEstructure {
     final public static String OBJETO_DESC_ESTADO = "Desc_Estado";
 
     final public static String OBJETO_RUBRO = "Rubro";
+
+    final public static String PREFERENCIA_USUARIO = "MyPref";
+    final public static String PREFERENCIA_ID_USUARIO = "idUsuario";
+    final public static String PREFERENCIA_NOMBRE_USUARIO = "nombreUsuario";
+    final public static String PREFERENCIA_PASS_USUARIO = "password";
+    final public static String PREFERENCIA_NOMBRE_COMPLETO_USUARIO = "nombreCompleto";
+    final public static String PREFERENCIA_LATITUD_USUARIO = "latitudUsuario";
+    final public static String PREFERENCIA_LONGITUD_USUARIO = "longitudUsuario";
+
+    final public static String PREFERENCIA_BUSQUEDA_SERVICIO = "busquedaServicios";
+    final public static String PREFERENCIA_VALOR_BUSQUEDA_SERVICIO = "valor";
+
+    final public static String PREFERENCIA_AFIRMACION = "SI";
+    final public static String PREFERENCIA_NEGACION = "NO";
+
 }

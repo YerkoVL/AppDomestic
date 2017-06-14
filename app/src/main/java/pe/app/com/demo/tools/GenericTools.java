@@ -5,6 +5,8 @@ public class GenericTools {
     final public static String URL_APP = "http://dsystem-001-site1.btempurl.com";
     final public static String GET_INICIO = "?";
     final public static String GET_CONTINUO = "&";
+    final public static String GET_ESPACIO = "%20";
+    final public static String GET_COMAS = ",";
     final public static String GET_ID_USER = "IdUsuario=";
     final public static String GET_USER = "username=";
     final public static String GET_PASS = "password=";
@@ -22,5 +24,9 @@ public class GenericTools {
         }
 
         return valor;
+    }
+
+    final public String checkearDigito(int numero){
+        return numero<=9 ? "0" + numero:String.valueOf(numero);
     }
 }

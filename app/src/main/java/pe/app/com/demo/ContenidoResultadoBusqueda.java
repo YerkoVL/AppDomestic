@@ -1,20 +1,45 @@
 package pe.app.com.demo;
 
-import android.support.v4.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import pe.app.com.demo.adapters.ResultadoBusquedaAdapter;
+import pe.app.com.demo.conexion.Singleton;
 import pe.app.com.demo.entity.ResultadoBusqueda;
+import pe.app.com.demo.tools.GenericTools;
+
+import static android.content.ContentValues.TAG;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_ID_USUARIO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_NOMBRE_USUARIO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_USUARIO;
+import static pe.app.com.demo.tools.GenericTools.GET_CONTINUO;
+import static pe.app.com.demo.tools.GenericTools.GET_ID_USER;
+import static pe.app.com.demo.tools.GenericTools.GET_INICIO;
+import static pe.app.com.demo.tools.GenericTools.GET_LISTA_RUBROS;
+import static pe.app.com.demo.tools.GenericTools.URL_APP;
+import static pe.app.com.demo.tools.GenericUrls.BASE_CONSULTA_SERVICIOS;
+import static pe.app.com.demo.tools.GenericUrls.BASE_URL;
 
 public class ContenidoResultadoBusqueda extends Fragment {
 
@@ -23,6 +48,14 @@ public class ContenidoResultadoBusqueda extends Fragment {
     private List<ResultadoBusqueda> resultadoBusquedaList;
 
     Context mCtx;
+
+    ProgressDialog progressDialog = null;
+
+    GenericTools tools = new GenericTools();
+
+    int idUsuario = 0;
+    String nombreUsuario = "";
+    String rubrosLista = "";
 
     @Nullable
     @Override
@@ -37,69 +70,73 @@ public class ContenidoResultadoBusqueda extends Fragment {
         recyclerView.setHasFixedSize(true);
 
         recyclerView.setLayoutManager(linearLayoutManager);
+        progressDialog = new ProgressDialog(mCtx);
 
         resultadoBusquedaList = new ArrayList<>();
 
-        cargaRecyclerResultadosBusqueda();
+        obtenerDatosUsuario();
+        obtenerRespuestaBusqueda();
 
         return rootView;
 
     }
 
-    public void cargaRecyclerResultadosBusqueda(){
-        //for (int i = 1; i <= 5; i++) {
-        ResultadoBusqueda resultadoBusqueda = new ResultadoBusqueda(
-                "Juan Perez",
-                "Albañil, Gasfitero, Pintor",
-                "8",
-                4.5f,
-                R.drawable.avatar_n1
-        );
+    public void obtenerRespuestaBusqueda() {
 
-        resultadoBusquedaList.add(resultadoBusqueda);
+            final String url = URL_APP + BASE_URL + BASE_CONSULTA_SERVICIOS + GET_INICIO + GET_LISTA_RUBROS + rubrosLista +
+                               GET_CONTINUO + GET_ID_USER + idUsuario;
 
-        ResultadoBusqueda resultadoBusqueda1 = new ResultadoBusqueda(
-                "Julia Lezama",
-                "Gasfitera, Pintora",
-                "25",
-                2.5f,
-                R.drawable.avatar_n2
-        );
+        progressDialog.show();
+        progressDialog.setContentView(R.layout.content_progress_action);
 
-        resultadoBusquedaList.add(resultadoBusqueda1);
+        JsonArrayRequest respuestaSolicitud = new JsonArrayRequest(url,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
 
-        ResultadoBusqueda resultadoBusqueda2 = new ResultadoBusqueda(
-                "Jim Aguilar",
-                "Pintor",
-                "5",
-                5f,
-                R.drawable.avatar_n3
-        );
+                        try {
+                            for (int i = 0; i < response.length(); i++) {
 
-        resultadoBusquedaList.add(resultadoBusqueda2);
+                                JSONObject object = (JSONObject) response.get(i);
 
-        ResultadoBusqueda resultadoBusqueda3 = new ResultadoBusqueda(
-                "Zosimo CHaupis",
-                "Gasfitería, Albañil",
-                "10",
-                4.5f,
-                R.drawable.avatar_n1
-        );
+                                //ResultadoBusqueda solicitud = new ResultadoBusqueda(
+                                //       tools.validarNulos(object.getString()));
 
-        resultadoBusquedaList.add(resultadoBusqueda3);
+                                //resultadoBusquedaList.add(solicitud);
+                            }
 
-        ResultadoBusqueda resultadoBusqueda4 = new ResultadoBusqueda(
-                "Fatima Tamara",
-                "Administradora, Empresaria",
-                "12",
-                4.5f,
-                R.drawable.avatar_n2
-        );
+                            resultadoBusquedaAdapter = new ResultadoBusquedaAdapter(resultadoBusquedaList,mCtx);
+                            recyclerView.setAdapter(resultadoBusquedaAdapter);
+                            progressDialog.dismiss();
 
-        resultadoBusquedaList.add(resultadoBusqueda4);
-        //}
+                        } catch (JSONException e) {
+                            progressDialog.dismiss();
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                progressDialog.dismiss();
+            }
+        });
 
-        resultadoBusquedaAdapter = new ResultadoBusquedaAdapter(resultadoBusquedaList,mCtx);
-        recyclerView.setAdapter(resultadoBusquedaAdapter);
+        Singleton.getInstance(mCtx).addToRequestQueue(respuestaSolicitud);
+    }
+
+    public void obtenerDatosUsuario(){
+        SharedPreferences preferencia = mCtx.getSharedPreferences(PREFERENCIA_USUARIO,Context.MODE_PRIVATE);
+        idUsuario = preferencia.getInt(PREFERENCIA_ID_USUARIO,0);
+        nombreUsuario = preferencia.getString(PREFERENCIA_NOMBRE_USUARIO,"");
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    public void recibirListaRubros(String Rubros){
+        rubrosLista = Rubros;
     }
 }

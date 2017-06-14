@@ -1,10 +1,11 @@
 package pe.app.com.demo;
 
 import android.app.ProgressDialog;
-import android.support.v4.app.Fragment;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,19 +29,21 @@ import pe.app.com.demo.adapters.SolicitudAdapter;
 import pe.app.com.demo.conexion.Singleton;
 import pe.app.com.demo.entity.Solicitud;
 import pe.app.com.demo.tools.GenericAlerts;
-import pe.app.com.demo.tools.GenericEstructure;
 import pe.app.com.demo.tools.GenericTools;
 
 import static android.content.ContentValues.TAG;
-import static pe.app.com.demo.tools.GenericEstructure.OBJETO_ID;
-import static pe.app.com.demo.tools.GenericEstructure.OBJETO_ID_ESTADO;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_CALIFICACION;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_DESC_ESTADO;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_FECHA_FIN;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_FECHA_INICIO;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_FECHA_SOLICITUD;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_ID;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_ID_ESTADO;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_RUBRO;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_SERVICIO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_ID_USUARIO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_NOMBRE_USUARIO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_USUARIO;
 import static pe.app.com.demo.tools.GenericTools.GET_INICIO;
 import static pe.app.com.demo.tools.GenericTools.GET_USER;
 import static pe.app.com.demo.tools.GenericTools.URL_APP;
@@ -59,6 +62,9 @@ public class ContenidoSolicitudes extends Fragment {
     GenericTools tools = new GenericTools();
     Context mCtx;
 
+    int idUsuario = 0;
+    String nombreUsuario = "";
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -76,7 +82,8 @@ public class ContenidoSolicitudes extends Fragment {
 
         solicitudList = new ArrayList<>();
 
-        obtenerSolicitudes("demo");
+        obtenerDatosUsuario();
+        obtenerSolicitudes(nombreUsuario);
 
         return rootView;
 
@@ -131,5 +138,11 @@ public class ContenidoSolicitudes extends Fragment {
         });
 
         Singleton.getInstance(mCtx).addToRequestQueue(respuestaSolicitud);
+    }
+
+    public void obtenerDatosUsuario(){
+        SharedPreferences preferencia = mCtx.getSharedPreferences(PREFERENCIA_USUARIO,Context.MODE_PRIVATE);
+        idUsuario = preferencia.getInt(PREFERENCIA_ID_USUARIO,0);
+        nombreUsuario = preferencia.getString(PREFERENCIA_NOMBRE_USUARIO,"");
     }
 }

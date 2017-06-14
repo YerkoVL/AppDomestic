@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorFondoDefault"
+    android:id="@+id/activity_contenido_resultado_busqueda"
     tools:context="pe.app.com.demo.ContenidoResultadoBusqueda">
 
     <android.support.v7.widget.RecyclerView
