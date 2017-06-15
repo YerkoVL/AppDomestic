@@ -2,6 +2,7 @@ package pe.app.com.demo;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -25,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pe.app.com.demo.adapters.ResultadoBusquedaAdapter;
+import pe.app.com.demo.comunicators.ComunicadorAdapters;
+import pe.app.com.demo.comunicators.ComunicadorFragment;
 import pe.app.com.demo.conexion.Singleton;
 import pe.app.com.demo.entity.ResultadoBusqueda;
 import pe.app.com.demo.tools.GenericTools;
@@ -78,12 +81,13 @@ public class ContenidoResultadoBusqueda extends Fragment {
     Context mCtx;
 
     ProgressDialog progressDialog = null;
-
     GenericTools tools = new GenericTools();
 
     int idUsuario = 0;
     String nombreUsuario = "";
     String rubrosLista = "";
+
+    String valorVerContacto = "PERFIL_PERSONAL";
 
     @Nullable
     @Override
@@ -158,7 +162,7 @@ public class ContenidoResultadoBusqueda extends Fragment {
                                 resultadoBusquedaList.add(resultadoBusqueda);
                             }
 
-                            resultadoBusquedaAdapter = new ResultadoBusquedaAdapter(resultadoBusquedaList,mCtx);
+                            resultadoBusquedaAdapter = new ResultadoBusquedaAdapter(resultadoBusquedaList,mCtx,comunicadorAdapters);
                             recyclerView.setAdapter(resultadoBusquedaAdapter);
                             progressDialog.dismiss();
 
@@ -194,7 +198,17 @@ public class ContenidoResultadoBusqueda extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
-    public void recibirListaRubros(String Rubros){
-        rubrosLista = Rubros;
-    }
+    ComunicadorAdapters comunicadorAdapters = new ComunicadorAdapters() {
+        @Override
+        public void comunicarResultadoPerfil(String idPersona, String imagen, String nombre) {
+            Bundle bundle = new Bundle();
+            Intent in =new Intent(getActivity(),MenuPrincipalActivity.class);
+                in.putExtra("VALOR_ACCION",1);
+                in.putExtra("VALOR_FRAGMENT",valorVerContacto);
+                in.putExtra("ID", idPersona);
+                in.putExtra("IMAGEN", imagen);
+            in.putExtras(bundle);
+            startActivity(in);
+        }
+    };
 }

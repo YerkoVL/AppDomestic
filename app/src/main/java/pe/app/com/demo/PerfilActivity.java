@@ -40,7 +40,8 @@ public class PerfilActivity extends Fragment {
     Toolbar toolbar;
     Context mCtx;
 
-    String idPersona, nombresPersona ,apPersona, dirPersona, dniPersona, latitudPersona, longitudPersona, nombresCompletoPersona, imagenRecPersona;
+    String nombresPersona ,apPersona, dirPersona, dniPersona, latitudPersona, longitudPersona, nombresCompletoPersona, imagenRecPersona;
+    int idPersona;
     Float reputacionPersona;
 
     TextView direccionUsuario,dniUsuario, nombreUsuario,reputacion;
@@ -60,8 +61,6 @@ public class PerfilActivity extends Fragment {
         reputacion = (TextView) rootView.findViewById(R.id.txtReputacion);
         valoracion = (RatingBar) rootView.findViewById(R.id.rating);
 
-        Glide.with(mCtx).load(imagenRecPersona).into(imagenUsuario);
-
         obtenerDatosUsuario();
 
         return rootView;
@@ -70,7 +69,7 @@ public class PerfilActivity extends Fragment {
     public void obtenerDatosUsuario(){
         try{
             SharedPreferences sharedPreferences = mCtx.getSharedPreferences(PREFERENCIA_NOMBRE_COMPLETO_USUARIO,Context.MODE_PRIVATE);
-            idPersona = sharedPreferences.getString(PREFERENCIA_ID_PERSONAL, "");
+            idPersona = sharedPreferences.getInt(PREFERENCIA_ID_PERSONAL, 0);
                 nombresPersona = sharedPreferences.getString(PREFERENCIA_NOMBRES_PERSONAL, "");
                 apPersona = sharedPreferences.getString(PREFERENCIA_APELLIDOS_PERSONAL, "");
             nombresPersona = nombresPersona + apPersona;
@@ -83,19 +82,25 @@ public class PerfilActivity extends Fragment {
             longitudPersona = sharedPreferences.getString(PREFERENCIA_LONGITUD_PERSONAL, "");
 
         }catch (Exception e){
-            SharedPreferences preferencia = mCtx.getSharedPreferences(PREFERENCIA_USUARIO,Context.MODE_PRIVATE);
-            idPersona = preferencia.getString(PREFERENCIA_ID_USUARIO, "");
-            nombresPersona = preferencia.getString(PREFERENCIA_NOMBRE_USUARIO, "");
-            //preferencia.getString(PREFERENCIA_PASS_USUARIO, "");
-            nombresCompletoPersona = preferencia.getString(PREFERENCIA_NOMBRE_COMPLETO_USUARIO, "");
-                String reputacionPre = preferencia.getString(PREFERENCIA_RATING_USUARIO,"");
-            reputacionPersona = Float.valueOf(reputacionPre + "f");
-            imagenRecPersona = preferencia.getString(PREFERENCIA_IMAGEN_USUARIO,"");
-            dniPersona = preferencia.getString(OBJETO_NRO_DOCUMENTO,"");
-            dirPersona = preferencia.getString(OBJETO_DIRECCION, "");
-            latitudPersona = preferencia.getString(PREFERENCIA_LATITUD_USUARIO, "");
-            longitudPersona = preferencia.getString(PREFERENCIA_LONGITUD_USUARIO, "");
-
+            e.printStackTrace();
+            try {
+                SharedPreferences preferencia = mCtx.getSharedPreferences(PREFERENCIA_USUARIO, Context.MODE_PRIVATE);
+                idPersona = preferencia.getInt(PREFERENCIA_ID_USUARIO, 0);
+                nombresPersona = preferencia.getString(PREFERENCIA_NOMBRE_USUARIO, "");
+                //preferencia.getString(PREFERENCIA_PASS_USUARIO, "");
+                nombresCompletoPersona = preferencia.getString(PREFERENCIA_NOMBRE_COMPLETO_USUARIO, "");
+                String reputacionPre = preferencia.getString(PREFERENCIA_RATING_USUARIO, "");
+                if (reputacionPre != null) {
+                    reputacionPersona = Float.valueOf(reputacionPre + "f");
+                }
+                imagenRecPersona = preferencia.getString(PREFERENCIA_IMAGEN_USUARIO, "");
+                dniPersona = preferencia.getString(OBJETO_NRO_DOCUMENTO, "");
+                dirPersona = preferencia.getString(OBJETO_DIRECCION, "");
+                latitudPersona = preferencia.getString(PREFERENCIA_LATITUD_USUARIO, "");
+                longitudPersona = preferencia.getString(PREFERENCIA_LONGITUD_USUARIO, "");
+            }catch (Exception i){
+                i.printStackTrace();
+            }
         }
     }
 

@@ -1,10 +1,10 @@
 package pe.app.com.demo.adapters;
 
+import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,9 +20,10 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-import pe.app.com.demo.MenuPrincipalActivity;
 import pe.app.com.demo.PerfilActivity;
 import pe.app.com.demo.R;
+import pe.app.com.demo.comunicators.ComunicadorAdapters;
+import pe.app.com.demo.comunicators.ComunicadorFragment;
 import pe.app.com.demo.entity.ResultadoBusqueda;
 
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_APELLIDOS_PERSONAL;
@@ -40,23 +41,28 @@ import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_VALOR_PERFIL;
 public class ResultadoBusquedaAdapter extends RecyclerView.Adapter<ResultadoBusquedaAdapter.ViewHolder>{
 
     private List<ResultadoBusqueda> resultadoBusquedaList;
+    private ComunicadorAdapters mCommunicator;
+    ComunicadorAdapters mComminication;
     private Context mCtx;
-    View v;
 
-    public ResultadoBusquedaAdapter(List<ResultadoBusqueda> resultadoBusqueda, Context ctx){
+    public ResultadoBusquedaAdapter(List<ResultadoBusqueda> resultadoBusqueda, Context ctx,ComunicadorAdapters communication){
         this.resultadoBusquedaList = resultadoBusqueda;
         this.mCtx = ctx;
+        mCommunicator=communication;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_resultado_busqueda, parent, false);
-        return new ViewHolder(v);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_resultado_busqueda, parent, false);
+        ViewHolder holder = new ViewHolder(v,mCommunicator);
+        //return new ViewHolder(v);
+        return holder;
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final ResultadoBusqueda resultadoBusqueda = resultadoBusquedaList.get(position);
+
         Glide.with(holder.imgViewSolucionador.getContext()).load(resultadoBusqueda.getImagen()).into(holder.imgViewSolucionador);
         holder.textViewNombre.setText(resultadoBusqueda.getNombres() + " " + resultadoBusqueda.getApellidos());
         holder.textViewServicio.setText(resultadoBusqueda.getServicio());
@@ -64,7 +70,7 @@ public class ResultadoBusquedaAdapter extends RecyclerView.Adapter<ResultadoBusq
         holder.rtbViewReputacion.setRating(resultadoBusqueda.getRating());
         holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 PopupMenu popupMenu = new PopupMenu(mCtx,holder.buttonViewOption);
                 popupMenu.inflate(R.menu.menu_resultado_busqueda);
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -74,7 +80,10 @@ public class ResultadoBusquedaAdapter extends RecyclerView.Adapter<ResultadoBusq
                             case R.id.menu_ResultadoBusquedaVerContacto:
                                 guardarDatosPersonalDisponible(resultadoBusqueda.getId(),resultadoBusqueda.getNombres(),resultadoBusqueda.getApellidos(),resultadoBusqueda.getDireccion(),resultadoBusqueda.getNroDocumento(),resultadoBusqueda.getLatitud(),resultadoBusqueda.getLongitud());
                                 guardarSharedPreferencesValor();
-                                //VALOR DE ENVIO
+                                mComminication.comunicarResultadoPerfil(
+                                        resultadoBusqueda.getId(),
+                                        resultadoBusqueda.getImagen(),
+                                        resultadoBusqueda.getNombres());
                                 break;
                             case R.id.menu_ResultadoBusquedaEnviar:
                                 guardarDatosPersonalDisponible(resultadoBusqueda.getId(),resultadoBusqueda.getNombres(),resultadoBusqueda.getApellidos(),resultadoBusqueda.getDireccion(),resultadoBusqueda.getNroDocumento(),resultadoBusqueda.getLatitud(),resultadoBusqueda.getLongitud());
@@ -107,7 +116,7 @@ public class ResultadoBusquedaAdapter extends RecyclerView.Adapter<ResultadoBusq
         public RatingBar rtbViewReputacion;
         public TextView buttonViewOption;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView, ComunicadorAdapters Communicator) {
             super(itemView);
 
             imgViewSolucionador = (ImageView) itemView.findViewById(R.id.imagenSolucionador);
@@ -116,6 +125,8 @@ public class ResultadoBusquedaAdapter extends RecyclerView.Adapter<ResultadoBusq
             textViewAtenciones = (TextView) itemView.findViewById(R.id.txtAtenciones);
             rtbViewReputacion = (RatingBar) itemView.findViewById(R.id.rntgReputacion);
             buttonViewOption = (TextView) itemView.findViewById(R.id.txtOptionPulse);
+
+            mComminication=Communicator;
         }
     }
 

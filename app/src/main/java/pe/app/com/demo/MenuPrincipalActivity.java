@@ -1,5 +1,7 @@
 package pe.app.com.demo;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,7 +15,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -24,6 +29,7 @@ import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_AFIRMACION;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_BUSQUEDA_SERVICIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_FRAGMENT;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_ID_USUARIO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_IMAGEN_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_NEGACION;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_NOMBRE_COMPLETO_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_PERSONAL;
@@ -36,8 +42,9 @@ public class MenuPrincipalActivity extends AppCompatActivity
     SharedPreferences sharedPreferences;
     Context mCtx;
 
-    String nomUsuario;
-    int idUsuario;
+    String nomUsuario, valorFRAGMENT, valorID, valorImagen;
+    int valorACCION,idUsuario;
+    String imagen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +58,7 @@ public class MenuPrincipalActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-            this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
@@ -60,14 +67,40 @@ public class MenuPrincipalActivity extends AppCompatActivity
 
         View hView = navigationView.getHeaderView(0);
         TextView nombreUsuario = (TextView) hView.findViewById(R.id.nvgtdNombreUsuario);
+        ImageView imagenUsuario = (ImageView) hView.findViewById(R.id.nvgtdImageView);
 
         obtenerDatosUsuario();
         nombreUsuario.setText(nomUsuario);
+        Glide.with(mCtx).load(imagen).into(imagenUsuario);
 
-        if(validarRealizoBusqueda()) {
-            asignarFragment(new datosBusqueda());
+        try {
+            Bundle bundle = getIntent().getExtras();
+            if(bundle!=null) {
+                valorACCION = bundle.getInt("VALOR_ACCION");
+                if (valorACCION == 1) {
+                    valorFRAGMENT = bundle.getString("VALOR_FRAGMENT");
+                }
+                valorID = bundle.getString("ID");
+                valorImagen = bundle.getString("IMAGEN");
+                if(valorImagen!=null){
+                    imagen = valorImagen;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (valorACCION==1) {
+            if (valorFRAGMENT.equals("PERFIL_PERSONAL")) {
+                asignarFragment(new PerfilActivity());
+            } else {
+            }
         }else{
-            asignarFragment(new datosInicioCliente());
+            if (validarRealizoBusqueda()) {
+                asignarFragment(new datosBusqueda());
+            } else {
+                asignarFragment(new datosInicioCliente());
+            }
         }
     }
 
@@ -198,6 +231,7 @@ public class MenuPrincipalActivity extends AppCompatActivity
         SharedPreferences preferencia = mCtx.getSharedPreferences(PREFERENCIA_USUARIO,Context.MODE_PRIVATE);
         idUsuario = preferencia.getInt(PREFERENCIA_ID_USUARIO,0);
         nomUsuario = preferencia.getString(PREFERENCIA_NOMBRE_COMPLETO_USUARIO,"");
+        imagen = preferencia.getString(PREFERENCIA_IMAGEN_USUARIO,"");
     }
 
     @Override
