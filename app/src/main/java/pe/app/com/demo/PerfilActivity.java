@@ -10,12 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_DIRECCION;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_ID_PERFIL;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_NRO_DOCUMENTO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_APELLIDOS_PERSONAL;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_DIRECCION_PERSONAL;
@@ -39,13 +41,14 @@ import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_VALOR_PERFIL;
 public class PerfilActivity extends Fragment {
     Context mCtx;
 
-    String nombresPersona ,apPersona, dirPersona, dniPersona, latitudPersona, longitudPersona, nombresCompletoPersona, imagenRecPersona, reputacionPre;
-    int idPersona;
-    Float reputacionPersona;
+    String nombresPersona , dirPersona, dniPersona, latitudPersona, longitudPersona, nombresCompletoPersona, imagenRecPersona, reputacionPre;
+    int idPersona, idPerfil;
+    Float reputacionPersona = 0f;
 
     TextView direccionUsuario,dniUsuario, nombreUsuario,reputacion;
     RatingBar valoracion;
-    ImageView imagenUsuario;
+    ImageView imagen;
+    LinearLayout linearLayoutPerfil;
 
     @Nullable
     @Override
@@ -56,9 +59,10 @@ public class PerfilActivity extends Fragment {
         direccionUsuario = (TextView) rootView.findViewById(R.id.txtDireccionUsuario);
         dniUsuario = (TextView) rootView.findViewById(R.id.txtDniUsuario);
         nombreUsuario = (TextView) rootView.findViewById(R.id.txtNombreUsuario);
-        imagenUsuario = (ImageView) rootView.findViewById(R.id.imagenUsuario);
+        imagen = (ImageView) rootView.findViewById(R.id.imagenUsuario);
         reputacion = (TextView) rootView.findViewById(R.id.txtReputacion);
         valoracion = (RatingBar) rootView.findViewById(R.id.rating);
+        linearLayoutPerfil = (LinearLayout) rootView.findViewById(R.id.lyOcultarPerfil);
 
         try {
             idPersona = this.getArguments().getInt("ID");
@@ -84,11 +88,12 @@ public class PerfilActivity extends Fragment {
         try {
             SharedPreferences preferencia = mCtx.getSharedPreferences(PREFERENCIA_USUARIO, Context.MODE_PRIVATE);
             idPersona = preferencia.getInt(PREFERENCIA_ID_USUARIO, 0);
+            idPerfil = preferencia.getInt(OBJETO_ID_PERFIL, 0);
             nombresPersona = preferencia.getString(PREFERENCIA_NOMBRE_USUARIO, "");
             //preferencia.getString(PREFERENCIA_PASS_USUARIO, "");
             nombresCompletoPersona = preferencia.getString(PREFERENCIA_NOMBRE_COMPLETO_USUARIO, "");
             reputacionPre = preferencia.getString(PREFERENCIA_RATING_USUARIO, "");
-            if (reputacionPre != null) {
+            if(reputacionPre.equals("") || !reputacionPre.equals("null")) {
                 reputacionPersona = Float.valueOf(reputacionPre + "f");
             }
             imagenRecPersona = preferencia.getString(PREFERENCIA_IMAGEN_USUARIO, "");
@@ -105,8 +110,13 @@ public class PerfilActivity extends Fragment {
         direccionUsuario.setText(dirPersona);
         dniUsuario.setText(dniPersona);
         nombreUsuario.setText(nombresCompletoPersona);
-        Glide.with(mCtx).load(imagenRecPersona).into(imagenUsuario);
-        reputacion.setText(reputacionPersona.toString());
-        valoracion.setRating(Float.valueOf(reputacionPersona + "f"));
+        Glide.with(mCtx).load(imagenRecPersona).into(imagen);
+        reputacion.setText(reputacionPre.toString());
+        valoracion.setRating(Float.valueOf(reputacionPersona));
+
+        if(idPerfil == 1){
+            linearLayoutPerfil.setVisibility(View.GONE);
+        }
+
     }
 }

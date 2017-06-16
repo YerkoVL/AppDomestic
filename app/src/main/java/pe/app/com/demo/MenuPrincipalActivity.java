@@ -21,7 +21,6 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import pe.app.com.demo.comunicators.ComunicadorFragment;
 
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_AFIRMACION;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_BUSQUEDA_SERVICIO;
@@ -35,12 +34,12 @@ import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_VALOR_BUSQUEDA_SERVICIO;
 
 public class MenuPrincipalActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,ComunicadorFragment {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     SharedPreferences sharedPreferences;
     Context mCtx;
 
-    String nomUsuario, valorFRAGMENT, valorID, valorIMAGEN, valorNOMBRES, valorNOMBRECOMPLETO, valorDNI, valorREPUTACION, valorDIRECCION, valorLATITUD, valorLONGITUD;
+    String nomUsuario, valorFRAGMENT, valorRUBROS, valorID, valorIMAGEN, valorNOMBRES, valorNOMBRECOMPLETO, valorDNI, valorREPUTACION, valorDIRECCION, valorLATITUD, valorLONGITUD;
     int valorACCION,idUsuario;
     String imagen;
 
@@ -68,8 +67,6 @@ public class MenuPrincipalActivity extends AppCompatActivity
         ImageView imagenUsuario = (ImageView) hView.findViewById(R.id.nvgtdImageView);
 
         obtenerDatosUsuario();
-        nombreUsuario.setText(nomUsuario);
-        Glide.with(mCtx).load(imagen).into(imagenUsuario);
 
         try {
             Bundle bundle = getIntent().getExtras();
@@ -99,6 +96,11 @@ public class MenuPrincipalActivity extends AppCompatActivity
                                 valorLATITUD,
                                 valorLONGITUD);
                     } else {
+                        if (valorFRAGMENT.equals("PERFIL_BUSQUEDA")){
+                            valorRUBROS = bundle.getString("VALOR_RUBROS");
+                            enviarDatosBuscarServicios(valorRUBROS);
+                            asignarFragment(new datosBusqueda());
+                        }
                     }
 
                 }else {
@@ -114,12 +116,15 @@ public class MenuPrincipalActivity extends AppCompatActivity
         }
 
         if (valorACCION != 1){
-            if (validarRealizoBusqueda()) {
-                asignarFragment(new datosBusqueda());
-            } else {
+            //if (validarRealizoBusqueda()) {
+              //  asignarFragment(new datosBusqueda());
+            //} else {
                 asignarFragment(new datosInicioCliente());
-            }
+            //}
         }
+
+        nombreUsuario.setText(nomUsuario);
+        Glide.with(mCtx).load(imagen).into(imagenUsuario);
     }
 
     @Override
@@ -249,13 +254,6 @@ public class MenuPrincipalActivity extends AppCompatActivity
         imagen = preferencia.getString(PREFERENCIA_IMAGEN_USUARIO,"");
     }
 
-    @Override
-    public void comunicarBusquedaConResultado(String rubros) {
-        List<android.support.v4.app.Fragment> fragmentList =  getSupportFragmentManager().getFragments();
-        //contenidoResultadoBusqueda = (ContenidoResultadoBusqueda) fragmentList.get(0);
-        //contenidoResultadoBusqueda.recibirListaRubros(rubros);
-    }
-
     public void enviarDatosPerfilPersonal(String valorID, String valorNOMBRES, String valorNOMBRECOMPLETO, String valorREPUTACION, String valorIMAGEN, String valorDNI, String valorDIRECCION, String valorLATITUD, String valorLONGITUD){
         Bundle bundle = new Bundle();
             bundle.putString("VALOR_FRAGMENT","PERSONAL");
@@ -269,6 +267,14 @@ public class MenuPrincipalActivity extends AppCompatActivity
             bundle.putString("LATITUD", valorLATITUD);
             bundle.putString("LONGITUD", valorLONGITUD);
         PerfilActivity fragobj = new PerfilActivity();
+        fragobj.setArguments(bundle);
+        asignarFragment(fragobj);
+    }
+
+    public void enviarDatosBuscarServicios(String listRubros){
+        Bundle bundle = new Bundle();
+        bundle.putString("VALOR_RUBROS", listRubros);
+        ContenidoResultadoBusqueda fragobj = new ContenidoResultadoBusqueda();
         fragobj.setArguments(bundle);
         asignarFragment(fragobj);
     }

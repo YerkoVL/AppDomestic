@@ -95,10 +95,12 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_below="@+id/inicial"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/inicial"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="26dp">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -170,6 +172,7 @@
     </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/lyOcultarPerfil"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">

@@ -30,6 +30,7 @@ import pe.app.com.demo.entity.Usuario;
 import pe.app.com.demo.tools.GenericAlerts;
 
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_DIRECCION;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_ID_PERFIL;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_NRO_DOCUMENTO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_BUSQUEDA_SERVICIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_DNI_PERSONAL;
@@ -159,7 +160,7 @@ public class LoginActivity extends AppCompatActivity {
                             try {
                                 Usuario usuario = gson.fromJson(Response, Usuario.class);
                                 if(usuario.getNombres()!=null) {
-                                    guardarDatos(usuario.getId(),usuario.getNombreUsuario(), usuario.getPassword(),
+                                    guardarDatos(usuario.getId(),usuario.getIdPerfil(), usuario.getNombreUsuario(), usuario.getPassword(),
                                                  usuario.getNroDocumento(), usuario.getDireccion(),
                                                  usuario.getNombres() + " " + usuario.getApellidos(), usuario.getLatitud(),
                                                  usuario.getLongitud() , String.valueOf(usuario.getRating()) , usuario.getImagen());
@@ -193,9 +194,10 @@ public class LoginActivity extends AppCompatActivity {
         Singleton.getInstance(this).addToRequestQueue(respuestaLogin);
     }
 
-    public void guardarDatos(int idUsuario, String usuario, String password, String nroDocUsu , String dirUsua, String nombreCompleto, String latitud, String longitud, String rating, String imagen) {
+    public void guardarDatos(int idUsuario, int idPerfil, String usuario, String password, String nroDocUsu , String dirUsua, String nombreCompleto, String latitud, String longitud, String rating, String imagen) {
         SharedPreferences.Editor editor = getSharedPreferences(PREFERENCIA_USUARIO, MODE_PRIVATE).edit();
         editor.putInt(PREFERENCIA_ID_USUARIO, idUsuario);
+        editor.putInt(OBJETO_ID_PERFIL,idPerfil);
         editor.putString(PREFERENCIA_NOMBRE_USUARIO, usuario);
         editor.putString(PREFERENCIA_PASS_USUARIO, password);
         editor.putString(PREFERENCIA_NOMBRE_COMPLETO_USUARIO, nombreCompleto);
@@ -244,14 +246,11 @@ public class LoginActivity extends AppCompatActivity {
 
     public Boolean validarSesionActiva(){
         boolean valor = false;
-
         SharedPreferences preferencia = mCtx.getSharedPreferences(PREFERENCIA_USUARIO,Context.MODE_PRIVATE);
         String validarTexto = preferencia.getString(PREFERENCIA_NOMBRE_USUARIO,null);
-
         if(validarTexto!=null){
             valor = true;
         }
-
         return valor;
     }
 }

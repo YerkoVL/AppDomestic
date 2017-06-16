@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -27,6 +28,7 @@ import java.util.List;
 
 import pe.app.com.demo.adapters.ResultadoBusquedaAdapter;
 import pe.app.com.demo.comunicators.ComunicadorAdapters;
+import pe.app.com.demo.comunicators.ComunicadorBuscarServicioXMenuPrincipal;
 import pe.app.com.demo.conexion.Singleton;
 import pe.app.com.demo.entity.ResultadoBusqueda;
 import pe.app.com.demo.tools.GenericTools;
@@ -57,6 +59,7 @@ import static pe.app.com.demo.tools.GenericEstructure.OBJETO_RATING;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_SERVICIO;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_TELEFONO;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_TIPO_DOCUMENTO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_BUSQUEDA_SERVICIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_FRAGMENT;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_FRAGMENT_RUBROS;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_ID_USUARIO;
@@ -84,9 +87,8 @@ public class ContenidoResultadoBusqueda extends Fragment {
 
     int idUsuario = 0;
     String nombreUsuario = "";
-    String rubrosLista = "";
 
-    String valorVerContacto = "PERFIL_PERSONAL";
+    String valorVerContacto = "PERFIL_PERSONAL",rubrosList, rubrosLista = "";
 
     @Nullable
     @Override
@@ -105,9 +107,7 @@ public class ContenidoResultadoBusqueda extends Fragment {
 
         resultadoBusquedaList = new ArrayList<>();
 
-        obtenerPreferenciasFragment();
         obtenerDatosUsuario();
-        obtenerRespuestaBusqueda();
 
         return rootView;
 
@@ -181,20 +181,26 @@ public class ContenidoResultadoBusqueda extends Fragment {
         Singleton.getInstance(mCtx).addToRequestQueue(respuestaSolicitud);
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        try {
+            rubrosList = tools.validarNulos(this.getArguments().getString("VALOR_RUBROS"));
+            guardarDatosTemporales(rubrosList);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        obtenerDatosTemporales();
+        obtenerRespuestaBusqueda();
+
+    }
+
     public void obtenerDatosUsuario(){
         SharedPreferences preferencia = mCtx.getSharedPreferences(PREFERENCIA_USUARIO,Context.MODE_PRIVATE);
         idUsuario = preferencia.getInt(PREFERENCIA_ID_USUARIO,0);
         nombreUsuario = preferencia.getString(PREFERENCIA_NOMBRE_USUARIO,"");
-    }
-
-    public void obtenerPreferenciasFragment(){
-        SharedPreferences preferencia = mCtx.getSharedPreferences(PREFERENCIA_FRAGMENT,Context.MODE_PRIVATE);
-        rubrosLista = preferencia.getString(PREFERENCIA_FRAGMENT_RUBROS,"");
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
     }
 
     ComunicadorAdapters comunicadorAdapters = new ComunicadorAdapters() {
@@ -217,4 +223,16 @@ public class ContenidoResultadoBusqueda extends Fragment {
             startActivity(in);
         }
     };
+
+    public void guardarDatosTemporales(String ListaRubros) {
+        SharedPreferences.Editor editor = mCtx.getSharedPreferences(PREFERENCIA_BUSQUEDA_SERVICIO, Context.MODE_PRIVATE).edit();
+        editor.putString(PREFERENCIA_FRAGMENT_RUBROS, ListaRubros);
+        editor.commit();
+    }
+
+    public void obtenerDatosTemporales(){
+        SharedPreferences preferencia = mCtx.getSharedPreferences(PREFERENCIA_BUSQUEDA_SERVICIO,Context.MODE_PRIVATE);
+        rubrosLista = preferencia.getString(PREFERENCIA_FRAGMENT_RUBROS,"");
+    }
+
 }

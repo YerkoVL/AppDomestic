@@ -50,11 +50,11 @@ public class SolicitudAdapter extends RecyclerView.Adapter<SolicitudAdapter.View
                             case R.id.menu_SolicitudesVerDetalle:
                                 Toast.makeText(mCtx,"Ver Detalle",Toast.LENGTH_SHORT).show();
                                 break;
-                            case R.id.menu_SolicitudesCancelar:
-                                listaSolicitud.remove(position);
-                                notifyDataSetChanged();
-                                Toast.makeText(mCtx,"Cancelado",Toast.LENGTH_SHORT).show();
-                                break;
+                            //case R.id.menu_SolicitudesCancelar:
+                            //    listaSolicitud.remove(position);
+                            //    notifyDataSetChanged();
+                            //    Toast.makeText(mCtx,"Cancelado",Toast.LENGTH_SHORT).show();
+                            //    break;
                         }
                         return false;
                     }

@@ -24,6 +24,7 @@ import com.google.gson.Gson;
 
 import java.util.Calendar;
 
+import pe.app.com.demo.comunicators.ComunicadorBuscarServicioXMenuPrincipal;
 import pe.app.com.demo.comunicators.ComunicadorFragment;
 import pe.app.com.demo.conexion.Singleton;
 import pe.app.com.demo.entity.Respuesta;
@@ -71,7 +72,7 @@ public class ContenidoBuscarServicios extends Fragment{
 
     Calendar miCalendario = Calendar.getInstance();
     ProgressDialog progressDialog = null;
-    ComunicadorFragment comunicacion;
+    private ComunicadorBuscarServicioXMenuPrincipal comunicadorBuscar;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_buscar_servicios, container, false);
@@ -87,8 +88,7 @@ public class ContenidoBuscarServicios extends Fragment{
         gasfiteroCheck = (CheckBox) rootView.findViewById(R.id.chkGasfitero);
 
         progressDialog = new ProgressDialog(mCtx);
-
-        comunicacion = (ComunicadorFragment) getActivity();
+        comunicadorBuscar = comunicadorBuscarServicioXMenuPrincipal;
 
         fechaInicio.setFocusableInTouchMode(false);
         fechaFin.setFocusableInTouchMode(false);
@@ -188,7 +188,7 @@ public class ContenidoBuscarServicios extends Fragment{
         editor.commit();
     }
 
-    public void inicioBusqueda(int idUsuario,String fechaInicio, String fechaFin, String servicios, String rubros) {
+    public void inicioBusqueda(int idUsuario, String fechaInicio, String fechaFin, String servicios, final String rubros) {
 
         final String url = URL_APP + BASE_URL + BASE_INSERTAR_SOLICITUD + GET_INICIO + GET_ID_USER + idUsuario + GET_CONTINUO +
                            GET_FECHA_INICIO + fechaInicio + GET_CONTINUO + GET_FECHA_FIN + fechaFin +  GET_CONTINUO + GET_SERVICIO + servicios +
@@ -207,7 +207,8 @@ public class ContenidoBuscarServicios extends Fragment{
                                 ResultadoInsercionSolicitud resultadoInsercionSolicitud = gson.fromJson(Response, ResultadoInsercionSolicitud.class);
                                 if(resultadoInsercionSolicitud.getId()!= null) {
                                     progressDialog.dismiss();
-                                    startActivity(new Intent(mCtx,MenuPrincipalActivity.class));
+                                    comunicadorBuscar.comunicarResultadoPerfil(1,"PERFIL_BUSQUEDA",rubros);
+                                    //startActivity(new Intent(mCtx,MenuPrincipalActivity.class));
                                 }else{
                                     Respuesta respuesta = gson.fromJson(Response,Respuesta.class);
                                     alertas.mensajeInfo("Fallo Insertar",respuesta.getMensaje(),mCtx);
@@ -289,8 +290,16 @@ public class ContenidoBuscarServicios extends Fragment{
         editor.commit();
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
+    ComunicadorBuscarServicioXMenuPrincipal comunicadorBuscarServicioXMenuPrincipal = new ComunicadorBuscarServicioXMenuPrincipal() {
+        @Override
+        public void comunicarResultadoPerfil(int valorACCION,String valorFRAGMENT, String valorRUBROS) {
+            Bundle bundle = new Bundle();
+            Intent in =new Intent(getActivity(),MenuPrincipalActivity.class);
+            in.putExtra("VALOR_ACCION",valorACCION);
+            in.putExtra("VALOR_FRAGMENT",valorFRAGMENT);
+            in.putExtra("VALOR_RUBROS",valorRUBROS);
+            in.putExtras(bundle);
+            startActivity(in);
+        }
+    };
 }
