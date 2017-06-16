@@ -27,7 +27,6 @@ import java.util.List;
 
 import pe.app.com.demo.adapters.ResultadoBusquedaAdapter;
 import pe.app.com.demo.comunicators.ComunicadorAdapters;
-import pe.app.com.demo.comunicators.ComunicadorFragment;
 import pe.app.com.demo.conexion.Singleton;
 import pe.app.com.demo.entity.ResultadoBusqueda;
 import pe.app.com.demo.tools.GenericTools;
@@ -200,13 +199,20 @@ public class ContenidoResultadoBusqueda extends Fragment {
 
     ComunicadorAdapters comunicadorAdapters = new ComunicadorAdapters() {
         @Override
-        public void comunicarResultadoPerfil(String idPersona, String imagen, String nombre) {
+        public void comunicarResultadoPerfil(String idPersona, String nombre, String nombreCompleto, String reputacion, String imagen, String dni, String direccion, String latitud, String longitud) {
             Bundle bundle = new Bundle();
             Intent in =new Intent(getActivity(),MenuPrincipalActivity.class);
                 in.putExtra("VALOR_ACCION",1);
                 in.putExtra("VALOR_FRAGMENT",valorVerContacto);
                 in.putExtra("ID", idPersona);
+                in.putExtra("NOMBRES", nombre);
+                in.putExtra("NOMBRES_COMPLETOS", nombreCompleto);
+                in.putExtra("REPUTACION", reputacion);
                 in.putExtra("IMAGEN", imagen);
+                in.putExtra("DNI", dni);
+                in.putExtra("DIRECCION", direccion);
+                in.putExtra("LATITUD", latitud);
+                in.putExtra("LONGITUD", longitud);
             in.putExtras(bundle);
             startActivity(in);
         }

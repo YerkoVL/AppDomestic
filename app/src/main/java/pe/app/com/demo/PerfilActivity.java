@@ -37,10 +37,9 @@ import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_VALOR_PERFIL;
 
 public class PerfilActivity extends Fragment {
-    Toolbar toolbar;
     Context mCtx;
 
-    String nombresPersona ,apPersona, dirPersona, dniPersona, latitudPersona, longitudPersona, nombresCompletoPersona, imagenRecPersona;
+    String nombresPersona ,apPersona, dirPersona, dniPersona, latitudPersona, longitudPersona, nombresCompletoPersona, imagenRecPersona, reputacionPre;
     int idPersona;
     Float reputacionPersona;
 
@@ -61,51 +60,53 @@ public class PerfilActivity extends Fragment {
         reputacion = (TextView) rootView.findViewById(R.id.txtReputacion);
         valoracion = (RatingBar) rootView.findViewById(R.id.rating);
 
-        obtenerDatosUsuario();
+        try {
+            idPersona = this.getArguments().getInt("ID");
+            nombresPersona = this.getArguments().getString("NOMBRES");
+            nombresCompletoPersona = this.getArguments().getString("NOMBRES_COMPLETOS");
+            reputacionPersona = this.getArguments().getFloat("REPUTACION");
+            imagenRecPersona = getArguments().getString("IMAGEN");
+            dniPersona = getArguments().getString("DNI");
+            dirPersona = getArguments().getString("DIRECCION");
+            latitudPersona = getArguments().getString("LATITUD");
+            longitudPersona = getArguments().getString("LONGITUD");
+        }catch (Exception e){
+            e.printStackTrace();
+            obtenerDatosUsuario();
+        }
+
+        asignarDatosUsuario();
 
         return rootView;
     }
 
     public void obtenerDatosUsuario(){
-        try{
-            SharedPreferences sharedPreferences = mCtx.getSharedPreferences(PREFERENCIA_NOMBRE_COMPLETO_USUARIO,Context.MODE_PRIVATE);
-            idPersona = sharedPreferences.getInt(PREFERENCIA_ID_PERSONAL, 0);
-                nombresPersona = sharedPreferences.getString(PREFERENCIA_NOMBRES_PERSONAL, "");
-                apPersona = sharedPreferences.getString(PREFERENCIA_APELLIDOS_PERSONAL, "");
-            nombresPersona = nombresPersona + apPersona;
-            dirPersona = sharedPreferences.getString(PREFERENCIA_DIRECCION_PERSONAL, "");
-            dniPersona = sharedPreferences.getString(PREFERENCIA_DNI_PERSONAL, "");
-                String ratingPre = sharedPreferences.getString(PREFERENCIA_RATING_USUARIO, "");
-            reputacionPersona = Float.valueOf(ratingPre + "f");
-            imagenRecPersona = sharedPreferences.getString(PREFERENCIA_IMAGEN_USUARIO, "");
-            latitudPersona = sharedPreferences.getString(PREFERENCIA_LATITUD_PERSONAL, "");
-            longitudPersona = sharedPreferences.getString(PREFERENCIA_LONGITUD_PERSONAL, "");
-
-        }catch (Exception e){
-            e.printStackTrace();
-            try {
-                SharedPreferences preferencia = mCtx.getSharedPreferences(PREFERENCIA_USUARIO, Context.MODE_PRIVATE);
-                idPersona = preferencia.getInt(PREFERENCIA_ID_USUARIO, 0);
-                nombresPersona = preferencia.getString(PREFERENCIA_NOMBRE_USUARIO, "");
-                //preferencia.getString(PREFERENCIA_PASS_USUARIO, "");
-                nombresCompletoPersona = preferencia.getString(PREFERENCIA_NOMBRE_COMPLETO_USUARIO, "");
-                String reputacionPre = preferencia.getString(PREFERENCIA_RATING_USUARIO, "");
-                if (reputacionPre != null) {
-                    reputacionPersona = Float.valueOf(reputacionPre + "f");
-                }
-                imagenRecPersona = preferencia.getString(PREFERENCIA_IMAGEN_USUARIO, "");
-                dniPersona = preferencia.getString(OBJETO_NRO_DOCUMENTO, "");
-                dirPersona = preferencia.getString(OBJETO_DIRECCION, "");
-                latitudPersona = preferencia.getString(PREFERENCIA_LATITUD_USUARIO, "");
-                longitudPersona = preferencia.getString(PREFERENCIA_LONGITUD_USUARIO, "");
-            }catch (Exception i){
-                i.printStackTrace();
+        try {
+            SharedPreferences preferencia = mCtx.getSharedPreferences(PREFERENCIA_USUARIO, Context.MODE_PRIVATE);
+            idPersona = preferencia.getInt(PREFERENCIA_ID_USUARIO, 0);
+            nombresPersona = preferencia.getString(PREFERENCIA_NOMBRE_USUARIO, "");
+            //preferencia.getString(PREFERENCIA_PASS_USUARIO, "");
+            nombresCompletoPersona = preferencia.getString(PREFERENCIA_NOMBRE_COMPLETO_USUARIO, "");
+            reputacionPre = preferencia.getString(PREFERENCIA_RATING_USUARIO, "");
+            if (reputacionPre != null) {
+                reputacionPersona = Float.valueOf(reputacionPre + "f");
             }
+            imagenRecPersona = preferencia.getString(PREFERENCIA_IMAGEN_USUARIO, "");
+            dniPersona = preferencia.getString(OBJETO_NRO_DOCUMENTO, "");
+            dirPersona = preferencia.getString(OBJETO_DIRECCION, "");
+            latitudPersona = preferencia.getString(PREFERENCIA_LATITUD_USUARIO, "");
+            longitudPersona = preferencia.getString(PREFERENCIA_LONGITUD_USUARIO, "");
+        }catch (Exception i){
+            i.printStackTrace();
         }
     }
 
-    public void leerSharedPreferencesValor() {
-        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(PREFERENCIA_PERFIL, mCtx.MODE_PRIVATE);
-        String valorPerfil = sharedPreferences.getString(PREFERENCIA_VALOR_PERFIL,PREFERENCIA_VALOR_PERFIL);
+    public void asignarDatosUsuario(){
+        direccionUsuario.setText(dirPersona);
+        dniUsuario.setText(dniPersona);
+        nombreUsuario.setText(nombresCompletoPersona);
+        Glide.with(mCtx).load(imagenRecPersona).into(imagenUsuario);
+        reputacion.setText(reputacionPersona.toString());
+        valoracion.setRating(Float.valueOf(reputacionPersona + "f"));
     }
 }

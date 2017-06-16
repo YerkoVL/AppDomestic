@@ -40,7 +40,7 @@ public class MenuPrincipalActivity extends AppCompatActivity
     SharedPreferences sharedPreferences;
     Context mCtx;
 
-    String nomUsuario, valorFRAGMENT, valorID, valorImagen;
+    String nomUsuario, valorFRAGMENT, valorID, valorIMAGEN, valorNOMBRES, valorNOMBRECOMPLETO, valorDNI, valorREPUTACION, valorDIRECCION, valorLATITUD, valorLONGITUD;
     int valorACCION,idUsuario;
     String imagen;
 
@@ -77,23 +77,43 @@ public class MenuPrincipalActivity extends AppCompatActivity
                 valorACCION = bundle.getInt("VALOR_ACCION");
                 if (valorACCION == 1) {
                     valorFRAGMENT = bundle.getString("VALOR_FRAGMENT");
-                }
-                valorID = bundle.getString("ID");
-                valorImagen = bundle.getString("IMAGEN");
-                if(valorImagen!=null){
-                    imagen = valorImagen;
+
+                    if (valorFRAGMENT.equals("PERFIL_PERSONAL")) {
+                        valorID = bundle.getString("ID");
+                        valorNOMBRES = bundle.getString("NOMBRES");
+                        valorNOMBRECOMPLETO = bundle.getString("NOMBRES_COMPLETOS");
+                        valorREPUTACION = bundle.getString("REPUTACION");
+                        valorIMAGEN= bundle.getString("IMAGEN");
+                        valorDNI = bundle.getString("DNI");
+                        valorDIRECCION = bundle.getString("DIRECCION");
+                        valorLATITUD = bundle.getString("LATITUD");
+                        valorLONGITUD = bundle.getString("LONGITUD");
+                        enviarDatosPerfilPersonal(
+                                valorID,
+                                valorNOMBRES,
+                                valorNOMBRECOMPLETO,
+                                valorREPUTACION,
+                                valorIMAGEN,
+                                valorDNI,
+                                valorDIRECCION,
+                                valorLATITUD,
+                                valorLONGITUD);
+                    } else {
+                    }
+
+                }else {
+                    valorID = bundle.getString("ID");
+                    valorIMAGEN = bundle.getString("IMAGEN");
+                    if (valorIMAGEN != null) {
+                        imagen = valorIMAGEN;
+                    }
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if (valorACCION==1) {
-            if (valorFRAGMENT.equals("PERFIL_PERSONAL")) {
-                asignarFragment(new PerfilActivity());
-            } else {
-            }
-        }else{
+        if (valorACCION != 1){
             if (validarRealizoBusqueda()) {
                 asignarFragment(new datosBusqueda());
             } else {
@@ -234,5 +254,22 @@ public class MenuPrincipalActivity extends AppCompatActivity
         List<android.support.v4.app.Fragment> fragmentList =  getSupportFragmentManager().getFragments();
         //contenidoResultadoBusqueda = (ContenidoResultadoBusqueda) fragmentList.get(0);
         //contenidoResultadoBusqueda.recibirListaRubros(rubros);
+    }
+
+    public void enviarDatosPerfilPersonal(String valorID, String valorNOMBRES, String valorNOMBRECOMPLETO, String valorREPUTACION, String valorIMAGEN, String valorDNI, String valorDIRECCION, String valorLATITUD, String valorLONGITUD){
+        Bundle bundle = new Bundle();
+            bundle.putString("VALOR_FRAGMENT","PERSONAL");
+            bundle.putString("ID", valorID);
+            bundle.putString("NOMBRES", valorNOMBRES);
+            bundle.putString("NOMBRES_COMPLETOS", valorNOMBRECOMPLETO);
+            bundle.putString("REPUTACION", valorREPUTACION);
+            bundle.putString("IMAGEN", valorIMAGEN);
+            bundle.putString("DNI", valorDNI);
+            bundle.putString("DIRECCION", valorDIRECCION);
+            bundle.putString("LATITUD", valorLATITUD);
+            bundle.putString("LONGITUD", valorLONGITUD);
+        PerfilActivity fragobj = new PerfilActivity();
+        fragobj.setArguments(bundle);
+        asignarFragment(fragobj);
     }
 }

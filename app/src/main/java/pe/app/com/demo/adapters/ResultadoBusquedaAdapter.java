@@ -82,8 +82,15 @@ public class ResultadoBusquedaAdapter extends RecyclerView.Adapter<ResultadoBusq
                                 guardarSharedPreferencesValor();
                                 mComminication.comunicarResultadoPerfil(
                                         resultadoBusqueda.getId(),
+                                        resultadoBusqueda.getNombreUsuario(),
+                                        resultadoBusqueda.getNombres() + " " + resultadoBusqueda.getApellidos(),
+                                        String.valueOf(resultadoBusqueda.getRating()),
                                         resultadoBusqueda.getImagen(),
-                                        resultadoBusqueda.getNombres());
+                                        resultadoBusqueda.getNroDocumento(),
+                                        resultadoBusqueda.getDireccion() + " - " + resultadoBusqueda.getDistrito(),
+                                        resultadoBusqueda.getLatitud(),
+                                        resultadoBusqueda.getLongitud()
+                                        );
                                 break;
                             case R.id.menu_ResultadoBusquedaEnviar:
                                 guardarDatosPersonalDisponible(resultadoBusqueda.getId(),resultadoBusqueda.getNombres(),resultadoBusqueda.getApellidos(),resultadoBusqueda.getDireccion(),resultadoBusqueda.getNroDocumento(),resultadoBusqueda.getLatitud(),resultadoBusqueda.getLongitud());
