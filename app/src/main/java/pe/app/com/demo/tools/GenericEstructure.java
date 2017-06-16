@@ -29,11 +29,14 @@ public class GenericEstructure {
     final public static String OBJETO_FECHA_FIN = "FechaFin";
     final public static String OBJETO_CALIFICACION = "Calificacion";
     final public static String OBJETO_FECHA_SOLICITUD = "FechaSolicitud";
+    final public static String OBJETO_RUBRO = "Rubro";
     final public static String OBJETO_DESCRIPCION = "Descripcion";
+    final public static String OBJETO_ID_SOCIO = "IdSocio";
+    final public static String OBJETO_SOCIO = "Socio";
+    final public static String OBJETO_FOTO = "Foto";
+    final public static String OBJETO_COMENTARIO = "Comentario";
     final public static String OBJETO_ID_ESTADO = "IdEstado";
     final public static String OBJETO_DESC_ESTADO = "Desc_Estado";
-
-    final public static String OBJETO_RUBRO = "Rubro";
 
     final public static String PREFERENCIA_USUARIO = "MyPref";
     final public static String PREFERENCIA_ID_USUARIO = "idUsuario";

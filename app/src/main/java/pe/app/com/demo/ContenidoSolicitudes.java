@@ -44,6 +44,7 @@ import static pe.app.com.demo.tools.GenericEstructure.OBJETO_SERVICIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_ID_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_NOMBRE_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_USUARIO;
+import static pe.app.com.demo.tools.GenericTools.GET_ESTADO_PARA_SOLICITUDES;
 import static pe.app.com.demo.tools.GenericTools.GET_INICIO;
 import static pe.app.com.demo.tools.GenericTools.GET_USER;
 import static pe.app.com.demo.tools.GenericTools.URL_APP;
@@ -117,7 +118,9 @@ public class ContenidoSolicitudes extends Fragment {
                                                                                                 tools.validarNulos(object.getString(OBJETO_ID_ESTADO)),
                                                                                                         tools.validarNulos(object.getString(OBJETO_DESC_ESTADO)));
 
-                                solicitudList.add(solicitud);
+                                if(solicitud.getIdEstado().equals(GET_ESTADO_PARA_SOLICITUDES)) {
+                                    solicitudList.add(solicitud);
+                                }
                             }
 
                             solicitudAdapter = new SolicitudAdapter(solicitudList, mCtx);

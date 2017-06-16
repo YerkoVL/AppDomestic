@@ -37,12 +37,12 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.View
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Historial historial = listaHistorial.get(position);
-        Glide.with(holder.imgViewSolucionador.getContext()).load(historial.getImagen()).into(holder.imgViewSolucionador);
-        holder.textViewNombre.setText(historial.getNombre());
-        holder.textViewEstadoAtencion.setText(historial.getEstado());
+        Glide.with(holder.imgViewSolucionador.getContext()).load(historial.getFoto()).into(holder.imgViewSolucionador);
+        holder.textViewNombre.setText(historial.getSocio());
+        holder.textViewEstadoAtencion.setText(historial.getDesc_Estado());
         holder.textViewServicio.setText(historial.getServicio());
-        holder.textViewDiasEstimados.setText(historial.getDiasEstimados());
-        holder.textViewFinServicio.setText(historial.getFinServicio());
+        holder.textViewInicioServicio.setText(historial.getFechaInicio());
+        holder.textViewFinServicio.setText(historial.getFechaFin());
         holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,7 +86,7 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.View
         public TextView textViewNombre;
         public TextView textViewServicio;
         public TextView textViewEstadoAtencion;
-        public TextView textViewDiasEstimados;
+        public TextView textViewInicioServicio;
         public TextView textViewFinServicio;
         public TextView buttonViewOption;
 
@@ -97,7 +97,7 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.View
             textViewNombre = (TextView) itemView.findViewById(R.id.txtNombreSolucionador);
             textViewServicio = (TextView) itemView.findViewById(R.id.txtServicio);
             textViewEstadoAtencion = (TextView) itemView.findViewById(R.id.txtEstadoAtencion);
-            textViewDiasEstimados = (TextView) itemView.findViewById(R.id.txtDiasEstimados);
+            textViewInicioServicio = (TextView) itemView.findViewById(R.id.txtFechaInicio);
             textViewFinServicio = (TextView) itemView.findViewById(R.id.txtFinServicio);
             buttonViewOption = (TextView) itemView.findViewById(R.id.txtOptionPulse);
         }

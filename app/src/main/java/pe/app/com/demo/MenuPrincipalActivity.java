@@ -1,7 +1,5 @@
 package pe.app.com.demo;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -169,8 +167,6 @@ public class MenuPrincipalActivity extends AppCompatActivity
 
         }
         return true;
-
-
     }
 
     public void asignarFragment(android.support.v4.app.Fragment fragmento){
@@ -218,7 +214,6 @@ public class MenuPrincipalActivity extends AppCompatActivity
             }else{
                 valor = false;
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             valor = false;

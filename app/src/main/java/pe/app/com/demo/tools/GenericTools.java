@@ -16,6 +16,8 @@ public class GenericTools {
     final public static String GET_SERVICIO = "servicio=";
     final public static String GET_RUBROS = "rubros=";
     final public static String GET_LISTA_RUBROS = "listRubro=";
+    final public static String GET_ESTADO_PARA_SOLICITUDES = "3";
+    final public static String GET_ESTADO_PARA_HISTORIAL = "7";
 
     final public String validarNulos(String valor){
 
