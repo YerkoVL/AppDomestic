@@ -1,9 +1,11 @@
 package pe.app.com.demo;
 
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,7 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.LinearLayout;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -26,9 +28,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import pe.app.com.demo.SQLiteHelper.MapasSQLHelper;
 import pe.app.com.demo.adapters.ResultadoBusquedaAdapter;
 import pe.app.com.demo.comunicators.ComunicadorAdapters;
-import pe.app.com.demo.comunicators.ComunicadorBuscarServicioXMenuPrincipal;
 import pe.app.com.demo.conexion.Singleton;
 import pe.app.com.demo.entity.ResultadoBusqueda;
 import pe.app.com.demo.tools.GenericTools;
@@ -38,6 +40,7 @@ import static pe.app.com.demo.tools.GenericEstructure.OBJETO_APELLIDOS;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_ATENCIONES;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_BIENVENIDA;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_CORREO;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_DESCRIPCION;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_DESC_ESTADO;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_DIRECCION;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_DISTRITO;
@@ -56,15 +59,12 @@ import static pe.app.com.demo.tools.GenericEstructure.OBJETO_NRO_DOCUMENTO;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_PASS_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_PERFIL;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_RATING;
-import static pe.app.com.demo.tools.GenericEstructure.OBJETO_SERVICIO;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_TELEFONO;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_TIPO_DOCUMENTO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_BUSQUEDA_SERVICIO;
-import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_FRAGMENT;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_FRAGMENT_RUBROS;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_ID_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_NOMBRE_USUARIO;
-import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_PASS_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_USUARIO;
 import static pe.app.com.demo.tools.GenericTools.GET_CONTINUO;
 import static pe.app.com.demo.tools.GenericTools.GET_ID_USER;
@@ -79,14 +79,17 @@ public class ContenidoResultadoBusqueda extends Fragment {
     private RecyclerView recyclerView;
     private ResultadoBusquedaAdapter resultadoBusquedaAdapter;
     private List<ResultadoBusqueda> resultadoBusquedaList;
+    private MapasSQLHelper db;
 
     Context mCtx;
+    LinearLayout dataEmpty;
 
     ProgressDialog progressDialog = null;
     GenericTools tools = new GenericTools();
 
     int idUsuario = 0;
     String nombreUsuario = "";
+    boolean valorData = false;
 
     String valorVerContacto = "PERFIL_PERSONAL",rubrosList, rubrosLista = "";
 
@@ -102,6 +105,8 @@ public class ContenidoResultadoBusqueda extends Fragment {
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerResultadoBusqueda);
         recyclerView.setHasFixedSize(true);
 
+        dataEmpty = (LinearLayout) rootView.findViewById(R.id.lyDataEmpty);
+
         recyclerView.setLayoutManager(linearLayoutManager);
         progressDialog = new ProgressDialog(mCtx);
 
@@ -115,7 +120,7 @@ public class ContenidoResultadoBusqueda extends Fragment {
 
     public void obtenerRespuestaBusqueda() {
 
-            final String url = URL_APP + BASE_URL + BASE_CONSULTA_SERVICIOS + GET_INICIO + GET_LISTA_RUBROS + rubrosLista +
+        final String url = URL_APP + BASE_URL + BASE_CONSULTA_SERVICIOS + GET_INICIO + GET_LISTA_RUBROS + rubrosLista +
                                GET_CONTINUO + GET_ID_USER + idUsuario;
 
         progressDialog.show();
@@ -143,7 +148,7 @@ public class ContenidoResultadoBusqueda extends Fragment {
                                         tools.validarNulos(object.getString(OBJETO_DIRECCION)),
                                         tools.validarNulos(object.getString(OBJETO_NOMBRE_USUARIO)),
                                         tools.validarNulos(object.getString(OBJETO_PASS_USUARIO)),
-                                        tools.validarNulos(object.getString(OBJETO_PASS_USUARIO)),//OBJETO_SERVICIO
+                                        tools.validarNulos(""),
                                         tools.validarNulos(object.getString(OBJETO_LATITUD)),
                                         tools.validarNulos(object.getString(OBJETO_LONGITUD)),
                                         tools.validarNulos(object.getString(OBJETO_ID_PERFIL)),
@@ -158,11 +163,43 @@ public class ContenidoResultadoBusqueda extends Fragment {
                                         tools.validarNulos(object.getString(OBJETO_ID_ESTADO)),
                                         tools.validarNulos(object.getString(OBJETO_DESC_ESTADO)));
 
-                                resultadoBusquedaList.add(resultadoBusqueda);
+                                JSONArray objetoSERVICIO = object.getJSONArray("SERVICIO");
+
+                                if (objetoSERVICIO != null || objetoSERVICIO.length() > 0) {
+                                    String idPersona = "", nombreCompletoPersona = "", latitudPersona="", longitudPersona="";
+
+                                    String descripcionServicioTotales= "";
+
+                                    for(int x = 0 ;x < objetoSERVICIO.length();x++) {
+                                        JSONObject servicio = objetoSERVICIO.getJSONObject(x);
+                                        String descripcionServicio = tools.validarNulos(servicio.getString(OBJETO_DESCRIPCION));
+                                        descripcionServicioTotales = descripcionServicio + ", " + descripcionServicioTotales;
+                                    }
+
+                                    resultadoBusqueda.setServicio(descripcionServicioTotales);
+
+                                    idPersona = tools.validarNulos(object.getString(OBJETO_ID));
+                                    nombreCompletoPersona = tools.validarNulos(object.getString(OBJETO_NOMBRES)) + " " + tools.validarNulos(object.getString(OBJETO_APELLIDOS));
+                                    latitudPersona = tools.validarNulos(object.getString(OBJETO_LATITUD));
+                                    longitudPersona = tools.validarNulos(object.getString(OBJETO_LONGITUD));
+
+                                    insertarDatosMapas(idPersona,nombreCompletoPersona,descripcionServicioTotales, latitudPersona,longitudPersona);
+                                    resultadoBusquedaList.add(resultadoBusqueda);
+                                }
                             }
 
                             resultadoBusquedaAdapter = new ResultadoBusquedaAdapter(resultadoBusquedaList,mCtx,comunicadorAdapters);
                             recyclerView.setAdapter(resultadoBusquedaAdapter);
+
+                            if(resultadoBusquedaList.size()>0){
+                                valorData = true;
+                            }
+
+                            if(valorData){
+                                dataEmpty.setVisibility(View.GONE);
+                            }else{
+                                dataEmpty.setVisibility(View.VISIBLE);
+                            }
                             progressDialog.dismiss();
 
                         } catch (JSONException e) {
@@ -233,6 +270,25 @@ public class ContenidoResultadoBusqueda extends Fragment {
     public void obtenerDatosTemporales(){
         SharedPreferences preferencia = mCtx.getSharedPreferences(PREFERENCIA_BUSQUEDA_SERVICIO,Context.MODE_PRIVATE);
         rubrosLista = preferencia.getString(PREFERENCIA_FRAGMENT_RUBROS,"");
+    }
+
+    public void insertarDatosMapas(String idPersona,String nombreCompletoPersona,String descripcionServicioTotales, String latitudPersona,String longitudPersona){
+        MapasSQLHelper usdbh =
+                new MapasSQLHelper(mCtx, "DBMapas", null, 1);
+
+        SQLiteDatabase db = usdbh.getWritableDatabase();
+
+        ContentValues nuevoRegistro = new ContentValues();
+        nuevoRegistro.put("idPersona", idPersona);
+        nuevoRegistro.put("nombrePersona", nombreCompletoPersona);
+        nuevoRegistro.put("rubros", descripcionServicioTotales);
+        nuevoRegistro.put("latitud", latitudPersona);
+        nuevoRegistro.put("longitud",longitudPersona);
+
+        db.insert("Mapas", null, nuevoRegistro);
+
+        db.close();
+
     }
 
 }

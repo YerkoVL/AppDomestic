@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -68,8 +69,11 @@ public class ContenidoHistorial extends Fragment {
     GenericTools tools = new GenericTools();
     Context mCtx;
 
+    LinearLayout dataEmpty;
+
     String nombreUsuario;
     int idUsuario;
+    boolean valorData=false;
 
     @Nullable
     @Override
@@ -85,13 +89,12 @@ public class ContenidoHistorial extends Fragment {
         recyclerView.setHasFixedSize(true);
 
         recyclerView.setLayoutManager(linearLayoutManager);
+        dataEmpty = (LinearLayout) rootView.findViewById(R.id.lyDataEmpty);
 
         historialList = new ArrayList<>();
 
         obtenerDatosUsuario();
         obtenerHistorialUsuario(nombreUsuario);
-
-        //cargaRecyclerHistorial();
 
         return rootView;
 
@@ -149,6 +152,16 @@ public class ContenidoHistorial extends Fragment {
 
                             historialAdapter = new HistorialAdapter(historialList,mCtx);
                             recyclerView.setAdapter(historialAdapter);
+
+                            if(historialList.size()>0){
+                                valorData = true;
+                            }
+
+                            if(valorData){
+                                dataEmpty.setVisibility(View.GONE);
+                            }else{
+                                dataEmpty.setVisibility(View.VISIBLE);
+                            }
                             progressDialog.dismiss();
 
                         } catch (JSONException e) {

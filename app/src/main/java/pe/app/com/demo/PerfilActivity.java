@@ -1,14 +1,15 @@
 package pe.app.com.demo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -16,27 +17,19 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import pe.app.com.demo.comunicators.ComunicadorPerfilXHistorialTrabajo;
+
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_DIRECCION;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_ID_PERFIL;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_NRO_DOCUMENTO;
-import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_APELLIDOS_PERSONAL;
-import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_DIRECCION_PERSONAL;
-import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_DNI_PERSONAL;
-import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_ID_PERSONAL;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_ID_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_IMAGEN_USUARIO;
-import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_LATITUD_PERSONAL;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_LATITUD_USUARIO;
-import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_LONGITUD_PERSONAL;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_LONGITUD_USUARIO;
-import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_NOMBRES_PERSONAL;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_NOMBRE_COMPLETO_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_NOMBRE_USUARIO;
-import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_PASS_USUARIO;
-import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_PERFIL;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_RATING_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_USUARIO;
-import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_VALOR_PERFIL;
 
 public class PerfilActivity extends Fragment {
     Context mCtx;
@@ -49,6 +42,8 @@ public class PerfilActivity extends Fragment {
     RatingBar valoracion;
     ImageView imagen;
     LinearLayout linearLayoutPerfil;
+    ImageButton historialTrabajos;
+    ComunicadorPerfilXHistorialTrabajo comunicador;
 
     @Nullable
     @Override
@@ -63,9 +58,12 @@ public class PerfilActivity extends Fragment {
         reputacion = (TextView) rootView.findViewById(R.id.txtReputacion);
         valoracion = (RatingBar) rootView.findViewById(R.id.rating);
         linearLayoutPerfil = (LinearLayout) rootView.findViewById(R.id.lyOcultarPerfil);
+        historialTrabajos = (ImageButton) rootView.findViewById(R.id.btnHistorialTrabajos);
+
+        comunicador = comunicadorPerfilXHistorialTrabajo;
 
         try {
-            idPersona = this.getArguments().getInt("ID");
+            idPersona = Integer.valueOf(this.getArguments().getString("ID"));
             nombresPersona = this.getArguments().getString("NOMBRES");
             nombresCompletoPersona = this.getArguments().getString("NOMBRES_COMPLETOS");
             reputacionPersona = this.getArguments().getFloat("REPUTACION");
@@ -80,6 +78,13 @@ public class PerfilActivity extends Fragment {
         }
 
         asignarDatosUsuario();
+
+        historialTrabajos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                comunicador.comunicarHistorialTrabajo(1,"PERFIL_HISTORIAL",idPersona,nombresCompletoPersona);
+            }
+        });
 
         return rootView;
     }
@@ -111,12 +116,27 @@ public class PerfilActivity extends Fragment {
         dniUsuario.setText(dniPersona);
         nombreUsuario.setText(nombresCompletoPersona);
         Glide.with(mCtx).load(imagenRecPersona).into(imagen);
-        reputacion.setText(reputacionPre.toString());
+        reputacion.setText(reputacionPre);
         valoracion.setRating(Float.valueOf(reputacionPersona));
 
         if(idPerfil == 1){
             linearLayoutPerfil.setVisibility(View.GONE);
         }
-
     }
+
+    ComunicadorPerfilXHistorialTrabajo comunicadorPerfilXHistorialTrabajo = new ComunicadorPerfilXHistorialTrabajo() {
+        @Override
+        public void comunicarHistorialTrabajo(int valorACCION,String valorFRAGMENT, int idSocio, String nombre) {
+            Bundle bundle = new Bundle();
+            Intent in =new Intent(getActivity(),MenuPrincipalActivity.class);
+                in.putExtra("VALOR_ACCION",valorACCION);
+                in.putExtra("VALOR_FRAGMENT",valorFRAGMENT);
+                in.putExtra("ID_SOCIO",idSocio);
+                in.putExtra("NOMBRE_SOCIO",nombresCompletoPersona);
+                in.putExtras(bundle);
+            startActivity(in);
+        }
+
+    };
+
 }

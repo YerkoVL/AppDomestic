@@ -25,7 +25,6 @@ import com.google.gson.Gson;
 import java.util.Calendar;
 
 import pe.app.com.demo.comunicators.ComunicadorBuscarServicioXMenuPrincipal;
-import pe.app.com.demo.comunicators.ComunicadorFragment;
 import pe.app.com.demo.conexion.Singleton;
 import pe.app.com.demo.entity.Respuesta;
 import pe.app.com.demo.entity.ResultadoInsercionSolicitud;
@@ -69,6 +68,7 @@ public class ContenidoBuscarServicios extends Fragment{
     Gson gson = new Gson();
 
     int idUsuario=0;
+    String descripcionServicioTotales, reenviarRubros;
 
     Calendar miCalendario = Calendar.getInstance();
     ProgressDialog progressDialog = null;
@@ -161,12 +161,10 @@ public class ContenidoBuscarServicios extends Fragment{
             if(!fechaFinSolicitud.equals("")){
                 if(!serviciosSolicitud.equals("")){
                     if(!rubrosSolicitud.equals("")){
+                        reenviarRubros = rubrosSolicitud;
                         inicioBusqueda(idUsuario, fechaInicioSolicitud,fechaFinSolicitud,serviciosSolicitud,rubrosSolicitud);
                         actualizarSP();
-                        //ACONDICIONADO PARA FRAGMENTOS
                         guardarPreferenciaFragment(rubrosSolicitud);
-                        //comunicacion.comunicarBusquedaConResultado(rubrosSolicitud);
-
                     }else{
                         alertas.mensajeInfo("Error","Debe seleccionar rubros",mCtx);
                     }
@@ -206,9 +204,8 @@ public class ContenidoBuscarServicios extends Fragment{
                             try {
                                 ResultadoInsercionSolicitud resultadoInsercionSolicitud = gson.fromJson(Response, ResultadoInsercionSolicitud.class);
                                 if(resultadoInsercionSolicitud.getId()!= null) {
-                                    progressDialog.dismiss();
                                     comunicadorBuscar.comunicarResultadoPerfil(1,"PERFIL_BUSQUEDA",rubros);
-                                    //startActivity(new Intent(mCtx,MenuPrincipalActivity.class));
+                                    progressDialog.dismiss();
                                 }else{
                                     Respuesta respuesta = gson.fromJson(Response,Respuesta.class);
                                     alertas.mensajeInfo("Fallo Insertar",respuesta.getMensaje(),mCtx);

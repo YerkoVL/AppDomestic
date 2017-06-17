@@ -18,11 +18,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 
-import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_AFIRMACION;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_BUSQUEDA_SERVICIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_FRAGMENT;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_ID_USUARIO;
@@ -39,8 +38,9 @@ public class MenuPrincipalActivity extends AppCompatActivity
     SharedPreferences sharedPreferences;
     Context mCtx;
 
-    String nomUsuario, valorFRAGMENT, valorRUBROS, valorID, valorIMAGEN, valorNOMBRES, valorNOMBRECOMPLETO, valorDNI, valorREPUTACION, valorDIRECCION, valorLATITUD, valorLONGITUD;
-    int valorACCION,idUsuario;
+    String nomUsuario, valorFRAGMENT, valorRUBROS, valorID, valorNOMBRESOCIO, valorIMAGEN, valorNOMBRES, valorNOMBRECOMPLETO, valorDNI, valorREPUTACION, valorDIRECCION, valorLATITUD, valorLONGITUD;
+    int valorACCION,idUsuario, valorIDSOCIO;
+    ArrayList valorMAPAS;
     String imagen;
 
     @Override
@@ -100,6 +100,15 @@ public class MenuPrincipalActivity extends AppCompatActivity
                             valorRUBROS = bundle.getString("VALOR_RUBROS");
                             enviarDatosBuscarServicios(valorRUBROS);
                             asignarFragment(new datosBusqueda());
+                        }else{
+                            if(valorFRAGMENT.equals("PERFIL_HISTORIAL")){
+                                valorIDSOCIO = bundle.getInt("ID_SOCIO");
+                                valorNOMBRESOCIO = bundle.getString("NOMBRE_SOCIO");
+                                getSupportActionBar().setTitle(valorNOMBRESOCIO);
+                                enviarDatosHistorialTrabajos(valorIDSOCIO);
+                            }else{
+                                //OTRO FRAGMENTO
+                            }
                         }
                     }
 
@@ -227,26 +236,6 @@ public class MenuPrincipalActivity extends AppCompatActivity
         editor.commit();
     }
 
-    public Boolean validarRealizoBusqueda(){
-        boolean valor;
-
-        try {
-        sharedPreferences = getSharedPreferences(PREFERENCIA_BUSQUEDA_SERVICIO, mCtx.MODE_PRIVATE);
-        String valorRecuperado = sharedPreferences.getString(PREFERENCIA_VALOR_BUSQUEDA_SERVICIO, null);
-
-            if(valorRecuperado.equals(PREFERENCIA_AFIRMACION)){
-                valor = true;
-            }else{
-                valor = false;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            valor = false;
-        }
-
-        return valor;
-    }
-
     public void obtenerDatosUsuario(){
         SharedPreferences preferencia = mCtx.getSharedPreferences(PREFERENCIA_USUARIO,Context.MODE_PRIVATE);
         idUsuario = preferencia.getInt(PREFERENCIA_ID_USUARIO,0);
@@ -266,16 +255,25 @@ public class MenuPrincipalActivity extends AppCompatActivity
             bundle.putString("DIRECCION", valorDIRECCION);
             bundle.putString("LATITUD", valorLATITUD);
             bundle.putString("LONGITUD", valorLONGITUD);
-        PerfilActivity fragobj = new PerfilActivity();
-        fragobj.setArguments(bundle);
-        asignarFragment(fragobj);
+        PerfilActivity fragmentoObjeto = new PerfilActivity();
+        fragmentoObjeto.setArguments(bundle);
+        asignarFragment(fragmentoObjeto);
     }
 
     public void enviarDatosBuscarServicios(String listRubros){
         Bundle bundle = new Bundle();
         bundle.putString("VALOR_RUBROS", listRubros);
-        ContenidoResultadoBusqueda fragobj = new ContenidoResultadoBusqueda();
-        fragobj.setArguments(bundle);
-        asignarFragment(fragobj);
+        ContenidoResultadoBusqueda fragmentoObjeto = new ContenidoResultadoBusqueda();
+        fragmentoObjeto.setArguments(bundle);
+        asignarFragment(fragmentoObjeto);
     }
+
+    public void enviarDatosHistorialTrabajos(int idSocio){
+        Bundle bundle = new Bundle();
+        bundle.putInt("ID_SOCIO", idSocio);
+        ContenidoHistorialTrabajos fragmentoObjeto = new ContenidoHistorialTrabajos();
+        fragmentoObjeto.setArguments(bundle);
+        asignarFragment(fragmentoObjeto);
+    }
+
 }

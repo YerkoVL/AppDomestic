@@ -1,10 +1,7 @@
 package pe.app.com.demo.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,17 +17,14 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-import pe.app.com.demo.PerfilActivity;
 import pe.app.com.demo.R;
 import pe.app.com.demo.comunicators.ComunicadorAdapters;
-import pe.app.com.demo.comunicators.ComunicadorFragment;
 import pe.app.com.demo.entity.ResultadoBusqueda;
 
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_APELLIDOS_PERSONAL;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_DIRECCION_PERSONAL;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_DNI_PERSONAL;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_ID_PERSONAL;
-import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_ID_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_LATITUD_PERSONAL;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_LONGITUD_PERSONAL;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_NOMBRES_PERSONAL;
@@ -63,6 +57,7 @@ public class ResultadoBusquedaAdapter extends RecyclerView.Adapter<ResultadoBusq
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final ResultadoBusqueda resultadoBusqueda = resultadoBusquedaList.get(position);
 
+        holder.textViewId.setText(resultadoBusqueda.getId());
         Glide.with(holder.imgViewSolucionador.getContext()).load(resultadoBusqueda.getImagen()).into(holder.imgViewSolucionador);
         holder.textViewNombre.setText(resultadoBusqueda.getNombres() + " " + resultadoBusqueda.getApellidos());
         holder.textViewServicio.setText(resultadoBusqueda.getServicio());
@@ -116,6 +111,7 @@ public class ResultadoBusquedaAdapter extends RecyclerView.Adapter<ResultadoBusq
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
+        public TextView textViewId;
         public ImageView imgViewSolucionador;
         public TextView textViewNombre;
         public TextView textViewServicio;
@@ -126,6 +122,7 @@ public class ResultadoBusquedaAdapter extends RecyclerView.Adapter<ResultadoBusq
         public ViewHolder(View itemView, ComunicadorAdapters Communicator) {
             super(itemView);
 
+            textViewId = (TextView) itemView.findViewById(R.id.txtIdSocio);
             imgViewSolucionador = (ImageView) itemView.findViewById(R.id.imagenSolucionador);
             textViewNombre = (TextView) itemView.findViewById(R.id.txtNombreSolucionador);
             textViewServicio = (TextView) itemView.findViewById(R.id.txtServicio);

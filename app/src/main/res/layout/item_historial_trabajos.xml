@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="@color/colorFondoDefault"
     android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
@@ -16,22 +17,6 @@
             android:padding="@dimen/activity_horizontal_margin">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/imagenSolucionador"
-                    android:layout_width="@dimen/grid_item_image_size"
-                    android:layout_height="@dimen/grid_item_image_size"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:background="@drawable/ic_photo_defaulth" />
-
-            </LinearLayout>
-
-            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -42,21 +27,11 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/txtIdSocio"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/id"
-                        android:textColor="@color/colorAccent"
-                        android:textSize="@dimen/textoTituloHeader"
-                        android:textStyle="bold"
-                        android:visibility="gone"/>
-
-                    <TextView
                         android:id="@+id/txtNombreSolucionador"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/imagen"
-                        android:text="@string/nombres"
+                        android:text="@string/serviciosRealizados"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/textoTituloHeader"
                         android:textStyle="bold" />
@@ -67,69 +42,84 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/servicios"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textSize="@dimen/textoTitulo"
-                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/txtServicio"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
                         android:text="XXXXXX" />
 
                 </LinearLayout>
-
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@android:drawable/ic_dialog_map" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/fechaInicio"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textSize="@dimen/textoTitulo"
+                        android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/txtAtenciones"
+                        android:id="@+id/txtFechaInicio"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginTop="7dp"
-                        android:text="##"                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                        android:text="DD/MM/YY"
+                        android:textSize="@dimen/textoDescripcion" />
 
-                    <RatingBar
-                        android:id="@+id/rntgReputacion"
-                        style="?android:attr/ratingBarStyleSmall"
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/finServicio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/fechaFin"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textSize="@dimen/textoTitulo"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtFinServicio"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:clickable="true"
-                        android:isIndicator="true"
-                        android:paddingTop="8dp"
-                        android:progressTint="#FDDB39"
-                        android:rating="3"
-                        android:secondaryProgressTint="#FDDB39" />
+                        android:text="DD/MM/YY"
+                        android:textSize="@dimen/textoDescripcion" />
 
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/txtOptionPulse"
+                    android:id="@+id/txtComentarios"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
-                    android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:text="&#8942;"
-                    android:textSize="@dimen/textoOpcion" />
+                    android:text="Comentarios"
+                    android:textSize="@dimen/textoDescripcion" />
+
+                <RatingBar
+                    android:id="@+id/rntgReputacion"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:clickable="true"
+                    android:isIndicator="true"
+                    android:paddingTop="8dp"
+                    android:progressTint="#FDDB39"
+                    android:rating="3"
+                    android:secondaryProgressTint="#FDDB39" />
 
             </LinearLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
-</LinearLayout>
+</RelativeLayout>

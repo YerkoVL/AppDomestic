@@ -11,6 +11,7 @@
     <!--FIN UTILITARIOS-->
     
     <!--INICIO GENERALES-->
+    <string name="id">Id</string>
     <string name="nombres">Nombres</string>
     <string name="apellidos">Apellidos</string>
     <string name="direccion">Dirección</string>
@@ -29,6 +30,7 @@
     <string name="cargando">Cargando...</string>
     <string name="registrar">Registrar</string>
     <string name="buscar">Buscar</string>
+    <string name="dataEmpty">Sin data encontrada</string>
     <!--FIN GENERALES-->
 
     <!--INICIO MENUS-->
@@ -72,5 +74,9 @@
     <string name="tituloRegistroUsuario">Datos Personales</string>
     <string name="subirFoto">Subir Foto</string>
     <!--FIN PANTALLA REGISTRO USUARIO-->
+
+    <!--INICIO PANTALLA HISTORIAL TRABAJOS-->
+    <string name="serviciosRealizados">Servicio Realizado</string>
+    <!--FIN PANTALLA HISTORIAL TRABAJOS-->
 
 </resources>
