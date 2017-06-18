@@ -2,6 +2,7 @@ package pe.app.com.demo;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pe.app.com.demo.adapters.HistorialAdapter;
+import pe.app.com.demo.comunicators.ComunicadorHistorialXDetalle;
 import pe.app.com.demo.conexion.Singleton;
 import pe.app.com.demo.entity.Historial;
 import pe.app.com.demo.tools.GenericAlerts;
@@ -133,13 +135,19 @@ public class ContenidoHistorial extends Fragment {
                                     historial.setDesc_Estado(tools.validarNulos(object.getString(OBJETO_DESC_ESTADO)));
 
                                     JSONArray objetoRubro = object.getJSONArray(OBJETO_RUBRO);
-                                    JSONObject rubro = objetoRubro.getJSONObject(0);
 
-                                    if (objetoRubro != null || objetoRubro.length() > 0) {
-                                        historial.setIdRubro(tools.validarNulos(rubro.getString(OBJETO_ID)));
-                                        historial.setDescripcionRubro(tools.validarNulos(rubro.getString(OBJETO_DESCRIPCION)));
-                                        historial.setIdEstadoRubro(tools.validarNulos(rubro.getString(OBJETO_ID_ESTADO)));
-                                        historial.setDescripcionRubro(tools.validarNulos(rubro.getString(OBJETO_DESC_ESTADO)));
+                                    if (historial.getIdEstado().equals(GET_ESTADO_PARA_HISTORIAL) && objetoRubro != null || objetoRubro.length() > 0) {
+                                        String descripcionRubrosTotales= "";
+                                        for(int x = 0 ;x < objetoRubro.length();x++) {
+                                            JSONObject rubro = objetoRubro.getJSONObject(x);
+                                            String descripcionRubro = tools.validarNulos(rubro.getString(OBJETO_DESCRIPCION));
+                                            if(objetoRubro.length()>1) {
+                                                descripcionRubrosTotales = descripcionRubro + ", " + descripcionRubrosTotales;
+                                            }else{
+                                                descripcionRubrosTotales = descripcionRubro;
+                                            }
+                                        }
+                                        historial.setDescripcionRubro(descripcionRubrosTotales);
                                     }
                                 }catch (Exception e){
                                     e.printStackTrace();
@@ -150,7 +158,7 @@ public class ContenidoHistorial extends Fragment {
                                 }
                             }
 
-                            historialAdapter = new HistorialAdapter(historialList,mCtx);
+                            historialAdapter = new HistorialAdapter(historialList,mCtx,comunicadorHistorialXDetalle);
                             recyclerView.setAdapter(historialAdapter);
 
                             if(historialList.size()>0){
@@ -185,5 +193,25 @@ public class ContenidoHistorial extends Fragment {
         idUsuario = preferencia.getInt(PREFERENCIA_ID_USUARIO,0);
         nombreUsuario = preferencia.getString(PREFERENCIA_NOMBRE_USUARIO,"");
     }
+
+    ComunicadorHistorialXDetalle comunicadorHistorialXDetalle = new ComunicadorHistorialXDetalle() {
+        @Override
+        public void comunicarHistorial(String imagen, String nombre, String rubros, String fechaInicio, String fechaFin, String servicios, String comentarios, String calificacion) {
+            Bundle bundle = new Bundle();
+            Intent in =new Intent(getActivity(),MenuPrincipalActivity.class);
+            in.putExtra("VALOR_ACCION",1);
+            in.putExtra("VALOR_FRAGMENT","PERFIL_DETALLE_HISTORIAL");
+            in.putExtra("IMAGEN", imagen);
+            in.putExtra("NOMBRE", nombre);
+            in.putExtra("RUBROS", rubros);
+            in.putExtra("FECHA_INICIO", fechaInicio);
+            in.putExtra("FECHA_FIN", fechaFin);
+            in.putExtra("SERVICIOS", servicios);
+            in.putExtra("COMENTARIOS", comentarios);
+            in.putExtra("CALIFICACION", calificacion);
+            in.putExtras(bundle);
+            startActivity(in);
+        }
+    };
 
 }

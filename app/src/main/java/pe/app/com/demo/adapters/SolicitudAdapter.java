@@ -8,21 +8,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
 import pe.app.com.demo.R;
+import pe.app.com.demo.comunicators.ComunicadorSolicitudesXDetalle;
 import pe.app.com.demo.entity.Solicitud;
 
 public class SolicitudAdapter extends RecyclerView.Adapter<SolicitudAdapter.ViewHolder>{
 
     private List<Solicitud> listaSolicitud;
+    private ComunicadorSolicitudesXDetalle comunicador;
     private Context mCtx;
 
-    public SolicitudAdapter(List<Solicitud> solicitud,Context ctx){
+    public SolicitudAdapter(List<Solicitud> solicitud,Context ctx, ComunicadorSolicitudesXDetalle comunicadorSolicitudesXDetalle){
         this.listaSolicitud = solicitud;
         this.mCtx = ctx;
+        this.comunicador = comunicadorSolicitudesXDetalle;
     }
 
     @Override
@@ -48,13 +50,14 @@ public class SolicitudAdapter extends RecyclerView.Adapter<SolicitudAdapter.View
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()){
                             case R.id.menu_SolicitudesVerDetalle:
-                                Toast.makeText(mCtx,"Ver Detalle",Toast.LENGTH_SHORT).show();
+                                comunicador.comunicarSolicitudes(
+                                        solicitud.getId(),
+                                        solicitud.getFechaSolicitud(),
+                                        solicitud.getServicio(),
+                                        solicitud.getRubro(),
+                                        solicitud.getFechaInicio(),
+                                        solicitud.getFechaFin());
                                 break;
-                            //case R.id.menu_SolicitudesCancelar:
-                            //    listaSolicitud.remove(position);
-                            //    notifyDataSetChanged();
-                            //    Toast.makeText(mCtx,"Cancelado",Toast.LENGTH_SHORT).show();
-                            //    break;
                         }
                         return false;
                     }

@@ -26,11 +26,13 @@
     <string name="descripcion">Descripción</string>
     <string name="pendiente">Pendiente</string>
     <string name="servicios">Servicios</string>
+    <string name="rubros">Rubros</string>
     <string name="establecer">Establecer</string>
     <string name="cargando">Cargando...</string>
     <string name="registrar">Registrar</string>
     <string name="buscar">Buscar</string>
     <string name="dataEmpty">Sin data encontrada</string>
+    <string name="comentarios">Comentarios</string>
     <!--FIN GENERALES-->
 
     <!--INICIO MENUS-->

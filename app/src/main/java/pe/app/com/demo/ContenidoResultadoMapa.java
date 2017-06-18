@@ -13,7 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mapbox.mapboxsdk.Mapbox;
-import com.mapbox.mapboxsdk.annotations.MarkerOptions;
+import com.mapbox.mapboxsdk.annotations.Icon;
+import com.mapbox.mapboxsdk.annotations.IconFactory;
+import com.mapbox.mapboxsdk.annotations.MarkerViewOptions;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.constants.Style;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -48,13 +50,13 @@ public class ContenidoResultadoMapa extends Fragment {
 
         Mapbox.getInstance(mCtx, getString(R.string.accesToken));
 
-        SupportMapFragment mapFragment;
+        final SupportMapFragment mapFragment;
         if (savedInstanceState == null) {
 
             // CREACION DE FRAGMENTO
             final FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
-            LatLng lima = new LatLng(-12.0453, -77.0311);
+            LatLng lima = new LatLng( -12.132480885221323,-76.98358297348022);
 
             // CONSTRUCCION DE MAPBOX
             MapboxMapOptions options = new MapboxMapOptions();
@@ -82,19 +84,7 @@ public class ContenidoResultadoMapa extends Fragment {
             @Override
             public void onClick(View view) {
                 if (map != null) {
-                    leerMapas();
 
-                    for(int x=0;x<mapaArrayList.size();x++) {
-                        String id = mapaArrayList.get(x).getIdSocio();
-                        String nombre = mapaArrayList.get(x).getNombreSocio();
-                        String latitud = mapaArrayList.get(x).getLatitud();
-                        String longitud = mapaArrayList.get(x).getLatitud();
-
-                        map.addMarker(new MarkerOptions()
-                                .position(new LatLng(Double.valueOf(latitud),Double.valueOf(longitud)))
-                                .title(id)
-                                .snippet(nombre));
-                    }
                 }
             }
         });
@@ -103,6 +93,29 @@ public class ContenidoResultadoMapa extends Fragment {
             @Override
             public void onMapReady(MapboxMap mapboxMap) {
                 map = mapboxMap;
+
+                IconFactory iconFactory = IconFactory.getInstance(mCtx);
+                Icon icon = iconFactory.fromResource(R.drawable.mapbox_marker_icon_default);
+
+                leerMapas();
+
+                for(int x=0;x<mapaArrayList.size();x++) {
+                    String id = mapaArrayList.get(x).getIdSocio();
+                    String nombre = mapaArrayList.get(x).getNombreSocio();
+                    String latitud = mapaArrayList.get(x).getLatitud();
+                    String longitud = mapaArrayList.get(x).getLatitud();
+
+                    mapboxMap.addMarker(new MarkerViewOptions()
+                            .icon(icon)
+                            .rotation(90)
+                            .anchor(0.5f, 0.5f)
+                            .alpha(0.5f)
+                            .infoWindowAnchor(0.5f, 0.5f)
+                            .flat(true)
+                            .position(new LatLng(Double.valueOf(latitud),Double.valueOf(longitud)))
+                            .title(id)
+                            .snippet(nombre));
+                }
             }
         });
 
@@ -115,7 +128,7 @@ public class ContenidoResultadoMapa extends Fragment {
 
         SQLiteDatabase db = usdbh.getWritableDatabase();
 
-        Cursor c = db.rawQuery(" SELECT idPersona,nombrePersona, rubros, latitud, longitud FROM Mapas", null);
+        Cursor c = db.rawQuery(" SELECT DISTINCT idPersona,nombrePersona, rubros, latitud, longitud FROM Mapas", null);
 
         if (c.moveToFirst()) {
             do {

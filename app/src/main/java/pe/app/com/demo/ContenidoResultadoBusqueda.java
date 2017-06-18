@@ -230,7 +230,6 @@ public class ContenidoResultadoBusqueda extends Fragment {
         }
 
         obtenerDatosTemporales();
-        obtenerRespuestaBusqueda();
 
     }
 
@@ -270,6 +269,8 @@ public class ContenidoResultadoBusqueda extends Fragment {
     public void obtenerDatosTemporales(){
         SharedPreferences preferencia = mCtx.getSharedPreferences(PREFERENCIA_BUSQUEDA_SERVICIO,Context.MODE_PRIVATE);
         rubrosLista = preferencia.getString(PREFERENCIA_FRAGMENT_RUBROS,"");
+
+        obtenerRespuestaBusqueda();
     }
 
     public void insertarDatosMapas(String idPersona,String nombreCompletoPersona,String descripcionServicioTotales, String latitudPersona,String longitudPersona){

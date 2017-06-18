@@ -38,7 +38,9 @@ public class MenuPrincipalActivity extends AppCompatActivity
     SharedPreferences sharedPreferences;
     Context mCtx;
 
-    String nomUsuario, valorFRAGMENT, valorRUBROS, valorID, valorNOMBRESOCIO, valorIMAGEN, valorNOMBRES, valorNOMBRECOMPLETO, valorDNI, valorREPUTACION, valorDIRECCION, valorLATITUD, valorLONGITUD;
+    String nomUsuario, valorFRAGMENT, valorRUBROS, valorID, valorNOMBRESOCIO, valorIMAGEN, valorNOMBRES,
+    valorNOMBRECOMPLETO, valorDNI, valorREPUTACION, valorDIRECCION, valorLATITUD, valorLONGITUD,
+    valorIDSOLICITUD, valorFECHASOLICITUD, valorSERVICIOS, valorFECHAINICIO, valorFECHAFIN, valorCOMENTARIOS, valorCALIFICACION;
     int valorACCION,idUsuario, valorIDSOCIO;
     ArrayList valorMAPAS;
     String imagen;
@@ -107,7 +109,45 @@ public class MenuPrincipalActivity extends AppCompatActivity
                                 getSupportActionBar().setTitle(valorNOMBRESOCIO);
                                 enviarDatosHistorialTrabajos(valorIDSOCIO);
                             }else{
-                                //OTRO FRAGMENTO
+                                if(valorFRAGMENT.equals("PERFIL_DETALLE_SOLICITUD")){
+                                    valorIDSOLICITUD = bundle.getString("VALOR_ID_SOLICITUD");
+                                    valorFECHASOLICITUD = bundle.getString("VALOR_FECHA_SOLICITUD");
+                                    valorSERVICIOS = bundle.getString("VALOR_SERVICIOS");
+                                    valorRUBROS = bundle.getString("VALOR_RUBROS");
+                                    valorFECHAINICIO = bundle.getString("VALOR_FECHA_INICIO");
+                                    valorFECHAFIN = bundle.getString("VALOR_FECHA_FIN");
+                                    getSupportActionBar().setTitle("Detalle Solicitud " + valorIDSOLICITUD);
+                                    enviarDatosDetalleSolicitud(
+                                            valorIDSOLICITUD,
+                                            valorFECHASOLICITUD,
+                                            valorSERVICIOS,
+                                            valorRUBROS,
+                                            valorFECHAINICIO,
+                                            valorFECHAFIN);
+                                }else{
+                                    if(valorFRAGMENT.equals("PERFIL_DETALLE_HISTORIAL")){
+                                        valorIMAGEN = bundle.getString("IMAGEN");
+                                        valorNOMBRECOMPLETO = bundle.getString("NOMBRE");
+                                        valorRUBROS = bundle.getString("RUBROS");
+                                        valorFECHAINICIO = bundle.getString("FECHA_INICIO");
+                                        valorFECHAFIN = bundle.getString("FECHA_FIN");
+                                        valorSERVICIOS = bundle.getString("SERVICIOS");
+                                        valorCOMENTARIOS = bundle.getString("COMENTARIOS");
+                                        valorCALIFICACION = bundle.getString("CALIFICACION");
+                                        enviarDatosDetalleHistorial(
+                                                valorIMAGEN,
+                                                valorNOMBRECOMPLETO,
+                                                valorRUBROS,
+                                                valorFECHAINICIO,
+                                                valorFECHAFIN,
+                                                valorSERVICIOS,
+                                                valorCOMENTARIOS,
+                                                valorCALIFICACION
+                                        );
+                                    }else{
+                                        //OTRO FRAGMENTO
+                                    }
+                                }
                             }
                         }
                     }
@@ -276,4 +316,31 @@ public class MenuPrincipalActivity extends AppCompatActivity
         asignarFragment(fragmentoObjeto);
     }
 
+    public void enviarDatosDetalleSolicitud(String idSolicitud, String fechaSolicitud, String servicios, String rubros, String fechaInicio, String fechaFin){
+        Bundle bundle = new Bundle();
+        bundle.putString("ID", idSolicitud);
+        bundle.putString("FECHA_SOLICITUD", fechaSolicitud);
+        bundle.putString("SERVICIOS", servicios);
+        bundle.putString("RUBROS", rubros);
+        bundle.putString("INICIO", fechaInicio);
+        bundle.putString("FIN", fechaFin);
+        ContenidoDetalleSolicitudes fragmentoObjeto = new ContenidoDetalleSolicitudes();
+        fragmentoObjeto.setArguments(bundle);
+        asignarFragment(fragmentoObjeto);
+    }
+
+    public void enviarDatosDetalleHistorial(String imagen, String nombre, String rubros, String fechaInicio, String fechaFin, String servicios, String comentarios, String calificacion){
+        Bundle bundle = new Bundle();
+        bundle.putString("IMAGEN", imagen);
+        bundle.putString("NOMBRE", nombre);
+        bundle.putString("RUBROS", rubros);
+        bundle.putString("INICIO", fechaInicio);
+        bundle.putString("FIN", fechaFin);
+        bundle.putString("SERVICIOS", servicios);
+        bundle.putString("COMENTARIOS", comentarios);
+        bundle.putString("CALIFICACION", calificacion);
+        ContenidoDetalleHistorial fragmentoObjeto = new ContenidoDetalleHistorial();
+        fragmentoObjeto.setArguments(bundle);
+        asignarFragment(fragmentoObjeto);
+    }
 }

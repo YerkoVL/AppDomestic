@@ -100,6 +100,8 @@ public class ContenidoBuscarServicios extends Fragment{
                 mes = datePicker.getMonth() + 1;
                 dia = datePicker.getDayOfMonth();
 
+                datePicker.setMinDate(Calendar.DATE);
+
                 String nuevaFecha = anio + "/" + tools.checkearDigito(mes) + "/" + tools.checkearDigito(dia);
 
                 fechaFin.setText(nuevaFecha);
@@ -113,6 +115,8 @@ public class ContenidoBuscarServicios extends Fragment{
                 anio = datePicker.getYear();
                 mes = datePicker.getMonth() + 1;
                 dia = datePicker.getDayOfMonth();
+
+                datePicker.setMinDate(Calendar.DATE);
 
                 String nuevaFecha =  anio + "/" + tools.checkearDigito(mes) + "/" + tools.checkearDigito(dia);
 

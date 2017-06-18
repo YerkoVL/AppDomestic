@@ -2,6 +2,7 @@ package pe.app.com.demo;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pe.app.com.demo.adapters.SolicitudAdapter;
+import pe.app.com.demo.comunicators.ComunicadorSolicitudesXDetalle;
 import pe.app.com.demo.conexion.Singleton;
 import pe.app.com.demo.entity.Solicitud;
 import pe.app.com.demo.tools.GenericAlerts;
@@ -34,6 +36,7 @@ import pe.app.com.demo.tools.GenericTools;
 
 import static android.content.ContentValues.TAG;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_CALIFICACION;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_DESCRIPCION;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_DESC_ESTADO;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_FECHA_FIN;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_FECHA_INICIO;
@@ -124,12 +127,28 @@ public class ContenidoSolicitudes extends Fragment {
                                                                                                 tools.validarNulos(object.getString(OBJETO_ID_ESTADO)),
                                                                                                         tools.validarNulos(object.getString(OBJETO_DESC_ESTADO)));
 
+                                JSONArray objetoRUBRO = object.getJSONArray(OBJETO_RUBRO);
+
+                                if (objetoRUBRO != null || objetoRUBRO.length() > 0) {
+                                    String descripcionRubrosTotales= "";
+                                    for(int x = 0 ;x < objetoRUBRO.length();x++) {
+                                        JSONObject rubro = objetoRUBRO.getJSONObject(x);
+                                        String descripcionRubro = tools.validarNulos(rubro.getString(OBJETO_DESCRIPCION));
+                                        if(objetoRUBRO.length()>1) {
+                                            descripcionRubrosTotales = descripcionRubro + ", " + descripcionRubrosTotales;
+                                        }else{
+                                            descripcionRubrosTotales = descripcionRubro;
+                                        }
+                                    }
+                                    solicitud.setRubro(descripcionRubrosTotales);
+                                }
+
                                 if(solicitud.getIdEstado().equals(GET_ESTADO_PARA_SOLICITUDES)) {
                                     solicitudList.add(solicitud);
                                 }
                             }
 
-                            solicitudAdapter = new SolicitudAdapter(solicitudList, mCtx);
+                            solicitudAdapter = new SolicitudAdapter(solicitudList, mCtx, comunicadorSolicitudesXDetalle);
                             recyclerView.setAdapter(solicitudAdapter);
 
                             if(solicitudList.size()>0){
@@ -165,4 +184,23 @@ public class ContenidoSolicitudes extends Fragment {
         idUsuario = preferencia.getInt(PREFERENCIA_ID_USUARIO,0);
         nombreUsuario = preferencia.getString(PREFERENCIA_NOMBRE_USUARIO,"");
     }
+
+    ComunicadorSolicitudesXDetalle comunicadorSolicitudesXDetalle = new ComunicadorSolicitudesXDetalle() {
+        @Override
+        public void comunicarSolicitudes(String idSolicitud, String fechaSolicitud, String servicios, String rubros, String fechaInicio, String fechaFin) {
+            Bundle bundle = new Bundle();
+            Intent in =new Intent(getActivity(),MenuPrincipalActivity.class);
+            in.putExtra("VALOR_ACCION",1);
+            in.putExtra("VALOR_FRAGMENT","PERFIL_DETALLE_SOLICITUD");
+            in.putExtra("VALOR_ID_SOLICITUD",idSolicitud);
+            in.putExtra("VALOR_FECHA_SOLICITUD",fechaSolicitud);
+            in.putExtra("VALOR_SERVICIOS",servicios);
+            in.putExtra("VALOR_RUBROS",rubros);
+            in.putExtra("VALOR_FECHA_INICIO",fechaInicio);
+            in.putExtra("VALOR_FECHA_FIN",fechaFin);
+            in.putExtras(bundle);
+            startActivity(in);
+        }
+
+    };
 }

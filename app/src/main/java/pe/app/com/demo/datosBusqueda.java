@@ -23,7 +23,9 @@ public class datosBusqueda extends Fragment {
 
         viewPager = (ViewPager) view.findViewById(R.id.viewpager);
         viewPager.setAdapter(new deslizarAdaptador(getChildFragmentManager()));
+        viewPager.setHorizontalScrollBarEnabled(false);
         tabLayout = (TabLayout) view.findViewById(R.id.sliding_tabs);
+        tabLayout.setHorizontalScrollBarEnabled(false);
         tabLayout.post(new Runnable() {
             @Override
             public void run() {

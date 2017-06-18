@@ -16,16 +16,19 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import pe.app.com.demo.R;
+import pe.app.com.demo.comunicators.ComunicadorHistorialXDetalle;
 import pe.app.com.demo.entity.Historial;
 
 public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.ViewHolder>{
 
     private List<Historial> listaHistorial;
+    private ComunicadorHistorialXDetalle comunicador;
     private Context mCtx;
 
-    public HistorialAdapter(List<Historial> historial, Context ctx){
+    public HistorialAdapter(List<Historial> historial, Context ctx, ComunicadorHistorialXDetalle comunicadorHistorialXDetalle){
         this.listaHistorial = historial;
         this.mCtx = ctx;
+        this.comunicador = comunicadorHistorialXDetalle;
     }
 
     @Override
@@ -47,7 +50,11 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.View
             @Override
             public void onClick(View view) {
                 PopupMenu popupMenu = new PopupMenu(mCtx,holder.buttonViewOption);
-                popupMenu.inflate(R.menu.menu_historial);
+                if(Integer.valueOf(historial.getIdEstado())==7){
+                    popupMenu.inflate(R.menu.menu_historial_terminados);
+                }else {
+                    popupMenu.inflate(R.menu.menu_historial);
+                }
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
@@ -58,7 +65,16 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.View
                                 Toast.makeText(mCtx,"Finalizado",Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.menu_HistorialVerDetalle:
-                                Toast.makeText(mCtx,"Ver Detalle",Toast.LENGTH_SHORT).show();
+                                comunicador.comunicarHistorial(
+                                        historial.getFoto(),
+                                        historial.getSocio(),
+                                        historial.getDescripcionRubro(),
+                                        historial.getFechaInicio(),
+                                        historial.getFechaFin(),
+                                        historial.getServicio(),
+                                        historial.getComentario(),
+                                        historial.getCalificacion()
+                                );
                                 break;
                             case R.id.menu_HistorialCancelar:
                                 listaHistorial.remove(position);
