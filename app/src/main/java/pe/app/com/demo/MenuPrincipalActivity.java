@@ -145,7 +145,22 @@ public class MenuPrincipalActivity extends AppCompatActivity
                                                 valorCALIFICACION
                                         );
                                     }else{
-                                        //OTRO FRAGMENTO
+                                        if(valorFRAGMENT.equals("PERFIL_MAPA")){
+                                            valorID = bundle.getString("VALOR_ID");
+                                            valorNOMBRECOMPLETO = bundle.getString("VALOR_NOMBRE");
+                                            valorRUBROS = bundle.getString("VALOR_RUBROS");
+                                            valorLATITUD = bundle.getString("VALOR_LATITUD");
+                                            valorLONGITUD = bundle.getString("VALOR_LONGITUD");
+                                            enviarDatosUbicacion(
+                                                    valorID,
+                                                    valorNOMBRECOMPLETO,
+                                                    valorRUBROS,
+                                                    Double.valueOf(valorLATITUD),
+                                                    Double.valueOf(valorLONGITUD)
+                                            );
+                                        }else {
+                                            //OTRO FRAGMENTO
+                                        }
                                     }
                                 }
                             }
@@ -178,12 +193,22 @@ public class MenuPrincipalActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
+        //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        int count = getFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
             super.onBackPressed();
+            getFragmentManager().popBackStack();
+        } else {
+            getFragmentManager().popBackStack();//No se porqué puse lo mismo O.o
         }
+
+        //if (drawer.isDrawerOpen(GravityCompat.START)) {
+        //    drawer.closeDrawer(GravityCompat.START);
+        //} else {
+        //    super.onBackPressed();
+        //}
     }
 
     @Override
@@ -340,6 +365,18 @@ public class MenuPrincipalActivity extends AppCompatActivity
         bundle.putString("COMENTARIOS", comentarios);
         bundle.putString("CALIFICACION", calificacion);
         ContenidoDetalleHistorial fragmentoObjeto = new ContenidoDetalleHistorial();
+        fragmentoObjeto.setArguments(bundle);
+        asignarFragment(fragmentoObjeto);
+    }
+
+    public void enviarDatosUbicacion(String idPersona, String nombreCompleto,String rubros, Double latitud, Double longitud){
+        Bundle bundle = new Bundle();
+        bundle.putString("ID", idPersona);
+        bundle.putString("NOMBRES_COMPLETOS", nombreCompleto);
+        bundle.putString("RUBROS", rubros);
+        bundle.putDouble("LATITUD", latitud);
+        bundle.putDouble("LONGITUD", longitud);
+        ContenidoResultadoMapa fragmentoObjeto = new ContenidoResultadoMapa();
         fragmentoObjeto.setArguments(bundle);
         asignarFragment(fragmentoObjeto);
     }

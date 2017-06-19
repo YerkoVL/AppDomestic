@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import pe.app.com.demo.comunicators.ComunicadorPerfilXHistorialTrabajo;
+import pe.app.com.demo.comunicators.ComunicadorPerfilXMapa;
 
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_DIRECCION;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_ID_PERFIL;
@@ -42,7 +43,7 @@ public class PerfilActivity extends Fragment {
     RatingBar valoracion;
     ImageView imagen;
     LinearLayout linearLayoutPerfil;
-    ImageButton historialTrabajos;
+    ImageButton verUbicacion, historialTrabajos;
     ComunicadorPerfilXHistorialTrabajo comunicador;
 
     @Nullable
@@ -58,6 +59,7 @@ public class PerfilActivity extends Fragment {
         reputacion = (TextView) rootView.findViewById(R.id.txtReputacion);
         valoracion = (RatingBar) rootView.findViewById(R.id.rating);
         linearLayoutPerfil = (LinearLayout) rootView.findViewById(R.id.lyOcultarPerfil);
+        verUbicacion = (ImageButton) rootView.findViewById(R.id.btnVerUbicacion);
         historialTrabajos = (ImageButton) rootView.findViewById(R.id.btnHistorialTrabajos);
 
         comunicador = comunicadorPerfilXHistorialTrabajo;
@@ -78,6 +80,13 @@ public class PerfilActivity extends Fragment {
         }
 
         asignarDatosUsuario();
+
+        verUbicacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                comunicadorPerfilXMapa.comunicarPerfil(String.valueOf(idPersona), 1,"PERFIL_MAPA","cliente",nombresCompletoPersona,latitudPersona,longitudPersona);
+            }
+        });
 
         historialTrabajos.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,6 +146,23 @@ public class PerfilActivity extends Fragment {
             startActivity(in);
         }
 
+    };
+
+    ComunicadorPerfilXMapa comunicadorPerfilXMapa = new ComunicadorPerfilXMapa() {
+        @Override
+        public void comunicarPerfil(String valorID,int valorACCION,String valorFRAGMENT, String rubros, String nombre, String latitud, String longitud) {
+            Bundle bundle = new Bundle();
+            Intent in =new Intent(getActivity(),MenuPrincipalActivity.class);
+            in.putExtra("VALOR_ACCION",valorACCION);
+            in.putExtra("VALOR_FRAGMENT",valorFRAGMENT);
+            in.putExtra("VALOR_ID",valorID);
+            in.putExtra("VALOR_RUBROS",rubros);
+            in.putExtra("VALOR_NOMBRE",nombre);
+            in.putExtra("VALOR_LATITUD",latitud);
+            in.putExtra("VALOR_LONGITUD",longitud);
+            in.putExtras(bundle);
+            startActivity(in);
+        }
     };
 
 }

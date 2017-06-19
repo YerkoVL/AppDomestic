@@ -18,7 +18,7 @@ public class GenericEstructure {
     final public static String OBJETO_ID_DISTRITO = "IdDistrito";
     final public static String OBJETO_DISTRITO = "Distrito";
     final public static String OBJETO_LATITUD = "Latitud";
-    final public static String OBJETO_LONGITUD = "IdDistrito";
+    final public static String OBJETO_LONGITUD = "Longitud";
     final public static String OBJETO_FECHA_LOGEO = "FechaLogueo";
     final public static String OBJETO_BIENVENIDA = "Bienvenida";
     final public static String OBJETO_ATENCIONES = "Atenciones";

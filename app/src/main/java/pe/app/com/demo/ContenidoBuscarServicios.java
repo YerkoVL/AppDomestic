@@ -2,9 +2,11 @@ package pe.app.com.demo;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,11 +21,21 @@ import android.widget.EditText;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 
-import java.util.Calendar;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+import pe.app.com.demo.SQLiteHelper.MapasSQLHelper;
 import pe.app.com.demo.comunicators.ComunicadorBuscarServicioXMenuPrincipal;
 import pe.app.com.demo.conexion.Singleton;
 import pe.app.com.demo.entity.Respuesta;
@@ -31,6 +43,13 @@ import pe.app.com.demo.entity.ResultadoInsercionSolicitud;
 import pe.app.com.demo.tools.GenericAlerts;
 import pe.app.com.demo.tools.GenericTools;
 
+import static android.content.ContentValues.TAG;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_APELLIDOS;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_DESCRIPCION;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_ID;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_LATITUD;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_LONGITUD;
+import static pe.app.com.demo.tools.GenericEstructure.OBJETO_NOMBRES;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_AFIRMACION;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_BUSQUEDA_SERVICIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_FRAGMENT;
@@ -45,9 +64,11 @@ import static pe.app.com.demo.tools.GenericTools.GET_FECHA_FIN;
 import static pe.app.com.demo.tools.GenericTools.GET_FECHA_INICIO;
 import static pe.app.com.demo.tools.GenericTools.GET_ID_USER;
 import static pe.app.com.demo.tools.GenericTools.GET_INICIO;
+import static pe.app.com.demo.tools.GenericTools.GET_LISTA_RUBROS;
 import static pe.app.com.demo.tools.GenericTools.GET_RUBROS;
 import static pe.app.com.demo.tools.GenericTools.GET_SERVICIO;
 import static pe.app.com.demo.tools.GenericTools.URL_APP;
+import static pe.app.com.demo.tools.GenericUrls.BASE_CONSULTA_SERVICIOS;
 import static pe.app.com.demo.tools.GenericUrls.BASE_INSERTAR_SOLICITUD;
 import static pe.app.com.demo.tools.GenericUrls.BASE_URL;
 
@@ -68,9 +89,12 @@ public class ContenidoBuscarServicios extends Fragment{
     Gson gson = new Gson();
 
     int idUsuario=0;
-    String descripcionServicioTotales, reenviarRubros;
+    String reenviarRubros;
+    int diaInicioComparar, mesInicioComparar, anioInicioComparar;
+    int diaFinComparar, mesFinComparar, anioFinComparar;
 
     Calendar miCalendario = Calendar.getInstance();
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     ProgressDialog progressDialog = null;
     private ComunicadorBuscarServicioXMenuPrincipal comunicadorBuscar;
 
@@ -100,6 +124,10 @@ public class ContenidoBuscarServicios extends Fragment{
                 mes = datePicker.getMonth() + 1;
                 dia = datePicker.getDayOfMonth();
 
+                diaFinComparar = dia;
+                mesFinComparar = mes;
+                anioFinComparar = anio;
+
                 datePicker.setMinDate(Calendar.DATE);
 
                 String nuevaFecha = anio + "/" + tools.checkearDigito(mes) + "/" + tools.checkearDigito(dia);
@@ -115,6 +143,10 @@ public class ContenidoBuscarServicios extends Fragment{
                 anio = datePicker.getYear();
                 mes = datePicker.getMonth() + 1;
                 dia = datePicker.getDayOfMonth();
+
+                diaInicioComparar = dia;
+                mesInicioComparar = mes;
+                anioInicioComparar = anio;
 
                 datePicker.setMinDate(Calendar.DATE);
 
@@ -146,7 +178,11 @@ public class ContenidoBuscarServicios extends Fragment{
         busqueda.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                validarDatosEnviar();
+                try {
+                    validarDatosEnviar();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -155,7 +191,7 @@ public class ContenidoBuscarServicios extends Fragment{
         return rootView;
     }
 
-    public void validarDatosEnviar(){
+    public void validarDatosEnviar() throws ParseException {
         String fechaInicioSolicitud = fechaInicio.getText().toString();
         String fechaFinSolicitud = fechaFin.getText().toString();
         String serviciosSolicitud = obtenerServicios();
@@ -165,10 +201,18 @@ public class ContenidoBuscarServicios extends Fragment{
             if(!fechaFinSolicitud.equals("")){
                 if(!serviciosSolicitud.equals("")){
                     if(!rubrosSolicitud.equals("")){
-                        reenviarRubros = rubrosSolicitud;
-                        inicioBusqueda(idUsuario, fechaInicioSolicitud,fechaFinSolicitud,serviciosSolicitud,rubrosSolicitud);
-                        actualizarSP();
-                        guardarPreferenciaFragment(rubrosSolicitud);
+                        if(validarFechaXHoy()) {
+                            if(validarFechas()) {
+                                reenviarRubros = rubrosSolicitud;
+                                inicioBusqueda(idUsuario, fechaInicioSolicitud, fechaFinSolicitud, serviciosSolicitud, rubrosSolicitud);
+                                actualizarSP();
+                                guardarPreferenciaFragment(rubrosSolicitud);
+                            }else{
+                                alertas.mensajeInfo("Error","Fecha Inicio debe ser menor al de Fin",mCtx);
+                            }
+                        }else{
+                            alertas.mensajeInfo("Error","Fecha Inicio debe ser mayor del día de hoy",mCtx);
+                        }
                     }else{
                         alertas.mensajeInfo("Error","Debe seleccionar rubros",mCtx);
                     }
@@ -208,7 +252,8 @@ public class ContenidoBuscarServicios extends Fragment{
                             try {
                                 ResultadoInsercionSolicitud resultadoInsercionSolicitud = gson.fromJson(Response, ResultadoInsercionSolicitud.class);
                                 if(resultadoInsercionSolicitud.getId()!= null) {
-                                    comunicadorBuscar.comunicarResultadoPerfil(1,"PERFIL_BUSQUEDA",rubros);
+                                    eliminarMapasAnteriores();
+                                    generarMapas(rubros);
                                     progressDialog.dismiss();
                                 }else{
                                     Respuesta respuesta = gson.fromJson(Response,Respuesta.class);
@@ -238,8 +283,93 @@ public class ContenidoBuscarServicios extends Fragment{
         Singleton.getInstance(mCtx).addToRequestQueue(respuestaInsercion);
     }
 
+    public void generarMapas(final String rubros) {
+
+        final String url = URL_APP + BASE_URL + BASE_CONSULTA_SERVICIOS + GET_INICIO + GET_LISTA_RUBROS + rubros +
+                GET_CONTINUO + GET_ID_USER + idUsuario;
+
+        progressDialog.show();
+        progressDialog.setContentView(R.layout.content_progress_action);
+
+        JsonArrayRequest respuestaSolicitud = new JsonArrayRequest(url,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+
+                        try {
+                            for (int i = 0; i < response.length(); i++) {
+
+                                JSONObject object = (JSONObject) response.get(i);
+
+                                JSONArray objetoSERVICIO = object.getJSONArray("SERVICIO");
+
+                                if (objetoSERVICIO != null || objetoSERVICIO.length() > 0) {
+                                    String idPersona , nombreCompletoPersona , latitudPersona, longitudPersona;
+
+                                    String descripcionServicioTotales= "";
+
+                                    for(int x = 0 ;x < objetoSERVICIO.length();x++) {
+                                        JSONObject servicio = objetoSERVICIO.getJSONObject(x);
+                                        String descripcionServicio = tools.validarNulos(servicio.getString(OBJETO_DESCRIPCION));
+                                        descripcionServicioTotales = descripcionServicio + ", " + descripcionServicioTotales;
+                                    }
+
+                                    idPersona = tools.validarNulos(object.getString(OBJETO_ID));
+                                    nombreCompletoPersona = tools.validarNulos(object.getString(OBJETO_NOMBRES)) + " " + tools.validarNulos(object.getString(OBJETO_APELLIDOS));
+                                    latitudPersona = tools.validarNulos(object.getString(OBJETO_LATITUD));
+                                    longitudPersona = tools.validarNulos(object.getString(OBJETO_LONGITUD));
+
+                                    insertarDatosMapas(idPersona,nombreCompletoPersona,descripcionServicioTotales, latitudPersona,longitudPersona);
+                                }
+                            }
+                            progressDialog.dismiss();
+                            comunicadorBuscar.comunicarResultadoPerfil(1,"PERFIL_BUSQUEDA",rubros);
+
+                        } catch (JSONException e) {
+                            progressDialog.dismiss();
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                progressDialog.dismiss();
+            }
+        });
+
+        Singleton.getInstance(mCtx).addToRequestQueue(respuestaSolicitud);
+    }
+
+    public void insertarDatosMapas(String idPersona,String nombreCompletoPersona,String descripcionServicioTotales, String latitudPersona,String longitudPersona){
+        MapasSQLHelper usdbh =
+                new MapasSQLHelper(mCtx, "DBMapas", null, 1);
+
+        SQLiteDatabase db = usdbh.getWritableDatabase();
+
+        ContentValues nuevoRegistro = new ContentValues();
+        nuevoRegistro.put("idPersona", idPersona);
+        nuevoRegistro.put("nombrePersona", nombreCompletoPersona);
+        nuevoRegistro.put("rubros", descripcionServicioTotales);
+        nuevoRegistro.put("latitud", latitudPersona);
+        nuevoRegistro.put("longitud",longitudPersona);
+
+        db.insert("Mapas", null, nuevoRegistro);
+
+        db.close();
+    }
+
+    public void eliminarMapasAnteriores(){
+        MapasSQLHelper usdbh =
+                new MapasSQLHelper(mCtx, "DBMapas", null, 1);
+
+        SQLiteDatabase db = usdbh.getWritableDatabase();
+
+        db.delete("Mapas", null, null);
+    }
+
     public String obtenerServicios(){
-        String serviciosFinales = "";
+        String serviciosFinales;
 
         String serviciosPreFinal = descripcionServicio.getText().toString();
         serviciosFinales = serviciosPreFinal.replace(" ",GET_ESPACIO);
@@ -278,6 +408,38 @@ public class ContenidoBuscarServicios extends Fragment{
 
         tools.validarNulos(rubrosFinales);
         return rubrosFinales;
+    }
+
+    public boolean validarFechaXHoy() throws ParseException {
+        boolean valor=false;
+
+        int dia = miCalendario.get(Calendar.DAY_OF_MONTH);
+        int mes = miCalendario.get(Calendar.MONTH);
+        int anio = miCalendario.get(Calendar.YEAR);
+
+        if(diaInicioComparar>=dia){
+            if(mesInicioComparar>=mes + 1){
+                if (anioInicioComparar>=anio){
+                    valor = true;
+                }
+            }
+        }
+
+        return valor;
+    }
+
+    public boolean validarFechas() throws ParseException {
+        boolean valor=false;
+
+        if(diaFinComparar>=diaInicioComparar){
+            if(mesFinComparar>=mesInicioComparar){
+                if(anioFinComparar>=mesFinComparar){
+                    valor = true;
+                }
+            }
+        }
+
+        return valor;
     }
 
     public void obtenerDatosUsuario(){

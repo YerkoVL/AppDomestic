@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
             android:layout_margin="16dp"
-            android:src="@drawable/mapbox_compass_icon"
+            android:src="@drawable/mapbox_mylocation_icon_default"
             tools:ignore="VectorDrawableCompat"
             app:backgroundTint="@color/colorAccent"/>
 

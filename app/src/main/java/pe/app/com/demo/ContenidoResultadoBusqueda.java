@@ -183,7 +183,7 @@ public class ContenidoResultadoBusqueda extends Fragment {
                                     latitudPersona = tools.validarNulos(object.getString(OBJETO_LATITUD));
                                     longitudPersona = tools.validarNulos(object.getString(OBJETO_LONGITUD));
 
-                                    insertarDatosMapas(idPersona,nombreCompletoPersona,descripcionServicioTotales, latitudPersona,longitudPersona);
+                                    //insertarDatosMapas(idPersona,nombreCompletoPersona,descripcionServicioTotales, latitudPersona,longitudPersona);
                                     resultadoBusquedaList.add(resultadoBusqueda);
                                 }
                             }
@@ -272,24 +272,4 @@ public class ContenidoResultadoBusqueda extends Fragment {
 
         obtenerRespuestaBusqueda();
     }
-
-    public void insertarDatosMapas(String idPersona,String nombreCompletoPersona,String descripcionServicioTotales, String latitudPersona,String longitudPersona){
-        MapasSQLHelper usdbh =
-                new MapasSQLHelper(mCtx, "DBMapas", null, 1);
-
-        SQLiteDatabase db = usdbh.getWritableDatabase();
-
-        ContentValues nuevoRegistro = new ContentValues();
-        nuevoRegistro.put("idPersona", idPersona);
-        nuevoRegistro.put("nombrePersona", nombreCompletoPersona);
-        nuevoRegistro.put("rubros", descripcionServicioTotales);
-        nuevoRegistro.put("latitud", latitudPersona);
-        nuevoRegistro.put("longitud",longitudPersona);
-
-        db.insert("Mapas", null, nuevoRegistro);
-
-        db.close();
-
-    }
-
 }

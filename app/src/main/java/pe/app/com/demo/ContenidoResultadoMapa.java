@@ -4,10 +4,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.provider.DocumentFile;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +17,10 @@ import android.view.ViewGroup;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.annotations.IconFactory;
+import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerViewOptions;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.constants.Style;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
@@ -38,6 +42,8 @@ public class ContenidoResultadoMapa extends Fragment {
     private MapView mapView;
     private List<Mapa> mapaArrayList = new ArrayList<>();
     View rootView;
+    Double defaultLatitud = -12.132480885221323, defaultLongitud = -76.98358297348022;
+    String idPersona, rubros = "Disponible", nombresCompletoPersona;
 
     @Nullable
     @Override
@@ -56,7 +62,21 @@ public class ContenidoResultadoMapa extends Fragment {
             // CREACION DE FRAGMENTO
             final FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
-            LatLng lima = new LatLng( -12.132480885221323,-76.98358297348022);
+            try {
+                idPersona = this.getArguments().getString("ID");
+                rubros = this.getArguments().getString("RUBROS");
+                nombresCompletoPersona = this.getArguments().getString("NOMBRES_COMPLETOS");
+                defaultLongitud = this.getArguments().getDouble("LATITUD");
+                defaultLatitud = getArguments().getDouble("LONGITUD");
+
+                asignarValoresMapa(idPersona, nombresCompletoPersona,rubros,defaultLatitud,defaultLongitud);
+
+            }catch (Exception e){
+                e.printStackTrace();
+                leerMapas();
+            }
+
+            LatLng lima = new LatLng(defaultLatitud,defaultLongitud);
 
             // CONSTRUCCION DE MAPBOX
             MapboxMapOptions options = new MapboxMapOptions();
@@ -66,7 +86,7 @@ public class ContenidoResultadoMapa extends Fragment {
             options.doubleTapGesturesEnabled(true);
             options.camera(new CameraPosition.Builder()
                     .target(lima)
-                    .zoom(10)
+                    .zoom(12)
                     .build());
 
             // CREACION FRAGMENTO DE MAPA
@@ -80,46 +100,93 @@ public class ContenidoResultadoMapa extends Fragment {
         }
 
         floatingActionButton = (FloatingActionButton) rootView.findViewById(R.id.location_toggle_fab);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (map != null) {
-
-                }
-            }
-        });
 
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
-            public void onMapReady(MapboxMap mapboxMap) {
-                map = mapboxMap;
-
+            public void onMapReady(final MapboxMap mapboxMap) {
                 IconFactory iconFactory = IconFactory.getInstance(mCtx);
                 Icon icon = iconFactory.fromResource(R.drawable.mapbox_marker_icon_default);
 
-                leerMapas();
-
                 for(int x=0;x<mapaArrayList.size();x++) {
                     String id = mapaArrayList.get(x).getIdSocio();
+                    String rubros = mapaArrayList.get(x).getRubros();
                     String nombre = mapaArrayList.get(x).getNombreSocio();
                     String latitud = mapaArrayList.get(x).getLatitud();
-                    String longitud = mapaArrayList.get(x).getLatitud();
+                    String longitud = mapaArrayList.get(x).getLongitud();
 
                     mapboxMap.addMarker(new MarkerViewOptions()
                             .icon(icon)
-                            .rotation(90)
+                            //.rotation(90)
                             .anchor(0.5f, 0.5f)
                             .alpha(0.5f)
                             .infoWindowAnchor(0.5f, 0.5f)
                             .flat(true)
-                            .position(new LatLng(Double.valueOf(latitud),Double.valueOf(longitud)))
-                            .title(id)
-                            .snippet(nombre));
+                            .position(new LatLng(Double.valueOf(latitud.trim()),Double.valueOf(longitud.trim())))
+                            .title(nombre)
+                            .snippet(rubros));
                 }
+
+                mapboxMap.setOnInfoWindowClickListener(new MapboxMap.OnInfoWindowClickListener() {
+                    @Override
+                    public boolean onInfoWindowClick(@NonNull Marker marker) {
+                        double latitud = marker.getPosition().getLatitude();
+                        double longitud = marker.getPosition().getLongitude();
+                        mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(asignarPosicionCamara(latitud,longitud)),4000);
+                        return true;
+                    }
+                });
+
+                mapboxMap.setOnMarkerClickListener(new MapboxMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(@NonNull Marker marker) {
+                        double latitud = marker.getPosition().getLatitude();
+                        double longitud = marker.getPosition().getLongitude();
+                        mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(asignarPosicionCamara(latitud,longitud)),4000);
+                        return true;
+                    }
+                });
+
+                floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(asignarPosicionCamaraNormal(defaultLatitud,defaultLongitud)),5000);
+                    }
+                });
+
             }
         });
 
         return rootView;
+    }
+
+    public CameraPosition asignarPosicionCamara(Double latitud, Double longitud){
+        CameraPosition posicion = new CameraPosition.Builder()
+                .target(new LatLng(latitud, longitud)) // Sets the new camera position
+                .zoom(15) // Sets the zoom
+                .bearing(180) // Rotate the camera
+                .tilt(30) // Set the camera tilt
+                .build();
+        return posicion;
+    }
+
+    public CameraPosition asignarPosicionCamaraNormal(Double latitud, Double longitud){
+        CameraPosition posicion = new CameraPosition.Builder()
+                .target(new LatLng(latitud, longitud))
+                .zoom(10)
+                .bearing(360)
+                .build();
+        return posicion;
+    }
+
+    public void asignarValoresMapa(String id,String nombres, String rubros, Double latitud, Double longitud){
+        Mapa mapa = new Mapa(
+                id,
+                nombres,
+                rubros,
+                String.valueOf(latitud),
+                String.valueOf(longitud)
+        );
+        mapaArrayList.add(mapa);
     }
 
     public void leerMapas(){
@@ -135,8 +202,8 @@ public class ContenidoResultadoMapa extends Fragment {
                 String id = c.getString(0);
                 String nombre = c.getString(1);
                 String rubros = c.getString(2);
-                String latitud = c.getString(3);
-                String longitud = c.getString(4);
+                String longitud = c.getString(3);
+                String latitud = c.getString(4);
 
                 Mapa mapa= new Mapa(id, nombre, rubros, latitud, longitud);
 
