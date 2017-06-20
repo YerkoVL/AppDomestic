@@ -50,7 +50,7 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.View
             @Override
             public void onClick(final View view) {
                 PopupMenu popupMenu = new PopupMenu(mCtx,holder.buttonViewOption);
-                if(Integer.valueOf(historial.getIdEstado())==2){//YERKO CAMBIAR POR 7
+                if(Integer.valueOf(historial.getIdEstado())==7){
                     popupMenu.inflate(R.menu.menu_historial_terminados);
                 }else {
                     popupMenu.inflate(R.menu.menu_historial);
