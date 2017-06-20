@@ -48,9 +48,9 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.View
         holder.textViewFinServicio.setText(historial.getFechaFin());
         holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 PopupMenu popupMenu = new PopupMenu(mCtx,holder.buttonViewOption);
-                if(Integer.valueOf(historial.getIdEstado())==7){
+                if(Integer.valueOf(historial.getIdEstado())==2){//YERKO CAMBIAR POR 7
                     popupMenu.inflate(R.menu.menu_historial_terminados);
                 }else {
                     popupMenu.inflate(R.menu.menu_historial);
@@ -62,7 +62,6 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.View
                             case R.id.menu_HistorialFinalizar:
                                 listaHistorial.remove(position);
                                 notifyDataSetChanged();
-                                Toast.makeText(mCtx,"Finalizado",Toast.LENGTH_SHORT).show();
                                 break;
                             case R.id.menu_HistorialVerDetalle:
                                 comunicador.comunicarHistorial(

@@ -252,10 +252,6 @@ public class MenuPrincipalActivity extends AppCompatActivity
             getSupportActionBar().setTitle("Búsqueda de servicios");
             eliminarPreferenciasFragmentos();
             asignarFragment(new ContenidoBuscarServicios());
-        } else if (id == R.id.ic_history) {
-            getSupportActionBar().setTitle("Historial");
-            eliminarPreferenciasFragmentos();
-            asignarFragment(new datosInicioCliente());
         } else if (id == R.id.ic_sign_out) {
             actualizarSP();
             eliminarPreferenciasFragmentos();

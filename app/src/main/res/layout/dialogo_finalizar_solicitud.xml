@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:gravity="center"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textoTituloPantalla"
+        android:text="Califica Servico"
+        android:textStyle="bold"
+        android:textColor="@color/colorTexto"/>
+
+    <LinearLayout
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="El servicio de "/>
+
+        <TextView
+            android:id="@+id/txtNombrePersonal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Prueba...."/>
+
+    </LinearLayout>
+
+    <RadioGroup
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical" >
+
+        <RadioButton
+            android:id="@+id/txtExcelente"
+            android:text="Excelente"
+            android:button="@null"
+            android:drawableRight="@android:drawable/btn_radio"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <RadioButton
+            android:id="@+id/txtMuyBueno"
+            android:text="My Bueno"
+            android:button="@null"
+            android:drawableRight="@android:drawable/btn_radio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <RadioButton
+            android:id="@+id/txtBueno"
+            android:text="Bueno"
+            android:button="@null"
+            android:drawableRight="@android:drawable/btn_radio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <RadioButton
+            android:id="@+id/txtMalo"
+            android:text="Malo"
+            android:button="@null"
+            android:drawableRight="@android:drawable/btn_radio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <RadioButton
+            android:id="@+id/txtMuyMalo"
+            android:text="Muy Malo"
+            android:button="@null"
+            android:drawableRight="@android:drawable/btn_radio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Comentario"
+        android:textColor="@color/colorTexto"/>
+
+    <EditText
+        android:inputType="textMultiLine"
+        android:lines="8"
+        android:minLines="6"
+        android:gravity="top|left"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:scrollbars="vertical"/>
+
+</LinearLayout>
