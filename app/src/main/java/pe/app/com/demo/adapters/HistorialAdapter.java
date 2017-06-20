@@ -1,6 +1,8 @@
 package pe.app.com.demo.adapters;
 
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,7 +17,9 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import pe.app.com.demo.CustomDialog;
 import pe.app.com.demo.R;
+import pe.app.com.demo.comunicators.ComunicadorHistorialXCalificación;
 import pe.app.com.demo.comunicators.ComunicadorHistorialXDetalle;
 import pe.app.com.demo.entity.Historial;
 
@@ -23,12 +27,14 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.View
 
     private List<Historial> listaHistorial;
     private ComunicadorHistorialXDetalle comunicador;
+    private ComunicadorHistorialXCalificación comunicadorCalificacion;
     private Context mCtx;
 
-    public HistorialAdapter(List<Historial> historial, Context ctx, ComunicadorHistorialXDetalle comunicadorHistorialXDetalle){
+    public HistorialAdapter(List<Historial> historial, Context ctx, ComunicadorHistorialXDetalle comunicadorHistorialXDetalle, ComunicadorHistorialXCalificación comunicadorHistorialXCalificación){
         this.listaHistorial = historial;
         this.mCtx = ctx;
         this.comunicador = comunicadorHistorialXDetalle;
+        this.comunicadorCalificacion = comunicadorHistorialXCalificación;
     }
 
     @Override
@@ -62,6 +68,7 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.View
                             case R.id.menu_HistorialFinalizar:
                                 listaHistorial.remove(position);
                                 notifyDataSetChanged();
+                                comunicadorCalificacion.comunicarHistorial(historial.getSocio(),Integer.valueOf(historial.getIdSocio()),Integer.valueOf(historial.getId()));
                                 break;
                             case R.id.menu_HistorialVerDetalle:
                                 comunicador.comunicarHistorial(

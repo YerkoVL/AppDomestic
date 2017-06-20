@@ -33,10 +33,9 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import pe.app.com.demo.SQLiteHelper.MapasSQLHelper;
-import pe.app.com.demo.comunicators.ComunicadorBuscarServicioXMenuPrincipal;
+import pe.app.com.demo.comunicators.ComunicadorBuscarServicioXResultado;
 import pe.app.com.demo.conexion.Singleton;
 import pe.app.com.demo.entity.Respuesta;
 import pe.app.com.demo.entity.ResultadoInsercionSolicitud;
@@ -93,10 +92,12 @@ public class ContenidoBuscarServicios extends Fragment{
     int diaInicioComparar, mesInicioComparar, anioInicioComparar;
     int diaFinComparar, mesFinComparar, anioFinComparar;
 
+    String IdSolicitudEnviar;
+
     Calendar miCalendario = Calendar.getInstance();
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     ProgressDialog progressDialog = null;
-    private ComunicadorBuscarServicioXMenuPrincipal comunicadorBuscar;
+    private ComunicadorBuscarServicioXResultado comunicadorBuscar;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_buscar_servicios, container, false);
@@ -112,7 +113,7 @@ public class ContenidoBuscarServicios extends Fragment{
         gasfiteroCheck = (CheckBox) rootView.findViewById(R.id.chkGasfitero);
 
         progressDialog = new ProgressDialog(mCtx);
-        comunicadorBuscar = comunicadorBuscarServicioXMenuPrincipal;
+        comunicadorBuscar = comunicadorBuscarServicioXResultado;
 
         fechaInicio.setFocusableInTouchMode(false);
         fechaFin.setFocusableInTouchMode(false);
@@ -252,6 +253,7 @@ public class ContenidoBuscarServicios extends Fragment{
                             try {
                                 ResultadoInsercionSolicitud resultadoInsercionSolicitud = gson.fromJson(Response, ResultadoInsercionSolicitud.class);
                                 if(resultadoInsercionSolicitud.getId()!= null) {
+                                    IdSolicitudEnviar = resultadoInsercionSolicitud.getId();
                                     eliminarMapasAnteriores();
                                     generarMapas(rubros);
                                     progressDialog.dismiss();
@@ -323,7 +325,7 @@ public class ContenidoBuscarServicios extends Fragment{
                                 }
                             }
                             progressDialog.dismiss();
-                            comunicadorBuscar.comunicarResultadoPerfil(1,"PERFIL_BUSQUEDA",rubros);
+                            comunicadorBuscar.comunicarResultadoPerfil(1,"PERFIL_BUSQUEDA",rubros,Integer.valueOf(IdSolicitudEnviar));
 
                         } catch (JSONException e) {
                             progressDialog.dismiss();
@@ -453,14 +455,15 @@ public class ContenidoBuscarServicios extends Fragment{
         editor.commit();
     }
 
-    ComunicadorBuscarServicioXMenuPrincipal comunicadorBuscarServicioXMenuPrincipal = new ComunicadorBuscarServicioXMenuPrincipal() {
+    ComunicadorBuscarServicioXResultado comunicadorBuscarServicioXResultado = new ComunicadorBuscarServicioXResultado() {
         @Override
-        public void comunicarResultadoPerfil(int valorACCION,String valorFRAGMENT, String valorRUBROS) {
+        public void comunicarResultadoPerfil(int valorACCION,String valorFRAGMENT, String valorRUBROS, int IdSolicitud) {
             Bundle bundle = new Bundle();
             Intent in =new Intent(getActivity(),MenuPrincipalActivity.class);
             in.putExtra("VALOR_ACCION",valorACCION);
             in.putExtra("VALOR_FRAGMENT",valorFRAGMENT);
             in.putExtra("VALOR_RUBROS",valorRUBROS);
+            in.putExtra("VALOR_ID_SOLICITUD",IdSolicitud);
             in.putExtras(bundle);
             startActivity(in);
         }

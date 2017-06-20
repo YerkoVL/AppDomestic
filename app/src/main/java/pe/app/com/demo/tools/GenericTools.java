@@ -8,6 +8,8 @@ public class GenericTools {
     final public static String GET_ESPACIO = "%20";
     final public static String GET_COMAS = ",";
     final public static String GET_ID_USER = "IdUsuario=";
+    final public static String GET_ID_SOLICITUD = "IdSolicitud=";
+    final public static String GET_ID_ESTADO = "IdEstado=";
     final public static String GET_USER = "username=";
     final public static String GET_PASS = "password=";
     final public static String GET_ID_SOCIO = "idsocio=";
@@ -15,6 +17,8 @@ public class GenericTools {
     final public static String GET_FECHA_FIN = "FechaFin=";
     final public static String GET_SERVICIO = "servicio=";
     final public static String GET_RUBROS = "rubros=";
+    final public static String GET_VALOR = "Valor=";
+    final public static String GET_COMENTARIO = "Comentario=";
     final public static String GET_LISTA_RUBROS = "listRubro=";
     final public static String GET_ESTADO_PARA_SOLICITUDES = "3";
     final public static String GET_ESTADO_PARA_HISTORIAL = "7";

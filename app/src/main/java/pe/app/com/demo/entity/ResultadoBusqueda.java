@@ -2,6 +2,7 @@ package pe.app.com.demo.entity;
 
 public class ResultadoBusqueda {
     private String Id;
+    private String IdSolicitud;
     private String IdTipoDocumento;
     private String TipoDocumento;
     private String NroDocumento;
@@ -29,8 +30,9 @@ public class ResultadoBusqueda {
 
     public ResultadoBusqueda(){}
 
-    public ResultadoBusqueda(String id, String idTipoDocumento, String tipoDocumento, String nroDocumento, String nombres, String apellidos, String correo, String telefono, String direccion, String nombreUsuario, String password, String servicio, String latitud, String longitud, String idPerfil, String perfil, String idDistrito, String distrito, String fechaLogueo, String bienvenida, String atenciones, Float rating, String imagen, String idEstado, String desc_Estado) {
+    public ResultadoBusqueda(String id, String idSolicitud, String idTipoDocumento, String tipoDocumento, String nroDocumento, String nombres, String apellidos, String correo, String telefono, String direccion, String nombreUsuario, String password, String servicio, String latitud, String longitud, String idPerfil, String perfil, String idDistrito, String distrito, String fechaLogueo, String bienvenida, String atenciones, Float rating, String imagen, String idEstado, String desc_Estado) {
         Id = id;
+        IdSolicitud = idSolicitud;
         IdTipoDocumento = idTipoDocumento;
         TipoDocumento = tipoDocumento;
         NroDocumento = nroDocumento;
@@ -63,6 +65,14 @@ public class ResultadoBusqueda {
 
     public void setId(String id) {
         Id = id;
+    }
+
+    public String getIdSolicitud() {
+        return IdSolicitud;
+    }
+
+    public void setIdSolicitud(String idSolicitud) {
+        IdSolicitud = idSolicitud;
     }
 
     public String getIdTipoDocumento() {

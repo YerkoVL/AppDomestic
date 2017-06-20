@@ -11,6 +11,8 @@ public class GenericUrls {
     public static String BASE_CONSULTA_SOLICITUDES = "ObtenerSolicitudPorUsuario";
     public static String BASE_CONSULTA_SERVICIOS = "ObtenerResultadoBusqueda";
     public static String BASE_CONSULTA_HISTORIAL_TRABAJO_SOCIO = "ObtenerSolicitudHistSocio";
+    public static String BASE_ENVIO_SOLICITUD = "EnviarSolicitud";
+    public static String BASE_ENVIO_CALIFICACION = "EnviarCalificacion";
 
     //--------------------------------- POST --------------------------------------
     public static String BASE_INSERTAR_SOLICITUD = "InsertarSolicitud";

@@ -11,35 +11,58 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 
 import java.util.List;
 
 import pe.app.com.demo.R;
-import pe.app.com.demo.comunicators.ComunicadorAdapters;
+import pe.app.com.demo.comunicators.ComunicadorResultadoXPerfil;
+import pe.app.com.demo.conexion.Singleton;
+import pe.app.com.demo.entity.Respuesta;
 import pe.app.com.demo.entity.ResultadoBusqueda;
+import pe.app.com.demo.tools.GenericAlerts;
 
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_APELLIDOS_PERSONAL;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_DIRECCION_PERSONAL;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_DNI_PERSONAL;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_ID_PERSONAL;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_ID_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_LATITUD_PERSONAL;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_LONGITUD_PERSONAL;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_NOMBRES_PERSONAL;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_NOMBRE_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_PERFIL;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_PERSONAL;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_VALOR_PERFIL;
+import static pe.app.com.demo.tools.GenericTools.GET_CONTINUO;
+import static pe.app.com.demo.tools.GenericTools.GET_ID_ESTADO;
+import static pe.app.com.demo.tools.GenericTools.GET_ID_SOLICITUD;
+import static pe.app.com.demo.tools.GenericTools.GET_ID_USER;
+import static pe.app.com.demo.tools.GenericTools.GET_INICIO;
+import static pe.app.com.demo.tools.GenericTools.URL_APP;
+import static pe.app.com.demo.tools.GenericUrls.BASE_ENVIO_SOLICITUD;
+import static pe.app.com.demo.tools.GenericUrls.BASE_URL;
 
 public class ResultadoBusquedaAdapter extends RecyclerView.Adapter<ResultadoBusquedaAdapter.ViewHolder>{
 
     private List<ResultadoBusqueda> resultadoBusquedaList;
-    private ComunicadorAdapters mCommunicator;
-    ComunicadorAdapters mComminication;
+    private ComunicadorResultadoXPerfil mCommunicator;
+    ComunicadorResultadoXPerfil mComminication;
+    private GenericAlerts alertas = new GenericAlerts();
+    private Gson gson = new Gson();
     private Context mCtx;
 
-    public ResultadoBusquedaAdapter(List<ResultadoBusqueda> resultadoBusqueda, Context ctx,ComunicadorAdapters communication){
+    int idUsuario;
+    String nombreUsuario;
+
+    public ResultadoBusquedaAdapter(List<ResultadoBusqueda> resultadoBusqueda, Context ctx,ComunicadorResultadoXPerfil communication){
         this.resultadoBusquedaList = resultadoBusqueda;
         this.mCtx = ctx;
         mCommunicator=communication;
@@ -89,10 +112,9 @@ public class ResultadoBusquedaAdapter extends RecyclerView.Adapter<ResultadoBusq
                                 break;
                             case R.id.menu_ResultadoBusquedaEnviar:
                                 guardarDatosPersonalDisponible(resultadoBusqueda.getId(),resultadoBusqueda.getNombres(),resultadoBusqueda.getApellidos(),resultadoBusqueda.getDireccion(),resultadoBusqueda.getNroDocumento(),resultadoBusqueda.getLatitud(),resultadoBusqueda.getLongitud());
-                                //ENVIAR
+                                obtenerDatosUsuario();
                                 resultadoBusquedaList.remove(position);
-                                notifyDataSetChanged();
-                                Toast.makeText(mCtx,"Enviado",Toast.LENGTH_SHORT).show();
+                                enviarPeticionSolicitud(Integer.valueOf(resultadoBusqueda.getIdSolicitud()),Integer.valueOf(resultadoBusqueda.getId()),5);
                                 break;
                         }
                         return false;
@@ -119,7 +141,7 @@ public class ResultadoBusquedaAdapter extends RecyclerView.Adapter<ResultadoBusq
         public RatingBar rtbViewReputacion;
         public TextView buttonViewOption;
 
-        public ViewHolder(View itemView, ComunicadorAdapters Communicator) {
+        public ViewHolder(View itemView, ComunicadorResultadoXPerfil Communicator) {
             super(itemView);
 
             textViewId = (TextView) itemView.findViewById(R.id.txtIdSocio);
@@ -150,5 +172,49 @@ public class ResultadoBusquedaAdapter extends RecyclerView.Adapter<ResultadoBusq
         SharedPreferences.Editor editor = mCtx.getSharedPreferences(PREFERENCIA_PERFIL, mCtx.MODE_PRIVATE).edit();
         editor.putString(PREFERENCIA_VALOR_PERFIL, PREFERENCIA_VALOR_PERFIL);
         editor.commit();
+    }
+
+    public void enviarPeticionSolicitud(final int IdSolicitud, final int IdUsuario, final int IdEstado) {
+
+        final String url =  URL_APP + BASE_URL + BASE_ENVIO_SOLICITUD + GET_INICIO + GET_ID_SOLICITUD + IdSolicitud + GET_CONTINUO +
+                GET_ID_USER + IdUsuario + GET_CONTINUO + GET_ID_ESTADO + IdEstado;
+
+        StringRequest respuestaEnvioSolicitud = new StringRequest(Request.Method.GET,url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String Response) {
+                        if(Response!=null) {
+                            try {
+                                Respuesta respuesta = gson.fromJson(Response, Respuesta.class);
+                                if(respuesta.getMensaje()!=null) {
+                                    alertas.mensajeInfo("Éxito",respuesta.getMensaje(),mCtx);
+                                    notifyDataSetChanged();
+                                }else{
+                                    alertas.mensajeInfo("Fallo enviar calificacion",respuesta.getMensaje(),mCtx);
+                                }
+                            }catch (Exception e){
+                                e.printStackTrace();
+                                alertas.mensajeInfo("Fallo enviar calificacion","None",mCtx);
+                            }
+                        }else{
+                            Respuesta respuesta = gson.fromJson(Response, Respuesta.class);
+                            alertas.mensajeInfo("Fallo enviar calificacion",respuesta.getMensaje(),mCtx);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError e) {
+                e.printStackTrace();
+                alertas.mensajeInfo("Fallo enviar solicitud","Error Desconocido",mCtx);
+            }
+        });
+
+        Singleton.getInstance(mCtx).addToRequestQueue(respuestaEnvioSolicitud);
+    }
+
+    public void obtenerDatosUsuario(){
+        SharedPreferences preferencia = mCtx.getSharedPreferences(PREFERENCIA_USUARIO,Context.MODE_PRIVATE);
+        idUsuario = preferencia.getInt(PREFERENCIA_ID_USUARIO,0);
+        nombreUsuario = preferencia.getString(PREFERENCIA_NOMBRE_USUARIO,"");
     }
 }

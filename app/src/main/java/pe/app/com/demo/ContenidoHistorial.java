@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pe.app.com.demo.adapters.HistorialAdapter;
+import pe.app.com.demo.comunicators.ComunicadorHistorialXCalificación;
 import pe.app.com.demo.comunicators.ComunicadorHistorialXDetalle;
 import pe.app.com.demo.conexion.Singleton;
 import pe.app.com.demo.entity.Historial;
@@ -116,7 +119,6 @@ public class ContenidoHistorial extends Fragment {
 
                         try {
                             for (int i = 0; i < response.length(); i++) {
-
                                 JSONObject object = (JSONObject) response.get(i);
                                 Historial historial = new Historial();
 
@@ -153,12 +155,12 @@ public class ContenidoHistorial extends Fragment {
                                     e.printStackTrace();
                                 }
 
-                                if(historial.getIdEstado().equals(GET_ESTADO_PARA_HISTORIAL)){
+                                if(Integer.valueOf(historial.getIdEstado())>4){
                                     historialList.add(historial);
                                 }
                             }
 
-                            historialAdapter = new HistorialAdapter(historialList,mCtx,comunicadorHistorialXDetalle);
+                            historialAdapter = new HistorialAdapter(historialList,mCtx,comunicadorHistorialXDetalle, comunicadorHistorialXCalificación);
                             recyclerView.setAdapter(historialAdapter);
 
                             if(historialList.size()>0){
@@ -211,6 +213,21 @@ public class ContenidoHistorial extends Fragment {
             in.putExtra("CALIFICACION", calificacion);
             in.putExtras(bundle);
             startActivity(in);
+        }
+    };
+
+    ComunicadorHistorialXCalificación comunicadorHistorialXCalificación = new ComunicadorHistorialXCalificación() {
+        @Override
+        public void comunicarHistorial(String valorNOMBRE, int valorIDPERSONA, int valorIDSOLICITUD) {
+            Bundle bundle = new Bundle();
+            FragmentActivity activity = (FragmentActivity)(mCtx);
+            FragmentManager fm = activity.getSupportFragmentManager();
+            CustomDialog alertDialog = new CustomDialog();
+            bundle.putInt("ID_PERSONA",valorIDPERSONA);
+            bundle.putString("NOMBRES",valorNOMBRE);
+            bundle.putInt("ID_SOLICITUD",valorIDSOLICITUD);
+            alertDialog.setArguments(bundle);
+            alertDialog.show(fm, "fragment_alert");
         }
     };
 

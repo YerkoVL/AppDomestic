@@ -1,11 +1,9 @@
 package pe.app.com.demo;
 
 import android.app.ProgressDialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -28,9 +26,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import pe.app.com.demo.SQLiteHelper.MapasSQLHelper;
 import pe.app.com.demo.adapters.ResultadoBusquedaAdapter;
-import pe.app.com.demo.comunicators.ComunicadorAdapters;
+import pe.app.com.demo.comunicators.ComunicadorResultadoXPerfil;
 import pe.app.com.demo.conexion.Singleton;
 import pe.app.com.demo.entity.ResultadoBusqueda;
 import pe.app.com.demo.tools.GenericTools;
@@ -79,7 +76,6 @@ public class ContenidoResultadoBusqueda extends Fragment {
     private RecyclerView recyclerView;
     private ResultadoBusquedaAdapter resultadoBusquedaAdapter;
     private List<ResultadoBusqueda> resultadoBusquedaList;
-    private MapasSQLHelper db;
 
     Context mCtx;
     LinearLayout dataEmpty;
@@ -91,7 +87,8 @@ public class ContenidoResultadoBusqueda extends Fragment {
     String nombreUsuario = "";
     boolean valorData = false;
 
-    String valorVerContacto = "PERFIL_PERSONAL",rubrosList, rubrosLista = "";
+    String valorVerContacto = "PERFIL_PERSONAL",rubrosList, rubrosLista = "",rubrosList2;
+    int idSolicitud_Insertada;
 
     @Nullable
     @Override
@@ -109,6 +106,13 @@ public class ContenidoResultadoBusqueda extends Fragment {
 
         recyclerView.setLayoutManager(linearLayoutManager);
         progressDialog = new ProgressDialog(mCtx);
+
+        try {
+            rubrosList2 = this.getArguments().getString("VALOR_RUBROS");
+            idSolicitud_Insertada = this.getArguments().getInt("VALOR_ID_SOLICITUD");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         resultadoBusquedaList = new ArrayList<>();
 
@@ -138,6 +142,7 @@ public class ContenidoResultadoBusqueda extends Fragment {
 
                                 ResultadoBusqueda resultadoBusqueda = new ResultadoBusqueda(
                                         tools.validarNulos(object.getString(OBJETO_ID)),
+                                        String.valueOf(idSolicitud_Insertada),
                                         tools.validarNulos(object.getString(OBJETO_ID_TIPO_DOCUMENTO)),
                                         tools.validarNulos(object.getString(OBJETO_TIPO_DOCUMENTO)),
                                         tools.validarNulos(object.getString(OBJETO_NRO_DOCUMENTO)),
@@ -228,9 +233,7 @@ public class ContenidoResultadoBusqueda extends Fragment {
         }catch (Exception e){
             e.printStackTrace();
         }
-
         obtenerDatosTemporales();
-
     }
 
     public void obtenerDatosUsuario(){
@@ -239,7 +242,7 @@ public class ContenidoResultadoBusqueda extends Fragment {
         nombreUsuario = preferencia.getString(PREFERENCIA_NOMBRE_USUARIO,"");
     }
 
-    ComunicadorAdapters comunicadorAdapters = new ComunicadorAdapters() {
+    ComunicadorResultadoXPerfil comunicadorAdapters = new ComunicadorResultadoXPerfil() {
         @Override
         public void comunicarResultadoPerfil(String idPersona, String nombre, String nombreCompleto, String reputacion, String imagen, String dni, String direccion, String latitud, String longitud) {
             Bundle bundle = new Bundle();

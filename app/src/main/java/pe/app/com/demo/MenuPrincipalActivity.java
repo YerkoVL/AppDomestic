@@ -42,6 +42,7 @@ public class MenuPrincipalActivity extends AppCompatActivity
     valorNOMBRECOMPLETO, valorDNI, valorREPUTACION, valorDIRECCION, valorLATITUD, valorLONGITUD,
     valorIDSOLICITUD, valorFECHASOLICITUD, valorSERVICIOS, valorFECHAINICIO, valorFECHAFIN, valorCOMENTARIOS, valorCALIFICACION;
     int valorACCION,idUsuario, valorIDSOCIO;
+    int valorIDSOLICITUD_INSERTADA;
     ArrayList valorMAPAS;
     String imagen;
 
@@ -100,7 +101,8 @@ public class MenuPrincipalActivity extends AppCompatActivity
                     } else {
                         if (valorFRAGMENT.equals("PERFIL_BUSQUEDA")){
                             valorRUBROS = bundle.getString("VALOR_RUBROS");
-                            enviarDatosBuscarServicios(valorRUBROS);
+                            valorIDSOLICITUD_INSERTADA = bundle.getInt("VALOR_ID_SOLICITUD");
+                            enviarDatosBuscarServicios(valorRUBROS,valorIDSOLICITUD_INSERTADA);
                             asignarFragment(new datosBusqueda());
                         }else{
                             if(valorFRAGMENT.equals("PERFIL_HISTORIAL")){
@@ -321,9 +323,10 @@ public class MenuPrincipalActivity extends AppCompatActivity
         asignarFragment(fragmentoObjeto);
     }
 
-    public void enviarDatosBuscarServicios(String listRubros){
+    public void enviarDatosBuscarServicios(String listRubros,int IdSolicitud){
         Bundle bundle = new Bundle();
         bundle.putString("VALOR_RUBROS", listRubros);
+        bundle.putInt("VALOR_ID_SOLICITUD", IdSolicitud);
         ContenidoResultadoBusqueda fragmentoObjeto = new ContenidoResultadoBusqueda();
         fragmentoObjeto.setArguments(bundle);
         asignarFragment(fragmentoObjeto);
