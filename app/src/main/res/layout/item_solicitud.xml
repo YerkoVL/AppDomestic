@@ -139,6 +139,30 @@
 
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/estado"
+                            android:textSize="@dimen/textoTitulo"
+                            android:textColor="@color/colorTexto"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/txtEstado"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Activo / Inactivo"
+                            android:layout_marginStart="10dp"
+                            android:textColor="@color/colorTexto"
+                            android:textSize="@dimen/textoDescripcion"/>
+
+                    </LinearLayout>
+
                     <TextView
                         android:id="@+id/txtOptionPulse"
                         android:layout_width="wrap_content"

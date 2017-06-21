@@ -40,6 +40,7 @@ public class SolicitudAdapter extends RecyclerView.Adapter<SolicitudAdapter.View
         holder.textViewServicio.setText(solicitud.getServicio());
         holder.textViewFechaInicio.setText(solicitud.getFechaInicio());
         holder.textViewFechaFin.setText(solicitud.getFechaFin());
+        holder.textViewEstado.setText(solicitud.getDesc_Estado());
         holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,6 +80,7 @@ public class SolicitudAdapter extends RecyclerView.Adapter<SolicitudAdapter.View
         public TextView textViewServicio;
         public TextView textViewFechaInicio;
         public TextView textViewFechaFin;
+        public TextView textViewEstado;
         public TextView buttonViewOption;
 
         public ViewHolder(View itemView) {
@@ -88,6 +90,7 @@ public class SolicitudAdapter extends RecyclerView.Adapter<SolicitudAdapter.View
             textViewServicio = (TextView) itemView.findViewById(R.id.txtServicio);
             textViewFechaInicio = (TextView) itemView.findViewById(R.id.txtFechaInicio);
             textViewFechaFin = (TextView) itemView.findViewById(R.id.txtFechaFin);
+            textViewEstado = (TextView) itemView.findViewById(R.id.txtEstado);
             buttonViewOption = (TextView) itemView.findViewById(R.id.txtOptionPulse);
         }
     }

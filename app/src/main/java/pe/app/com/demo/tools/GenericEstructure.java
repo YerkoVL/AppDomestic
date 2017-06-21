@@ -15,7 +15,6 @@ public class GenericEstructure {
     final public static String OBJETO_DIRECCION = "Direccion";
     final public static String OBJETO_ID_PERFIL = "IdPerfil";
     final public static String OBJETO_PERFIL = "Perfil";
-    final public static String OBJETO_ID_DISTRITO = "IdDistrito";
     final public static String OBJETO_DISTRITO = "Distrito";
     final public static String OBJETO_LATITUD = "Latitud";
     final public static String OBJETO_LONGITUD = "Longitud";
@@ -32,6 +31,10 @@ public class GenericEstructure {
     final public static String OBJETO_RUBRO = "Rubro";
     final public static String OBJETO_DESCRIPCION = "Descripcion";
     final public static String OBJETO_ID_SOCIO = "IdSocio";
+    final public static String OBJETO_ID_PAIS = "IdPais";
+    final public static String OBJETO_ID_DEPARTAMENTO = "IdDpto";
+    final public static String OBJETO_ID_PROVINCIA = "IdProvincia";
+    final public static String OBJETO_ID_DISTRITO = "IdDistrito";
     final public static String OBJETO_SOCIO = "Socio";
     final public static String OBJETO_FOTO = "Foto";
     final public static String OBJETO_COMENTARIO = "Comentario";

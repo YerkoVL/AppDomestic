@@ -66,9 +66,10 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.View
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()){
                             case R.id.menu_HistorialFinalizar:
-                                listaHistorial.remove(position);
+                                //listaHistorial.remove(position);
                                 notifyDataSetChanged();
                                 comunicadorCalificacion.comunicarHistorial(historial.getSocio(),Integer.valueOf(historial.getIdSocio()),Integer.valueOf(historial.getId()));
+                                holder.textViewEstadoAtencion.setText("Terminado");
                                 break;
                             case R.id.menu_HistorialVerDetalle:
                                 comunicador.comunicarHistorial(

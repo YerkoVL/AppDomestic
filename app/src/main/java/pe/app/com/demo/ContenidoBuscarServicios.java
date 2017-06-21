@@ -387,26 +387,26 @@ public class ContenidoBuscarServicios extends Fragment{
         String rubrosFinales = "";
 
         if(pintorCheck.isChecked()){
-            rubrosFinales = rubrosFinales + "1";
+            rubrosFinales = rubrosFinales + "2";
             if(albanilCheck.isChecked()){
-                rubrosFinales = rubrosFinales + GET_COMAS + "2" ;
+                rubrosFinales = rubrosFinales + GET_COMAS + "3" ;
                 if(gasfiteroCheck.isChecked()){
-                    rubrosFinales = rubrosFinales + GET_COMAS + "3";
+                    rubrosFinales = rubrosFinales + GET_COMAS + "1";
                 }
             }else{
                 if(gasfiteroCheck.isChecked()){
-                    rubrosFinales = rubrosFinales + GET_COMAS + "3";
+                    rubrosFinales = rubrosFinales + GET_COMAS + "1";
                 }
             }
         }else{
             if(albanilCheck.isChecked()){
-                rubrosFinales = rubrosFinales + "2";
+                rubrosFinales = rubrosFinales + "3";
                 if(gasfiteroCheck.isChecked()){
-                    rubrosFinales = rubrosFinales + GET_COMAS + "3";
+                    rubrosFinales = rubrosFinales + GET_COMAS + "1";
                 }
             }else{
                 if(gasfiteroCheck.isChecked()){
-                    rubrosFinales = rubrosFinales + "3";
+                    rubrosFinales = rubrosFinales + "1";
                 }
             }
         }

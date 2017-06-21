@@ -15,6 +15,8 @@
     <string name="nombres">Nombres</string>
     <string name="apellidos">Apellidos</string>
     <string name="direccion">Dirección</string>
+    <string name="departamento">Departamento</string>
+    <string name="provincia">Provincia</string>
     <string name="distrito">Distrito</string>
     <string name="email">Email</string>
     <string name="telefono">Telefono</string>
@@ -23,6 +25,7 @@
     <string name="fechaSolicitud">Fecha de Solicitud</string>
     <string name="fechaInicio">Fecha de Inicio</string>
     <string name="fechaFin">Fecha de Fin</string>
+    <string name="estado">Estado</string>
     <string name="descripcion">Descripción</string>
     <string name="pendiente">Pendiente</string>
     <string name="servicios">Servicios</string>
