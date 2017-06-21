@@ -82,6 +82,7 @@
                 android:text="@string/descripcion"/>
 
             <EditText
+                android:layout_marginStart="20dp"
                 android:id="@+id/edtDescripcionServicios"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

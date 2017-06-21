@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,10 +18,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
+import pe.app.com.demo.tools.GenericAlerts;
 
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_BUSQUEDA_SERVICIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_FRAGMENT;
@@ -45,6 +48,8 @@ public class MenuPrincipalActivity extends AppCompatActivity
     int valorIDSOLICITUD_INSERTADA;
     ArrayList valorMAPAS;
     String imagen;
+
+    GenericAlerts alertas = new GenericAlerts();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -257,7 +262,20 @@ public class MenuPrincipalActivity extends AppCompatActivity
         } else if (id == R.id.ic_sign_out) {
             actualizarSP();
             eliminarPreferenciasFragmentos();
-            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+            new LovelyStandardDialog(mCtx)
+                    .setTopColorRes(R.color.colorFondoDefault)
+                    .setButtonsColorRes(R.color.colorAccent)
+                    .setIcon(R.drawable.ic_logo_app)
+                    .setTitle("¿Desea Cerrar Session?")
+                    .setMessage("Presione ACEPTAR para continuar.")
+                    .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            finish();
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, null)
+                    .show();
         } else if (id == R.id.ic_ayuda) {
 
         } else if (id == R.id.ic_informacion) {
@@ -378,5 +396,27 @@ public class MenuPrincipalActivity extends AppCompatActivity
         ContenidoResultadoMapa fragmentoObjeto = new ContenidoResultadoMapa();
         fragmentoObjeto.setArguments(bundle);
         asignarFragment(fragmentoObjeto);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            new LovelyStandardDialog(mCtx)
+                    .setTopColorRes(R.color.colorFondoDefault)
+                    .setButtonsColorRes(R.color.colorAccent)
+                    .setIcon(R.drawable.ic_logo_app)
+                    .setTitle("¿Desea Cerrar Session?")
+                    .setMessage("Presione ACEPTAR para continuar.")
+                    .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            finish();
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, null)
+                    .show();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

@@ -164,5 +164,4 @@ public class PerfilActivity extends Fragment {
             startActivity(in);
         }
     };
-
 }

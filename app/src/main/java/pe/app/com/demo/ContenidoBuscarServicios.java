@@ -52,6 +52,7 @@ import static pe.app.com.demo.tools.GenericEstructure.OBJETO_NOMBRES;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_AFIRMACION;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_BUSQUEDA_SERVICIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_FRAGMENT;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_FRAGMENT_ID_SOLICITUD;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_FRAGMENT_RUBROS;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_ID_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_USUARIO;
@@ -207,7 +208,7 @@ public class ContenidoBuscarServicios extends Fragment{
                                 reenviarRubros = rubrosSolicitud;
                                 inicioBusqueda(idUsuario, fechaInicioSolicitud, fechaFinSolicitud, serviciosSolicitud, rubrosSolicitud);
                                 actualizarSP();
-                                guardarPreferenciaFragment(rubrosSolicitud);
+//                                guardarPreferenciaFragment(rubrosSolicitud, IdSolicitudEnviar);
                             }else{
                                 alertas.mensajeInfo("Error","Fecha Inicio debe ser menor al de Fin",mCtx);
                             }
@@ -256,6 +257,9 @@ public class ContenidoBuscarServicios extends Fragment{
                                     IdSolicitudEnviar = resultadoInsercionSolicitud.getId();
                                     eliminarMapasAnteriores();
                                     generarMapas(rubros);
+
+                                    guardarPreferenciaFragment(reenviarRubros, Integer.valueOf(IdSolicitudEnviar));
+
                                     progressDialog.dismiss();
                                 }else{
                                     Respuesta respuesta = gson.fromJson(Response,Respuesta.class);
@@ -449,9 +453,10 @@ public class ContenidoBuscarServicios extends Fragment{
         idUsuario = preferencia.getInt(PREFERENCIA_ID_USUARIO,0);
     }
 
-    public void guardarPreferenciaFragment(String listaRubro) {
+    public void guardarPreferenciaFragment(String listaRubro,int idSolicitud) {
         SharedPreferences.Editor editor = mCtx.getSharedPreferences(PREFERENCIA_FRAGMENT, Context.MODE_PRIVATE).edit();
         editor.putString(PREFERENCIA_FRAGMENT_RUBROS, listaRubro);
+        editor.putInt(PREFERENCIA_FRAGMENT_ID_SOLICITUD, idSolicitud);
         editor.commit();
     }
 

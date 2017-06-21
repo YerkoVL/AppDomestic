@@ -59,6 +59,7 @@ import static pe.app.com.demo.tools.GenericEstructure.OBJETO_RATING;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_TELEFONO;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_TIPO_DOCUMENTO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_BUSQUEDA_SERVICIO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_FRAGMENT_ID_SOLICITUD;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_FRAGMENT_RUBROS;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_ID_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_NOMBRE_USUARIO;
@@ -117,6 +118,7 @@ public class ContenidoResultadoBusqueda extends Fragment {
         resultadoBusquedaList = new ArrayList<>();
 
         obtenerDatosUsuario();
+        obtenerDatosTemporales();
 
         return rootView;
 
@@ -272,6 +274,7 @@ public class ContenidoResultadoBusqueda extends Fragment {
     public void obtenerDatosTemporales(){
         SharedPreferences preferencia = mCtx.getSharedPreferences(PREFERENCIA_BUSQUEDA_SERVICIO,Context.MODE_PRIVATE);
         rubrosLista = preferencia.getString(PREFERENCIA_FRAGMENT_RUBROS,"");
+        idSolicitud_Insertada = preferencia.getInt(PREFERENCIA_FRAGMENT_ID_SOLICITUD,0);
 
         obtenerRespuestaBusqueda();
     }
