@@ -59,6 +59,7 @@ import static pe.app.com.demo.tools.GenericEstructure.OBJETO_RATING;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_TELEFONO;
 import static pe.app.com.demo.tools.GenericEstructure.OBJETO_TIPO_DOCUMENTO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_BUSQUEDA_SERVICIO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_FRAGMENT;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_FRAGMENT_ID_SOLICITUD;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_FRAGMENT_RUBROS;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_ID_USUARIO;
@@ -113,12 +114,11 @@ public class ContenidoResultadoBusqueda extends Fragment {
             idSolicitud_Insertada = this.getArguments().getInt("VALOR_ID_SOLICITUD");
         }catch (Exception e){
             e.printStackTrace();
+            obtenerDatosTemporales();
         }
 
-        resultadoBusquedaList = new ArrayList<>();
-
         obtenerDatosUsuario();
-        obtenerDatosTemporales();
+        obtenerRespuestaBusqueda();
 
         return rootView;
 
@@ -136,6 +136,8 @@ public class ContenidoResultadoBusqueda extends Fragment {
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
+
+                        resultadoBusquedaList = new ArrayList<>();
 
                         try {
                             for (int i = 0; i < response.length(); i++) {
@@ -272,10 +274,8 @@ public class ContenidoResultadoBusqueda extends Fragment {
     }
 
     public void obtenerDatosTemporales(){
-        SharedPreferences preferencia = mCtx.getSharedPreferences(PREFERENCIA_BUSQUEDA_SERVICIO,Context.MODE_PRIVATE);
+        SharedPreferences preferencia = mCtx.getSharedPreferences(PREFERENCIA_FRAGMENT,Context.MODE_PRIVATE);
         rubrosLista = preferencia.getString(PREFERENCIA_FRAGMENT_RUBROS,"");
         idSolicitud_Insertada = preferencia.getInt(PREFERENCIA_FRAGMENT_ID_SOLICITUD,0);
-
-        obtenerRespuestaBusqueda();
     }
 }

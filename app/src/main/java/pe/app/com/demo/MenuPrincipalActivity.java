@@ -1,7 +1,6 @@
 package pe.app.com.demo;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -206,7 +205,7 @@ public class MenuPrincipalActivity extends AppCompatActivity
 
         if (count == 0) {
             super.onBackPressed();
-            getFragmentManager().popBackStack();
+            //getFragmentManager().popBackStack();
         } else {
             getFragmentManager().popBackStack();//No se porqué puse lo mismo O.o
         }
@@ -402,20 +401,7 @@ public class MenuPrincipalActivity extends AppCompatActivity
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK))
         {
-            new LovelyStandardDialog(mCtx)
-                    .setTopColorRes(R.color.colorFondoDefault)
-                    .setButtonsColorRes(R.color.colorAccent)
-                    .setIcon(R.drawable.ic_logo_app)
-                    .setTitle("¿Desea Cerrar Session?")
-                    .setMessage("Presione ACEPTAR para continuar.")
-                    .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            finish();
-                        }
-                    })
-                    .setNegativeButton(android.R.string.no, null)
-                    .show();
+            getFragmentManager().popBackStack();
         }
         return super.onKeyDown(keyCode, event);
     }

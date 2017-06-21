@@ -257,7 +257,6 @@ public class ContenidoBuscarServicios extends Fragment{
                                     IdSolicitudEnviar = resultadoInsercionSolicitud.getId();
                                     eliminarMapasAnteriores();
                                     generarMapas(rubros);
-
                                     guardarPreferenciaFragment(reenviarRubros, Integer.valueOf(IdSolicitudEnviar));
 
                                     progressDialog.dismiss();

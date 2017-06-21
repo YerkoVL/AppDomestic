@@ -56,7 +56,7 @@ public class GenericEstructure {
 
     final public static String PREFERENCIA_FRAGMENT = "MyPrefFragment";
     final public static String PREFERENCIA_FRAGMENT_RUBROS = "rubros";
-    final public static String PREFERENCIA_FRAGMENT_ID_SOLICITUD = "r";
+    final public static String PREFERENCIA_FRAGMENT_ID_SOLICITUD = "IdSolicitud";
 
     final public static String PREFERENCIA_PERSONAL = "MyPrefPersonal";
     final public static String PREFERENCIA_ID_PERSONAL = "idPersonal";

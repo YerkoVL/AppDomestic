@@ -16,121 +16,139 @@
             android:padding="@dimen/activity_horizontal_margin">
 
             <LinearLayout
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true">
+                android:layout_height="match_parent">
 
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/fechaSolicitud"
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/fechaSolicitud"
-                        android:textSize="@dimen/textoTitulo"
-                        android:textColor="@color/colorTexto"
-                        android:textStyle="bold"/>
-
-                    <TextView
-                        android:id="@+id/txtFechaSolicitud"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="DD/MM/YY"
-                        android:layout_marginStart="10dp"
-                        android:textSize="@dimen/textoDescripcion"
-                        android:textColor="@color/colorTexto"/>
+                        android:src="@drawable/ic_solicitudes"/>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/servicio"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/descripcion"
-                        android:textSize="@dimen/textoTitulo"
-                        android:textColor="@color/colorTexto"
-                        android:textStyle="bold"/>
-
-                    <TextView
-                        android:id="@+id/txtServicio"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Descripcion de servicio correspondiente"
-                        android:layout_marginStart="10dp"
-                        android:textSize="@dimen/textoDescripcion"
-                        android:textColor="@color/colorTexto"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/fechaInicio"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/fechaInicio"
-                        android:textSize="@dimen/textoTitulo"
-                        android:textColor="@color/colorTexto"
-                        android:textStyle="bold"/>
-
-                    <TextView
-                        android:id="@+id/txtFechaInicio"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="DD/MM/YY"
-                        android:layout_marginStart="10dp"
-                        android:textSize="@dimen/textoDescripcion"
-                        android:textColor="@color/colorTexto"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/fechaFin"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/fechaFin"
-                        android:textSize="@dimen/textoTitulo"
-                        android:textColor="@color/colorTexto"
-                        android:textStyle="bold"/>
-
-                    <TextView
-                        android:id="@+id/txtFechaFin"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="DD/MM/YY"
-                        android:layout_marginStart="10dp"
-                        android:textColor="@color/colorTexto"
-                        android:textSize="@dimen/textoDescripcion"/>
-
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/txtOptionPulse"
-                    android:layout_width="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="&#8942;"
-                    android:textSize="@dimen/textoOpcion"
-                    android:layout_gravity="bottom|end"
-                    android:paddingLeft="@dimen/activity_horizontal_margin"/>
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true">
 
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/fechaSolicitud"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/fechaSolicitud"
+                            android:textSize="@dimen/textoTitulo"
+                            android:textColor="@color/colorTexto"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/txtFechaSolicitud"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="DD/MM/YY"
+                            android:layout_marginStart="10dp"
+                            android:textSize="@dimen/textoDescripcion"
+                            android:textColor="@color/colorTexto"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/servicio"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/descripcion"
+                            android:textSize="@dimen/textoTitulo"
+                            android:textColor="@color/colorTexto"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/txtServicio"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Descripcion de servicio correspondiente"
+                            android:layout_marginStart="10dp"
+                            android:textSize="@dimen/textoDescripcion"
+                            android:textColor="@color/colorTexto"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/fechaInicio"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/fechaInicio"
+                            android:textSize="@dimen/textoTitulo"
+                            android:textColor="@color/colorTexto"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/txtFechaInicio"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="DD/MM/YY"
+                            android:layout_marginStart="10dp"
+                            android:textSize="@dimen/textoDescripcion"
+                            android:textColor="@color/colorTexto"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/fechaFin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/fechaFin"
+                            android:textSize="@dimen/textoTitulo"
+                            android:textColor="@color/colorTexto"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/txtFechaFin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="DD/MM/YY"
+                            android:layout_marginStart="10dp"
+                            android:textColor="@color/colorTexto"
+                            android:textSize="@dimen/textoDescripcion"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txtOptionPulse"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="&#8942;"
+                        android:textSize="@dimen/textoOpcion"
+                        android:layout_gravity="bottom|end"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"/>
+
+                </LinearLayout>
             </LinearLayout>
 
         </RelativeLayout>
