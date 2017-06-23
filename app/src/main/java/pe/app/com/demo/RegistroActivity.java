@@ -97,6 +97,7 @@ public class RegistroActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI),RESULT_LOAD_IMAGE);
+                startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE),RESULT_CAMERA);
             }
         });
     }
