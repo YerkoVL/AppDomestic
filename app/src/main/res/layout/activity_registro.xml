@@ -171,18 +171,19 @@
                 android:layout_marginStart="20dp"
                 android:id="@+id/txtTelefonoUsuario"
                 android:layout_width="match_parent"
+                android:inputType="phone"
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>
 
-        <Button
+        <ImageView
             android:id="@+id/btnSubirFoto"
+            android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
             android:text="@string/subirFoto"
-            android:textColor="@color/colorFondoDefault"
-            android:background="@color/colorAccent"/>
+            android:src="@drawable/ic_upload_photo"/>
 
         <Button
             android:layout_marginTop="20dp"

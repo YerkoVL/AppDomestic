@@ -1,8 +1,6 @@
 package pe.app.com.demo.adapters;
 
 import android.content.Context;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,7 +15,6 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-import pe.app.com.demo.CustomDialog;
 import pe.app.com.demo.R;
 import pe.app.com.demo.comunicators.ComunicadorHistorialXCalificación;
 import pe.app.com.demo.comunicators.ComunicadorHistorialXDetalle;
