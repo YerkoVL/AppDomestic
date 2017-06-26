@@ -128,6 +128,8 @@ public class RegistroActivity extends AppCompatActivity {
 
         ctx = this;
 
+        progressDialog = new ProgressDialog(ctx);
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, 1000);
         } else {
@@ -247,12 +249,12 @@ public class RegistroActivity extends AppCompatActivity {
             e.printStackTrace();
             alertas.mensajeInfo("Error", "Debes ingresar foto", ctx);
         }
-        String DNI = nroDocumento.getText().toString();
-        String Nombres = nombreUsuario.getText().toString();
-        String Apellidos = apellidoUsuario.getText().toString();
-        String Direccion = direccionUsuario.getText().toString();
-        String Email = emailUsuario.getText().toString();
-        String Telefono = telefonoUsuario.getText().toString();
+        String DNI = tools.validarEspacios(nroDocumento.getText().toString());
+        String Nombres = tools.validarEspacios(nombreUsuario.getText().toString());
+        String Apellidos = tools.validarEspacios(apellidoUsuario.getText().toString());
+        String Direccion = tools.validarEspacios(direccionUsuario.getText().toString());
+        String Email = tools.validarEspacios(emailUsuario.getText().toString());
+        String Telefono = tools.validarEspacios(telefonoUsuario.getText().toString());
         Long valorDistrito = distrito.getSelectedItemId();
 
         if (!DNI.equals("")) {
@@ -301,9 +303,6 @@ public class RegistroActivity extends AppCompatActivity {
                             GET_RAZON_SOCIAL + RazonSocial + GET_CONTINUO + GET_NOMBRE_COMERCIAL + NombreComercial + GET_CONTINUO + GET_LONGITUD + Longitud + GET_CONTINUO + GET_LATITUD + Latitud + GET_CONTINUO +
                             GET_SERVICIO + Servicio + GET_CONTINUO + GET_FOTO + Foto;
 
-        //?Nombres=Yerko&Apellidos=Vera&IdTipoDocumento=1&NroDocumento=7074835&Direccion=San&Correo=yveralezama@gmail.com&Telefono=982318699&IdDistrito=150101
-        // &IdPerfil=1&RazonSocial=XXXX&NombreComercial=XXXX&Longitud=-77.04930804195533&Latitud=-12.080982952492553&SERVICIO=&Foto=
-
         progressDialog.show();
         progressDialog.setContentView(R.layout.content_progress_action);
 
@@ -315,18 +314,22 @@ public class RegistroActivity extends AppCompatActivity {
                         if(Response!=null) {
                             try {
                                 Respuesta respuesta = gson.fromJson(Response,Respuesta.class);
-                                alertas.mensajeInfo("Exito",respuesta.getMensaje(),ctx);
                                 progressDialog.dismiss();
-                                startActivity(new Intent(ctx, LoginActivity.class));
+                                if(respuesta.isValor()) {
+                                    Intent intent = new Intent(ctx, LoginActivity.class);
+                                    intent.putExtra("MENSAJE", respuesta.getMensaje());
+                                    startActivity(intent);
+                                }else{
+                                    alertas.mensajeInfo("Fallo Registro",respuesta.getMensaje(),ctx);
+                                }
 
                             }catch (Exception e){
                                 e.printStackTrace();
-                                alertas.mensajeInfo("Fallo Login","None",ctx);
+                                alertas.mensajeInfo("Fallo Registro","Desconocido",ctx);
                                 progressDialog.dismiss();
                             }
                         }else{
-                            Respuesta respuesta = gson.fromJson(Response,Respuesta.class);
-                            alertas.mensajeInfo("Fallo Registro",respuesta.getMensaje(),ctx);
+                            alertas.mensajeInfo("Fallo Registro","Desconocido",ctx);
                             progressDialog.dismiss();
                         }
                     }

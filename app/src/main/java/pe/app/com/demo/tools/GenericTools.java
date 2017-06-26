@@ -40,12 +40,15 @@ public class GenericTools {
     final public static String GET_FOTO = "Foto=";
 
     final public String validarNulos(String valor){
-
         if(valor == null){
             valor = " ";
         }
-
         return valor;
+    }
+
+    final public String validarEspacios(String valor){
+        String nuevoValor = valor.replace(" ",GET_ESPACIO);
+        return nuevoValor;
     }
 
     final public String checkearDigito(int numero){

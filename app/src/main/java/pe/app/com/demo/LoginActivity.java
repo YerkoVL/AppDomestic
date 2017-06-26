@@ -25,6 +25,7 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
+import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -124,6 +125,15 @@ public class LoginActivity extends AppCompatActivity {
         obtenerProvincias();
         obtenerDistritos();
 
+        try{
+            String mensaje = getIntent().getStringExtra("MENSAJE");
+            if(mensaje!=null) {
+                alertas.mensajeInfo("Gracias por unirte", mensaje, mCtx);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         btnIngresar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -222,6 +232,24 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         Singleton.getInstance(this).addToRequestQueue(respuestaLogin);
+    }
+
+    @Override
+    public void onBackPressed() {
+        new LovelyStandardDialog(mCtx)
+                .setTopColorRes(R.color.colorFondoDefault)
+                .setButtonsColorRes(R.color.colorAccent)
+                .setIcon(R.drawable.ic_logo_app)
+                .setTitle("¿Seguro que desea Salir del aplicactivo?")
+                .setMessage("Presione ACEPTAR para continuar.")
+                .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {System.exit(0);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .show();
+        super.onBackPressed();
     }
 
     public void guardarDatos(int idUsuario, int idPerfil, String usuario, String password, String nroDocUsu , String dirUsua, String nombreCompleto, String latitud, String longitud, String rating, String imagen) {

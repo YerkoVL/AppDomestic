@@ -48,7 +48,7 @@
                             android:id="@+id/fechaSolicitud"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/fechaSolicitud"
+                            android:text="Solicitud"
                             android:textSize="@dimen/textoTitulo"
                             android:textColor="@color/colorTexto"
                             android:textStyle="bold"/>
@@ -98,7 +98,7 @@
                             android:id="@+id/fechaInicio"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/fechaInicio"
+                            android:text="Inicio"
                             android:textSize="@dimen/textoTitulo"
                             android:textColor="@color/colorTexto"
                             android:textStyle="bold"/>
@@ -123,7 +123,7 @@
                             android:id="@+id/fechaFin"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/fechaFin"
+                            android:text="Fin"
                             android:textSize="@dimen/textoTitulo"
                             android:textColor="@color/colorTexto"
                             android:textStyle="bold"/>

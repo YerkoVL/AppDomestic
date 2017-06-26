@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -194,7 +195,13 @@ public class MenuPrincipalActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
+        int count = getFragmentManager().getBackStackEntryCount();
 
+        if (count == 0) {
+
+        } else {
+            getFragmentManager().popBackStack();
+        }
     }
 
     @Override
@@ -213,10 +220,10 @@ public class MenuPrincipalActivity extends AppCompatActivity
 
         switch (id) {
             case android.R.id.home:
-                FragmentManager fm= getSupportFragmentManager();
-                if(fm.getBackStackEntryCount()>0){
-                    fm.popBackStack();
-                }
+                //FragmentManager fm= getSupportFragmentManager();
+                //if(fm.getBackStackEntryCount()>0){
+                //       fm.popBackStack();
+                //}
                 break;
             default:
                 break;
@@ -261,7 +268,7 @@ public class MenuPrincipalActivity extends AppCompatActivity
                     .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            startActivity(new Intent(mCtx,MenuPrincipalActivity.class));
+                            startActivity(new Intent(mCtx,LoginActivity.class));
                         }
                     })
                     .setNegativeButton(android.R.string.no, null)
@@ -386,14 +393,5 @@ public class MenuPrincipalActivity extends AppCompatActivity
         ContenidoResultadoMapa fragmentoObjeto = new ContenidoResultadoMapa();
         fragmentoObjeto.setArguments(bundle);
         asignarFragment(fragmentoObjeto);
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ((keyCode == KeyEvent.KEYCODE_BACK))
-        {
-            getFragmentManager().popBackStack();
-        }
-        return super.onKeyDown(keyCode, event);
     }
 }
