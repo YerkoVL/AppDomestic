@@ -82,6 +82,8 @@
 
     <!--INICIO PANTALLA HISTORIAL TRABAJOS-->
     <string name="serviciosRealizados">Servicio Realizado</string>
+    <string name="tomarFoto">Tomar Foto</string>
+    <string name="seleccionarFoto">Selec. Foto</string>
     <!--FIN PANTALLA HISTORIAL TRABAJOS-->
 
 </resources>

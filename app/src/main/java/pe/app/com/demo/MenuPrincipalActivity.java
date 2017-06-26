@@ -1,9 +1,11 @@
 package pe.app.com.demo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -19,10 +21,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
-import java.util.ArrayList;
-
 import butterknife.ButterKnife;
-import pe.app.com.demo.tools.GenericAlerts;
 
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_BUSQUEDA_SERVICIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_FRAGMENT;
@@ -37,7 +36,6 @@ import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_VALOR_BUSQUEDA
 public class MenuPrincipalActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    SharedPreferences sharedPreferences;
     Context mCtx;
 
     String nomUsuario, valorFRAGMENT, valorRUBROS, valorID, valorNOMBRESOCIO, valorIMAGEN, valorNOMBRES,
@@ -45,10 +43,7 @@ public class MenuPrincipalActivity extends AppCompatActivity
     valorIDSOLICITUD, valorFECHASOLICITUD, valorSERVICIOS, valorFECHAINICIO, valorFECHAFIN, valorCOMENTARIOS, valorCALIFICACION;
     int valorACCION,idUsuario, valorIDSOCIO;
     int valorIDSOLICITUD_INSERTADA;
-    ArrayList valorMAPAS;
     String imagen;
-
-    GenericAlerts alertas = new GenericAlerts();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,34 +194,7 @@ public class MenuPrincipalActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        int count = getFragmentManager().getBackStackEntryCount();
-
-        if (count > 0) {
-            getFragmentManager().popBackStack();
-        } else {
-            new LovelyStandardDialog(mCtx)
-                    .setTopColorRes(R.color.colorFondoDefault)
-                    .setButtonsColorRes(R.color.colorAccent)
-                    .setIcon(R.drawable.ic_logo_app)
-                    .setTitle("¿Desea Cerrar Session?")
-                    .setMessage("Presione ACEPTAR para continuar.")
-                    .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            finish();
-                        }
-                    })
-                    .setNegativeButton(android.R.string.no, null)
-                    .show();
-        }
-
-        //if (drawer.isDrawerOpen(GravityCompat.START)) {
-        //    drawer.closeDrawer(GravityCompat.START);
-        //} else {
-        //    super.onBackPressed();
-        //}
     }
 
     @Override
@@ -242,6 +210,17 @@ public class MenuPrincipalActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        switch (id) {
+            case android.R.id.home:
+                FragmentManager fm= getSupportFragmentManager();
+                if(fm.getBackStackEntryCount()>0){
+                    fm.popBackStack();
+                }
+                break;
+            default:
+                break;
+        }
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
@@ -282,7 +261,7 @@ public class MenuPrincipalActivity extends AppCompatActivity
                     .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            finish();
+                            startActivity(new Intent(mCtx,MenuPrincipalActivity.class));
                         }
                     })
                     .setNegativeButton(android.R.string.no, null)

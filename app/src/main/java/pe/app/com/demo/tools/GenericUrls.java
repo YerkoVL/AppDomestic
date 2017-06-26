@@ -19,5 +19,6 @@ public class GenericUrls {
 
     //--------------------------------- POST --------------------------------------
     public static String BASE_INSERTAR_SOLICITUD = "InsertarSolicitud";
+    public static String BASE_REGISTRAR_USUARIO = "RegistroUsuario";
 
 }
