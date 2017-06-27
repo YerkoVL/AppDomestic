@@ -25,6 +25,7 @@
     <string name="fechaSolicitud">Fecha de Solicitud</string>
     <string name="fechaInicio">Fecha de Inicio</string>
     <string name="fechaFin">Fecha de Fin</string>
+    <string name="promociones">PROMOCIONES </string>
     <string name="estado">Estado</string>
     <string name="descripcion">Descripción</string>
     <string name="pendiente">Pendiente</string>
