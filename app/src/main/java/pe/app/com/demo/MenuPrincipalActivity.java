@@ -269,6 +269,7 @@ public class MenuPrincipalActivity extends AppCompatActivity
                         @Override
                         public void onClick(View v) {
                             startActivity(new Intent(mCtx,LoginActivity.class));
+                            finish();
                         }
                     })
                     .setNegativeButton(android.R.string.no, null)

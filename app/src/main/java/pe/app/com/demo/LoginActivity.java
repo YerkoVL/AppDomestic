@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -235,21 +236,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        new LovelyStandardDialog(mCtx)
-                .setTopColorRes(R.color.colorFondoDefault)
-                .setButtonsColorRes(R.color.colorAccent)
-                .setIcon(R.drawable.ic_logo_app)
-                .setTitle("¿Seguro que desea Salir del aplicactivo?")
-                .setMessage("Presione ACEPTAR para continuar.")
-                .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {System.exit(0);
-                    }
-                })
-                .setNegativeButton(android.R.string.no, null)
-                .show();
-        super.onBackPressed();
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            finish();
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 
     public void guardarDatos(int idUsuario, int idPerfil, String usuario, String password, String nroDocUsu , String dirUsua, String nombreCompleto, String latitud, String longitud, String rating, String imagen) {
