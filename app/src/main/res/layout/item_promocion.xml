@@ -21,7 +21,7 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/imagenSolucionador"
+                    android:id="@+id/imagenPromotor"
                     android:layout_width="@dimen/grid_item_image_size"
                     android:layout_height="@dimen/grid_item_image_size"
                     android:layout_alignParentLeft="true"

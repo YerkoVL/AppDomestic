@@ -36,8 +36,29 @@ public class ContenidoPromociones extends Fragment{
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerPromociones);
         recyclerView.setHasFixedSize(true);
 
+        recyclerView.setLayoutManager(linearLayoutManager);
+
         promocionList = new ArrayList<>();
 
+        obtenerPromociones();
+
         return rootView;
+    }
+
+    private void obtenerPromociones(){
+        Promocion promocion1 = new Promocion(
+                1,
+                "R.drawable.ic_promo_maestro",
+                 "MAESTRO"
+                ,"3");
+        //Promocion promocion2 = new Promocion(1,"SODIMAC HOME CENTER","4");
+        //Promocion promocion3 = new Promocion(1,"PLAZA VEA","1");
+
+        promocionList.add(promocion1);
+        //promocionList.add(promocion2);
+        //promocionList.add(promocion3);
+
+        promocionAdapter = new PromocionAdapter(promocionList, mCtx);
+        recyclerView.setAdapter(promocionAdapter);
     }
 }

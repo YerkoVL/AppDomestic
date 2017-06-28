@@ -7,7 +7,10 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -37,6 +40,7 @@ public class PromocionAdapter extends RecyclerView.Adapter<PromocionAdapter.View
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Promocion promocion = listaPromociones.get(position);
+        Glide.with(holder.imageViewImagenPromotor.getContext()).load(promocion.getFoto()).into(holder.imageViewImagenPromotor);
         holder.textViewNombrePromotor.setText(promocion.getNombrePromotor());
         holder.textViewCantidadPromociones.setText(promocion.getCantidadPromociones());
         holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +69,7 @@ public class PromocionAdapter extends RecyclerView.Adapter<PromocionAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
+        public ImageView imageViewImagenPromotor;
         public TextView textViewNombrePromotor;
         public TextView textViewCantidadPromociones;
         public TextView buttonViewOption;
@@ -72,6 +77,7 @@ public class PromocionAdapter extends RecyclerView.Adapter<PromocionAdapter.View
         public ViewHolder(View itemView) {
             super(itemView);
 
+            imageViewImagenPromotor = (ImageView) itemView.findViewById(R.id.imagenPromotor);
             textViewNombrePromotor = (TextView) itemView.findViewById(R.id.txtNombrePromocionador);
             textViewCantidadPromociones = (TextView) itemView.findViewById(R.id.txtCantidadPromociones);
             buttonViewOption = (TextView) itemView.findViewById(R.id.txtOptionPulse);

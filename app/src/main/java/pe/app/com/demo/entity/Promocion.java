@@ -4,13 +4,15 @@ public class Promocion {
     private int IdPromotor;
     private String NombrePromotor;
     private String CantidadPromociones;
+    private int Foto;
 
-    public Promocion() {    }
+    public Promocion() {}
 
-    public Promocion(int idPromotor, String nombrePromotor, String cantidadPromociones) {
+    public Promocion(int idPromotor, String nombrePromotor, String cantidadPromociones, int foto) {
         IdPromotor = idPromotor;
         NombrePromotor = nombrePromotor;
         CantidadPromociones = cantidadPromociones;
+        Foto = foto;
     }
 
     public int getIdPromotor() {
@@ -35,5 +37,13 @@ public class Promocion {
 
     public void setCantidadPromociones(String cantidadPromociones) {
         CantidadPromociones = cantidadPromociones;
+    }
+
+    public int getFoto() {
+        return Foto;
+    }
+
+    public void setFoto(int foto) {
+        Foto = foto;
     }
 }
