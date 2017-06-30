@@ -7,6 +7,7 @@ public class GenericUrls {
     public static String BASE_CONSULTA_DEPARTAMENTOS = "ListadoDpto";
     public static String BASE_CONSULTA_DISTRITOS = "ListadoDistrito";
     public static String BASE_CONSULTA_PROVINCIAS = "ListadoProvincia";
+    public static String BASE_CONSULTA_SOLICITUDES_ENVIADA = "ListaSolEnviados";
     public static String BASE_CONSULTA_SOLICITUDES = "ObtenerSolicitudPorUsuario";
     public static String BASE_CONSULTA_SERVICIOS = "ObtenerResultadoBusqueda";
     public static String BASE_CONSULTA_HISTORIAL_TRABAJO_SOCIO = "ObtenerSolicitudHistSocio";

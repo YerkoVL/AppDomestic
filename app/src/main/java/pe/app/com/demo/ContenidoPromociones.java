@@ -47,16 +47,24 @@ public class ContenidoPromociones extends Fragment{
 
     private void obtenerPromociones(){
         Promocion promocion1 = new Promocion(
-                1,
-                "R.drawable.ic_promo_maestro",
-                 "MAESTRO"
-                ,"3");
-        //Promocion promocion2 = new Promocion(1,"SODIMAC HOME CENTER","4");
-        //Promocion promocion3 = new Promocion(1,"PLAZA VEA","1");
+                "1",
+                 "MAESTRO",
+                "1",
+                "R.drawable.ic_promotor_maestro");
+        Promocion promocion2 = new Promocion(
+                "1",
+                "SODIMAC HOME CENTER",
+                "2",
+                "R.drawable.ic_promotor_homecenter");
+        Promocion promocion3 = new Promocion(
+                "1",
+                "WONG",
+                "1",
+                "R.drawable.ic_promotor_wong");
 
         promocionList.add(promocion1);
-        //promocionList.add(promocion2);
-        //promocionList.add(promocion3);
+        promocionList.add(promocion2);
+        promocionList.add(promocion3);
 
         promocionAdapter = new PromocionAdapter(promocionList, mCtx);
         recyclerView.setAdapter(promocionAdapter);

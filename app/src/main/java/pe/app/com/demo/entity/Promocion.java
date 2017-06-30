@@ -1,25 +1,25 @@
 package pe.app.com.demo.entity;
 
 public class Promocion {
-    private int IdPromotor;
+    private String IdPromotor;
     private String NombrePromotor;
     private String CantidadPromociones;
-    private int Foto;
+    private String Foto;
 
     public Promocion() {}
 
-    public Promocion(int idPromotor, String nombrePromotor, String cantidadPromociones, int foto) {
+    public Promocion(String idPromotor, String nombrePromotor, String cantidadPromociones, String foto) {
         IdPromotor = idPromotor;
         NombrePromotor = nombrePromotor;
         CantidadPromociones = cantidadPromociones;
         Foto = foto;
     }
 
-    public int getIdPromotor() {
+    public String getIdPromotor() {
         return IdPromotor;
     }
 
-    public void setIdPromotor(int idPromotor) {
+    public void setIdPromotor(String idPromotor) {
         IdPromotor = idPromotor;
     }
 
@@ -39,11 +39,11 @@ public class Promocion {
         CantidadPromociones = cantidadPromociones;
     }
 
-    public int getFoto() {
+    public String getFoto() {
         return Foto;
     }
 
-    public void setFoto(int foto) {
+    public void setFoto(String foto) {
         Foto = foto;
     }
 }

@@ -257,9 +257,9 @@ public class MenuPrincipalActivity extends AppCompatActivity
             eliminarPreferenciasFragmentos();
             asignarFragment(new ContenidoBuscarServicios());
         } else if(id == R.id.ic_promociones){
-            getSupportActionBar().setTitle("Promocion");
+            getSupportActionBar().setTitle("Promociones");
             eliminarPreferenciasFragmentos();
-            //asignarFragment(new ContenidoPromociones());
+            asignarFragment(new ContenidoPromociones());
         } else if (id == R.id.ic_sign_out) {
             actualizarSP();
             eliminarPreferenciasFragmentos();
