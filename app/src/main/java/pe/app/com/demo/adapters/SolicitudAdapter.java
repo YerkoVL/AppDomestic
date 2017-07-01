@@ -13,18 +13,21 @@ import java.util.List;
 
 import pe.app.com.demo.R;
 import pe.app.com.demo.comunicators.ComunicadorSolicitudesXDetalle;
+import pe.app.com.demo.comunicators.ComunicadorSolicitudesXEnviados;
 import pe.app.com.demo.entity.Solicitud;
 
 public class SolicitudAdapter extends RecyclerView.Adapter<SolicitudAdapter.ViewHolder>{
 
     private List<Solicitud> listaSolicitud;
     private ComunicadorSolicitudesXDetalle comunicador;
+    private ComunicadorSolicitudesXEnviados comunicador2;
     private Context mCtx;
 
-    public SolicitudAdapter(List<Solicitud> solicitud,Context ctx, ComunicadorSolicitudesXDetalle comunicadorSolicitudesXDetalle){
+    public SolicitudAdapter(List<Solicitud> solicitud,Context ctx, ComunicadorSolicitudesXDetalle comunicadorSolicitudesXDetalle, ComunicadorSolicitudesXEnviados comunicadorSolicitudesXEnviados){
         this.listaSolicitud = solicitud;
         this.mCtx = ctx;
         this.comunicador = comunicadorSolicitudesXDetalle;
+        this.comunicador2 = comunicadorSolicitudesXEnviados;
     }
 
     @Override
@@ -58,6 +61,9 @@ public class SolicitudAdapter extends RecyclerView.Adapter<SolicitudAdapter.View
                                         solicitud.getRubro(),
                                         solicitud.getFechaInicio(),
                                         solicitud.getFechaFin());
+                                break;
+                            case R.id.menu_SolicitudesVerDetalleEnviados:
+                                comunicador2.comunicarSolicitudes(solicitud.getId());
                                 break;
                         }
                         return false;

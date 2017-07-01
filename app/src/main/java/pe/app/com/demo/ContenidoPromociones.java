@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pe.app.com.demo.adapters.PromocionAdapter;
-import pe.app.com.demo.adapters.SolicitudAdapter;
 import pe.app.com.demo.entity.Promocion;
 
 public class ContenidoPromociones extends Fragment{
@@ -38,6 +37,13 @@ public class ContenidoPromociones extends Fragment{
 
         recyclerView.setLayoutManager(linearLayoutManager);
 
+        recyclerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
         promocionList = new ArrayList<>();
 
         obtenerPromociones();
@@ -50,17 +56,17 @@ public class ContenidoPromociones extends Fragment{
                 "1",
                  "MAESTRO",
                 "1",
-                "R.drawable.ic_promotor_maestro");
+                R.drawable.ic_promotor_maestro);
         Promocion promocion2 = new Promocion(
                 "1",
                 "SODIMAC HOME CENTER",
                 "2",
-                "R.drawable.ic_promotor_homecenter");
+                R.drawable.ic_promotor_homecenter);
         Promocion promocion3 = new Promocion(
                 "1",
                 "WONG",
                 "1",
-                "R.drawable.ic_promotor_wong");
+                R.drawable.ic_promotor_wong);
 
         promocionList.add(promocion1);
         promocionList.add(promocion2);

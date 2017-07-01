@@ -5,14 +5,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -160,8 +157,24 @@ public class MenuPrincipalActivity extends AppCompatActivity
                                                     Double.valueOf(valorLATITUD),
                                                     Double.valueOf(valorLONGITUD)
                                             );
-                                        }else {
-                                            //OTRO FRAGMENTO
+                                        }else{
+                                            if(valorFRAGMENT.equals("PERFIL_DETALLE_ENVIADOS")) {
+                                                valorID = bundle.getString("VALOR_ID_SOLICITUD");
+                                                enviarDatosEnviados(valorID);
+                                            }else{
+                                                if(valorFRAGMENT.equals("PERFIL_DETALLE_ENVIADOS")) {
+                                                    valorID = bundle.getString("VALOR_ID_SOLICITUD");
+                                                    enviarDatosEnviados(valorID);
+                                                }else{
+                                                    if(valorFRAGMENT.equals("PERFIL_DETALLE_PROMOCION")) {
+                                                        String valorPromotor = bundle.getString("VALOR");
+                                                        enviarDatosDetallePromocion(valorPromotor);
+                                                    }else{
+                                                        //OTR FRAGMENTO
+                                                    }
+                                                }
+                                            }
+
                                         }
                                     }
                                 }
@@ -396,6 +409,21 @@ public class MenuPrincipalActivity extends AppCompatActivity
         bundle.putDouble("LATITUD", latitud);
         bundle.putDouble("LONGITUD", longitud);
         ContenidoResultadoMapa fragmentoObjeto = new ContenidoResultadoMapa();
+        fragmentoObjeto.setArguments(bundle);
+        asignarFragment(fragmentoObjeto);
+    }
+    public void enviarDatosEnviados(String idSolicitud){
+        Bundle bundle = new Bundle();
+        bundle.putString("VALOR_ID", idSolicitud);
+        //ContenidoResultadoMapa fragmentoObjeto = new ContenidoResultadoMapa();
+        fragmentoObjeto.setArguments(bundle);
+        asignarFragment(fragmentoObjeto);
+    }
+
+    public void enviarDatosDetallePromocion(String valorPromotor){
+        Bundle bundle = new Bundle();
+        bundle.putString("VALOR", valorPromotor);
+        ContenidoDetallePromociones fragmentoObjeto = new ContenidoDetallePromociones();
         fragmentoObjeto.setArguments(bundle);
         asignarFragment(fragmentoObjeto);
     }

@@ -41,6 +41,7 @@
 
     <!--INICIO MENUS-->
     <string name="verDetalle">Ver Detalle</string>
+    <string name="verDetalleEnviados">Enviados</string>
     <string name="verContacto">Ver Contacto</string>
     <string name="verUbicacion">Ver Ubicacion</string>
     <string name="verHistorialTrabajos">Ver Historial de Trabajos</string>

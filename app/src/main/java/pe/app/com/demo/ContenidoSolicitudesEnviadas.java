@@ -56,7 +56,7 @@ import static pe.app.com.demo.tools.GenericTools.URL_APP;
 import static pe.app.com.demo.tools.GenericUrls.BASE_CONSULTA_SOLICITUDES;
 import static pe.app.com.demo.tools.GenericUrls.BASE_URL;
 
-public class ContenidoSolicitudes extends Fragment {
+public class ContenidoSolicitudesEnviadas extends Fragment {
 
     private RecyclerView recyclerView;
     private SolicitudAdapter solicitudAdapter;

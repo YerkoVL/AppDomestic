@@ -5,4 +5,8 @@
         android:id="@+id/menu_SolicitudesVerDetalle"
         android:title="@string/verDetalle" />
 
+    <item
+        android:id="@+id/menu_SolicitudesVerDetalleEnviados"
+        android:title="@string/verDetalleEnviados" />
+
 </menu>

@@ -5,12 +5,12 @@ public class DetallePromocion {
     private String NombreOferta;
     private String DescripcionOferta;
     private String CodigoOferta;
-    private String Foto;
+    private int Foto;
 
     public DetallePromocion() {
     }
 
-    public DetallePromocion(String id, String nombreOferta, String descripcionOferta, String codigoOferta, String foto) {
+    public DetallePromocion(String id, String nombreOferta, String descripcionOferta, String codigoOferta, int foto) {
         Id = id;
         NombreOferta = nombreOferta;
         DescripcionOferta = descripcionOferta;
@@ -50,11 +50,11 @@ public class DetallePromocion {
         CodigoOferta = codigoOferta;
     }
 
-    public String getFoto() {
+    public int getFoto() {
         return Foto;
     }
 
-    public void setFoto(String foto) {
+    public void setFoto(int foto) {
         Foto = foto;
     }
 }
