@@ -1,6 +1,7 @@
 package pe.app.com.demo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pe.app.com.demo.adapters.PromocionAdapter;
+import pe.app.com.demo.comunicators.ComunicadorPromocionXDetalle;
 import pe.app.com.demo.entity.Promocion;
 
 public class ContenidoPromociones extends Fragment{
@@ -36,13 +38,6 @@ public class ContenidoPromociones extends Fragment{
         recyclerView.setHasFixedSize(true);
 
         recyclerView.setLayoutManager(linearLayoutManager);
-
-        recyclerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
 
         promocionList = new ArrayList<>();
 
@@ -72,7 +67,20 @@ public class ContenidoPromociones extends Fragment{
         promocionList.add(promocion2);
         promocionList.add(promocion3);
 
-        promocionAdapter = new PromocionAdapter(promocionList, mCtx);
+        promocionAdapter = new PromocionAdapter(promocionList, mCtx,comunicadorPromocionXDetalle);
         recyclerView.setAdapter(promocionAdapter);
     }
+
+    ComunicadorPromocionXDetalle comunicadorPromocionXDetalle = new ComunicadorPromocionXDetalle() {
+        @Override
+        public void comunicarDetallePromocion(String nombrePromotor) {
+            Bundle bundle = new Bundle();
+            Intent in = new Intent(getActivity(), MenuPrincipalActivity.class);
+            in.putExtra("VALOR_ACCION", 1);
+            in.putExtra("VALOR_FRAGMENT", "PERFIL_DETALLE_PROMOCION");
+            in.putExtra("VALOR", nombrePromotor);
+            in.putExtras(bundle);
+            startActivity(in);
+        }
+    };
 }

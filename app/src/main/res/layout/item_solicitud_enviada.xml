@@ -6,7 +6,7 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         android:layout_margin="4dp"
         android:elevation="4dp">
 
@@ -18,7 +18,7 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentStart="true">
 
@@ -27,6 +27,7 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
+                        android:id="@+id/imagenPersonal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_photo_defaulth"/>
@@ -34,50 +35,50 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginStart="10dp"
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:layout_alignParentStart="true">
+                    android:layout_marginStart="10dp"
+                    android:orientation="vertical">
 
                     <LinearLayout
-                        android:orientation="horizontal"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/txtNombrePersonal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Nombre"
+                            android:textColor="@color/colorAccent"
                             android:textSize="@dimen/textoTituloHeader"
-                            android:textStyle="bold"
-                            android:textColor="@color/colorAccent"/>
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
                     <LinearLayout
-                        android:orientation="horizontal"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/servicios"
-                            android:textSize="@dimen/textoTitulo"
                             android:textColor="@color/colorTexto"
-                            android:textStyle="bold"/>
+                            android:textSize="@dimen/textoTitulo"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/txtServicio"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Descripcion de servicio correspondiente"
                             android:layout_marginStart="10dp"
-                            android:textSize="@dimen/textoDescripcion"
-                            android:textColor="@color/colorTexto"/>
+                            android:text="Descripcion de servicio correspondiente"
+                            android:textColor="@color/colorTexto"
+                            android:textSize="@dimen/textoDescripcion" />
 
                     </LinearLayout>
 
@@ -97,7 +98,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:layout_marginTop="7dp"
-                            android:text="##"                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                            android:text="##"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <RatingBar
                             android:id="@+id/rntgReputacion"
@@ -115,9 +117,9 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:orientation="horizontal"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/textView2"
@@ -132,10 +134,10 @@
                             android:id="@+id/txtEstado"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="estado"
                             android:layout_marginStart="10dp"
+                            android:text="estado"
                             android:textColor="@color/colorTexto"
-                            android:textSize="@dimen/textoDescripcion"/>
+                            android:textSize="@dimen/textoDescripcion" />
 
                     </LinearLayout>
 

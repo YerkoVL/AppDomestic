@@ -7,25 +7,28 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
 import pe.app.com.demo.R;
-import pe.app.com.demo.comunicators.ComunicadorSolicitudesXDetalle;
-import pe.app.com.demo.comunicators.ComunicadorSolicitudesXEnviados;
-import pe.app.com.demo.entity.Solicitud;
+import pe.app.com.demo.comunicators.ComunicadorHistorialXCalificación;
 import pe.app.com.demo.entity.SolicitudesEnviadas;
 
 public class SolicitudEnviadaAdapter extends RecyclerView.Adapter<SolicitudEnviadaAdapter.ViewHolder>{
 
     private List<SolicitudesEnviadas> listaSolicitudesEnviadas;
+    private ComunicadorHistorialXCalificación comunicadorCalificacion;
     private Context mCtx;
 
-    public SolicitudEnviadaAdapter(List<SolicitudesEnviadas> solicitudesEnviadas, Context ctx){
+    public SolicitudEnviadaAdapter(List<SolicitudesEnviadas> solicitudesEnviadas, Context ctx,ComunicadorHistorialXCalificación comunicadorHistorialXCalificación){
         this.listaSolicitudesEnviadas = solicitudesEnviadas;
         this.mCtx = ctx;
+        this.comunicadorCalificacion = comunicadorHistorialXCalificación;
     }
 
     @Override
@@ -37,20 +40,32 @@ public class SolicitudEnviadaAdapter extends RecyclerView.Adapter<SolicitudEnvia
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final SolicitudesEnviadas solicitudesEnviadas = listaSolicitudesEnviadas.get(position);
+        Glide.with(holder.imgViewPersonal.getContext()).load(solicitudesEnviadas.getImagen()).into(holder.imgViewPersonal);
         holder.textViewNombrePersonal.setText(solicitudesEnviadas.getNombres() + " " +solicitudesEnviadas.getApellidos() );
         holder.textViewServicio.setText(solicitudesEnviadas.getSERVICIO());
         holder.textViewAtenciones.setText(solicitudesEnviadas.getAtenciones());
+        holder.rtnViewReputacion.setRating(Float.valueOf(solicitudesEnviadas.getRating() + "f"));
         holder.textViewEstado.setText(solicitudesEnviadas.getDesc_Estado());
+        if(Integer.valueOf(solicitudesEnviadas.getIdEstado())!=11){
+            holder.buttonViewOption.setVisibility(View.GONE);
+        }
         holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 PopupMenu popupMenu = new PopupMenu(mCtx,holder.buttonViewOption);
-                popupMenu.inflate(R.menu.menu_solicitudes);
+                if(Integer.valueOf(solicitudesEnviadas.getIdEstado())==11){
+                    popupMenu.inflate(R.menu.menu_solicitudes_enviadas);
+                }
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()){
-
+                            case R.id.menu_SolicitudesEnviadasCerrar:
+                                comunicadorCalificacion.comunicarHistorial(solicitudesEnviadas.getNombres() + " " + solicitudesEnviadas.getApellidos()
+                                        ,Integer.valueOf(solicitudesEnviadas.getIdUsuario()),
+                                        Integer.valueOf(solicitudesEnviadas.getId()));
+                                notifyDataSetChanged();
+                                break;
                         }
                         return false;
                     }
@@ -68,6 +83,7 @@ public class SolicitudEnviadaAdapter extends RecyclerView.Adapter<SolicitudEnvia
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
+        public ImageView imgViewPersonal;
         public TextView textViewNombrePersonal;
         public TextView textViewServicio;
         public TextView textViewAtenciones;
@@ -78,10 +94,11 @@ public class SolicitudEnviadaAdapter extends RecyclerView.Adapter<SolicitudEnvia
         public ViewHolder(View itemView) {
             super(itemView);
 
+            imgViewPersonal = (ImageView) itemView.findViewById(R.id.imagenPersonal);
             textViewNombrePersonal = (TextView) itemView.findViewById(R.id.txtNombrePersonal);
             textViewServicio = (TextView) itemView.findViewById(R.id.txtServicio);
-            textViewAtenciones = (TextView) itemView.findViewById(R.id.);
-            rtnViewReputacion = (TextView) itemView.findViewById(R.id.);
+            textViewAtenciones = (TextView) itemView.findViewById(R.id.txtAtenciones);
+            rtnViewReputacion = (RatingBar) itemView.findViewById(R.id.rntgReputacion);
             textViewEstado = (TextView) itemView.findViewById(R.id.txtEstado);
             buttonViewOption = (TextView) itemView.findViewById(R.id.txtOptionPulse);
         }

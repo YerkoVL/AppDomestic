@@ -15,20 +15,19 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import pe.app.com.demo.R;
-import pe.app.com.demo.comunicators.ComunicadorSolicitudesXDetalle;
+import pe.app.com.demo.comunicators.ComunicadorPromocionXDetalle;
 import pe.app.com.demo.entity.Promocion;
-import pe.app.com.demo.entity.Solicitud;
 
 public class PromocionAdapter extends RecyclerView.Adapter<PromocionAdapter.ViewHolder>{
 
     private List<Promocion> listaPromociones;
-    //private ComunicadorPromocionXDetalle comunicador;
+    private ComunicadorPromocionXDetalle comunicador;
     private Context mCtx;
 
-    public PromocionAdapter(List<Promocion> promocion, Context ctx){//, ComunicadorPromocionXDetalle comunicadorPromocionXDetalle){
+    public PromocionAdapter(List<Promocion> promocion, Context ctx, ComunicadorPromocionXDetalle comunicadorPromocionXDetalle){//, ComunicadorPromocionXDetalle comunicadorPromocionXDetalle){
         this.listaPromociones = promocion;
         this.mCtx = ctx;
-        //this.comunicador = comunicadorPromocionXDetalle;
+        this.comunicador = comunicadorPromocionXDetalle;
     }
 
     @Override
@@ -47,11 +46,14 @@ public class PromocionAdapter extends RecyclerView.Adapter<PromocionAdapter.View
             @Override
             public void onClick(View view) {
                 PopupMenu popupMenu = new PopupMenu(mCtx,holder.buttonViewOption);
-                popupMenu.inflate(R.menu.menu_solicitudes);
+                popupMenu.inflate(R.menu.menu_promociones);
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()){
+                            case R.id.menu_PromocionesVerDetalle:
+                                comunicador.comunicarDetallePromocion(promocion.getNombrePromotor());
+                                break;
                         }
                         return false;
                     }

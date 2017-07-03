@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -79,11 +78,6 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.View
                                         historial.getComentario(),
                                         historial.getCalificacion()
                                 );
-                                break;
-                            case R.id.menu_HistorialCancelar:
-                                listaHistorial.remove(position);
-                                notifyDataSetChanged();
-                                Toast.makeText(mCtx,"Cancelado",Toast.LENGTH_SHORT).show();
                                 break;
                         }
                         return false;

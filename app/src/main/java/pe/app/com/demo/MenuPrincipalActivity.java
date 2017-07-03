@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -19,7 +20,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
+import java.util.List;
+
 import butterknife.ButterKnife;
+import pe.app.com.demo.tools.GenericAlerts;
 
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_BUSQUEDA_SERVICIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_FRAGMENT;
@@ -42,6 +46,10 @@ public class MenuPrincipalActivity extends AppCompatActivity
     int valorACCION,idUsuario, valorIDSOCIO;
     int valorIDSOLICITUD_INSERTADA;
     String imagen;
+
+    boolean bandera=true;
+
+    GenericAlerts alerts = new GenericAlerts();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +108,7 @@ public class MenuPrincipalActivity extends AppCompatActivity
                             valorRUBROS = bundle.getString("VALOR_RUBROS");
                             valorIDSOLICITUD_INSERTADA = bundle.getInt("VALOR_ID_SOLICITUD");
                             enviarDatosBuscarServicios(valorRUBROS,valorIDSOLICITUD_INSERTADA);
-                            asignarFragment(new datosBusqueda());
+                            asignarFragment(new datosBusqueda(),"BUSQUEDA");
                         }else{
                             if(valorFRAGMENT.equals("PERFIL_HISTORIAL")){
                                 valorIDSOCIO = bundle.getInt("ID_SOCIO");
@@ -150,6 +158,7 @@ public class MenuPrincipalActivity extends AppCompatActivity
                                             valorRUBROS = bundle.getString("VALOR_RUBROS");
                                             valorLATITUD = bundle.getString("VALOR_LATITUD");
                                             valorLONGITUD = bundle.getString("VALOR_LONGITUD");
+                                            getSupportActionBar().setTitle("Ubicación de " + valorNOMBRECOMPLETO);
                                             enviarDatosUbicacion(
                                                     valorID,
                                                     valorNOMBRECOMPLETO,
@@ -160,18 +169,15 @@ public class MenuPrincipalActivity extends AppCompatActivity
                                         }else{
                                             if(valorFRAGMENT.equals("PERFIL_DETALLE_ENVIADOS")) {
                                                 valorID = bundle.getString("VALOR_ID_SOLICITUD");
+                                                getSupportActionBar().setTitle("Solicitudes Enviadas de " + valorID);
                                                 enviarDatosEnviados(valorID);
                                             }else{
-                                                if(valorFRAGMENT.equals("PERFIL_DETALLE_ENVIADOS")) {
-                                                    valorID = bundle.getString("VALOR_ID_SOLICITUD");
-                                                    enviarDatosEnviados(valorID);
+                                                if(valorFRAGMENT.equals("PERFIL_DETALLE_PROMOCION")) {
+                                                    String valorPromotor = bundle.getString("VALOR");
+                                                    getSupportActionBar().setTitle("Detalle Promociones de " + valorPromotor);
+                                                    enviarDatosDetallePromocion(valorPromotor);
                                                 }else{
-                                                    if(valorFRAGMENT.equals("PERFIL_DETALLE_PROMOCION")) {
-                                                        String valorPromotor = bundle.getString("VALOR");
-                                                        enviarDatosDetallePromocion(valorPromotor);
-                                                    }else{
-                                                        //OTR FRAGMENTO
-                                                    }
+                                                    //OTRO FRAGMENTO
                                                 }
                                             }
 
@@ -198,7 +204,7 @@ public class MenuPrincipalActivity extends AppCompatActivity
             //if (validarRealizoBusqueda()) {
               //  asignarFragment(new datosBusqueda());
             //} else {
-                asignarFragment(new datosInicioCliente());
+                asignarFragment(new datosInicioCliente(),"DATOS_CLIENTE");
             //}
         }
 
@@ -208,12 +214,82 @@ public class MenuPrincipalActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        int count = getFragmentManager().getBackStackEntryCount();
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+        android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
+        final android.support.v4.app.FragmentTransaction ft = manager.beginTransaction();
 
-        if (count == 0) {
+        List<android.support.v4.app.Fragment> listaFragmentos = manager.getFragments();
 
-        } else {
-            getFragmentManager().popBackStack();
+        if(listaFragmentos.size()>1){
+            String tag = "";
+            try {
+                tag = listaFragmentos.get(0).getTag();
+                android.support.v4.app.Fragment fragment = manager.findFragmentByTag(tag);
+            }catch (Exception e){
+                e.printStackTrace();
+                bandera = false;
+            }
+            if(bandera) {
+                switch (tag) {
+                    case "DETALLE_HISTORIAL":
+                        getSupportActionBar().setTitle("Inicio");
+                        datosInicioCliente x = new datosInicioCliente();
+                        ft.replace(R.id.content_menu_principal, x).commit();
+                        break;
+                    case "DETALLE_SOLICITUD":
+                        getSupportActionBar().setTitle("Inicio");
+                        datosInicioCliente x1 = new datosInicioCliente();
+                        ft.replace(R.id.content_menu_principal, x1).commit();
+                        break;
+                    case "SOLICITUDES_ENVIADAS":
+                        getSupportActionBar().setTitle("Inicio");
+                        datosInicioCliente x2 = new datosInicioCliente();
+                        ft.replace(R.id.content_menu_principal, x2).commit();
+                        break;
+                    case "DETALLE_PROMOCIONES":
+                        getSupportActionBar().setTitle("Promociones");
+                        ContenidoPromociones x3 = new ContenidoPromociones();
+                        ft.replace(R.id.content_menu_principal, x3).commit();
+                        break;
+                    case "PERFIL_USUARIO":
+                        getSupportActionBar().setTitle("Inicio");
+                        datosInicioCliente x4 = new datosInicioCliente();
+                        ft.replace(R.id.content_menu_principal, x4).commit();
+                        break;
+                    case "PERFIL_PERSONA":
+                        super.onBackPressed();
+                        break;
+                    case "RESULTADO_BUSQUEDA":
+                        getSupportActionBar().setTitle("Busqueda de servicios");
+                        final ContenidoBuscarServicios x5 = new ContenidoBuscarServicios();
+                        new LovelyStandardDialog(mCtx)
+                                .setTopColorRes(R.color.colorFondoDefault)
+                                .setButtonsColorRes(R.color.colorAccent)
+                                .setIcon(R.drawable.ic_logo_app)
+                                .setTitle("¿Desea cerrar esta búsqueda?")
+                                .setMessage("La busqueda actual se quedará guardada y se iniciará otra.")
+                                .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        ft.replace(R.id.content_menu_principal, x5).commit();
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.no, null)
+                                .show();
+                        break;
+                    case "BUSQUEDA":
+                        getSupportActionBar().setTitle("Inicio");
+                        datosInicioCliente x6 = new datosInicioCliente();
+                        ft.replace(R.id.content_menu_principal, x6).commit();
+                        break;
+                    case "RESULTADO_MAPA":
+                        super.onBackPressed();
+                        break;
+                    case "HISTORIAL_TRABAJOS":
+                        super.onBackPressed();
+                        break;
+                }
+            }
         }
     }
 
@@ -231,12 +307,13 @@ public class MenuPrincipalActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+
         switch (id) {
             case android.R.id.home:
-                //FragmentManager fm= getSupportFragmentManager();
-                //if(fm.getBackStackEntryCount()>0){
-                //       fm.popBackStack();
-                //}
+                FragmentManager fm= getSupportFragmentManager();
+                if(fm.getBackStackEntryCount()>0){
+                       fm.popBackStack();
+                }
                 break;
             default:
                 break;
@@ -259,20 +336,20 @@ public class MenuPrincipalActivity extends AppCompatActivity
         if(id == R.id.ic_house){
             getSupportActionBar().setTitle("Inicio");
             eliminarPreferenciasFragmentos();
-            asignarFragment(new datosInicioCliente());
+            asignarFragment(new datosInicioCliente(),"DATOS_CLIENTE");
         } else if (id == R.id.ic_mi_perfil) {
             getSupportActionBar().setTitle("Perfil Usuario");
             eliminarPreferenciasPersonal();
             eliminarPreferenciasFragmentos();
-            asignarFragment(new PerfilActivity());
+            asignarFragment(new PerfilActivity(),"PERFIL_USUARIO");
         } else if (id == R.id.ic_search) {
             getSupportActionBar().setTitle("Búsqueda de servicios");
             eliminarPreferenciasFragmentos();
-            asignarFragment(new ContenidoBuscarServicios());
+            asignarFragment(new ContenidoBuscarServicios(),"BUSQUEDA");
         } else if(id == R.id.ic_promociones){
             getSupportActionBar().setTitle("Promociones");
             eliminarPreferenciasFragmentos();
-            asignarFragment(new ContenidoPromociones());
+            asignarFragment(new ContenidoPromociones(),"PROMOCIONES");
         } else if (id == R.id.ic_sign_out) {
             actualizarSP();
             eliminarPreferenciasFragmentos();
@@ -280,7 +357,7 @@ public class MenuPrincipalActivity extends AppCompatActivity
                     .setTopColorRes(R.color.colorFondoDefault)
                     .setButtonsColorRes(R.color.colorAccent)
                     .setIcon(R.drawable.ic_logo_app)
-                    .setTitle("¿Desea Cerrar Session?")
+                    .setTitle("¿Desea Cerrar Sesion?")
                     .setMessage("Presione ACEPTAR para continuar.")
                     .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
                         @Override
@@ -299,11 +376,12 @@ public class MenuPrincipalActivity extends AppCompatActivity
         return true;
     }
 
-    public void asignarFragment(android.support.v4.app.Fragment fragmento){
+    public void asignarFragment(android.support.v4.app.Fragment fragmento,String flag){
 
         if(fragmento!=null){
             android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_menu_principal,fragmento);
+            ft.add(R.id.content_menu_principal,fragmento,flag);
+            //ft.replace(R.id.content_menu_principal,fragmento);
             ft.commit();
 
         }
@@ -353,7 +431,7 @@ public class MenuPrincipalActivity extends AppCompatActivity
             bundle.putString("LONGITUD", valorLONGITUD);
         PerfilActivity fragmentoObjeto = new PerfilActivity();
         fragmentoObjeto.setArguments(bundle);
-        asignarFragment(fragmentoObjeto);
+        asignarFragment(fragmentoObjeto,"PERFIL_PERSONA");
     }
 
     public void enviarDatosBuscarServicios(String listRubros,int IdSolicitud){
@@ -362,7 +440,7 @@ public class MenuPrincipalActivity extends AppCompatActivity
         bundle.putInt("VALOR_ID_SOLICITUD", IdSolicitud);
         ContenidoResultadoBusqueda fragmentoObjeto = new ContenidoResultadoBusqueda();
         fragmentoObjeto.setArguments(bundle);
-        asignarFragment(fragmentoObjeto);
+        asignarFragment(fragmentoObjeto,"RESULTADO_BUSQUEDA");
     }
 
     public void enviarDatosHistorialTrabajos(int idSocio){
@@ -370,7 +448,7 @@ public class MenuPrincipalActivity extends AppCompatActivity
         bundle.putInt("ID_SOCIO", idSocio);
         ContenidoHistorialTrabajos fragmentoObjeto = new ContenidoHistorialTrabajos();
         fragmentoObjeto.setArguments(bundle);
-        asignarFragment(fragmentoObjeto);
+        asignarFragment(fragmentoObjeto,"HISTORIAL_TRABAJOS");
     }
 
     public void enviarDatosDetalleSolicitud(String idSolicitud, String fechaSolicitud, String servicios, String rubros, String fechaInicio, String fechaFin){
@@ -383,11 +461,12 @@ public class MenuPrincipalActivity extends AppCompatActivity
         bundle.putString("FIN", fechaFin);
         ContenidoDetalleSolicitudes fragmentoObjeto = new ContenidoDetalleSolicitudes();
         fragmentoObjeto.setArguments(bundle);
-        asignarFragment(fragmentoObjeto);
+        asignarFragment(fragmentoObjeto,"DETALLE_SOLICITUD");
     }
 
     public void enviarDatosDetalleHistorial(String imagen, String nombre, String rubros, String fechaInicio, String fechaFin, String servicios, String comentarios, String calificacion){
         Bundle bundle = new Bundle();
+        getSupportActionBar().setTitle("Detalle Historial");
         bundle.putString("IMAGEN", imagen);
         bundle.putString("NOMBRE", nombre);
         bundle.putString("RUBROS", rubros);
@@ -398,7 +477,7 @@ public class MenuPrincipalActivity extends AppCompatActivity
         bundle.putString("CALIFICACION", calificacion);
         ContenidoDetalleHistorial fragmentoObjeto = new ContenidoDetalleHistorial();
         fragmentoObjeto.setArguments(bundle);
-        asignarFragment(fragmentoObjeto);
+        asignarFragment(fragmentoObjeto,"DETALLE_HISTORIAL");
     }
 
     public void enviarDatosUbicacion(String idPersona, String nombreCompleto,String rubros, Double latitud, Double longitud){
@@ -410,14 +489,14 @@ public class MenuPrincipalActivity extends AppCompatActivity
         bundle.putDouble("LONGITUD", longitud);
         ContenidoResultadoMapa fragmentoObjeto = new ContenidoResultadoMapa();
         fragmentoObjeto.setArguments(bundle);
-        asignarFragment(fragmentoObjeto);
+        asignarFragment(fragmentoObjeto,"RESULTADO_MAPA");
     }
     public void enviarDatosEnviados(String idSolicitud){
         Bundle bundle = new Bundle();
-        bundle.putString("VALOR_ID", idSolicitud);
-        //ContenidoResultadoMapa fragmentoObjeto = new ContenidoResultadoMapa();
+        bundle.putString("VALOR_ID_SOLICITUD", idSolicitud);
+        ContenidoSolicitudesEnviadas fragmentoObjeto = new ContenidoSolicitudesEnviadas();
         fragmentoObjeto.setArguments(bundle);
-        asignarFragment(fragmentoObjeto);
+        asignarFragment(fragmentoObjeto,"SOLICITUDES_ENVIADAS");
     }
 
     public void enviarDatosDetallePromocion(String valorPromotor){
@@ -425,6 +504,6 @@ public class MenuPrincipalActivity extends AppCompatActivity
         bundle.putString("VALOR", valorPromotor);
         ContenidoDetallePromociones fragmentoObjeto = new ContenidoDetallePromociones();
         fragmentoObjeto.setArguments(bundle);
-        asignarFragment(fragmentoObjeto);
+        asignarFragment(fragmentoObjeto,"DETALLE_PROMOCIONES");
     }
 }

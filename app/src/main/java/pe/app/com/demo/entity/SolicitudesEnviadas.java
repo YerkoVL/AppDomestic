@@ -2,6 +2,7 @@ package pe.app.com.demo.entity;
 
 public class SolicitudesEnviadas {
     private String Id;
+    private String IdUsuario;
     private String IdTipoDocumento;
     private String TipoDocumento;
     private String NroDocumento;
@@ -35,8 +36,9 @@ public class SolicitudesEnviadas {
     public SolicitudesEnviadas() {
     }
 
-    public SolicitudesEnviadas(String id, String idTipoDocumento, String tipoDocumento, String nroDocumento, String nombres, String apellidos, String correo, String telefono, String direccion, String nombreUsuario, String password, String latitud, String longitud, String idPerfil, String perfil, String idDpto, String dpto, String idDistrito, String distrito, String fechaLogueo, String bienvenida, String atenciones, String rating, String imagen, String SERVICIO, String razonSocial, String nombreComercial, String key, String idEstado, String desc_Estado) {
+    public SolicitudesEnviadas(String id, String idUsuario, String idTipoDocumento, String tipoDocumento, String nroDocumento, String nombres, String apellidos, String correo, String telefono, String direccion, String nombreUsuario, String password, String latitud, String longitud, String idPerfil, String perfil, String idDpto, String dpto, String idDistrito, String distrito, String fechaLogueo, String bienvenida, String atenciones, String rating, String imagen, String SERVICIO, String razonSocial, String nombreComercial, String key, String idEstado, String desc_Estado) {
         Id = id;
+        IdUsuario = idUsuario;
         IdTipoDocumento = idTipoDocumento;
         TipoDocumento = tipoDocumento;
         NroDocumento = nroDocumento;
@@ -74,6 +76,14 @@ public class SolicitudesEnviadas {
 
     public void setId(String id) {
         Id = id;
+    }
+
+    public String getIdUsuario() {
+        return IdUsuario;
+    }
+
+    public void setIdUsuario(String idUsuario) {
+        IdUsuario = idUsuario;
     }
 
     public String getIdTipoDocumento() {

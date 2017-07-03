@@ -50,7 +50,7 @@ public class ContenidoDetallePromociones extends Fragment{
         if(CODIGO_RETORNO.equals("MAESTRO")){
             obtenerDetallePromocionesMaestro();
         }else{
-            if(CODIGO_RETORNO.equals("HOMECENTER")){
+            if(CODIGO_RETORNO.equals("SODIMAC HOME CENTER")){
                 obtenerDetallePromocionHomecenter();
             }else{
                 obtenerDetallePromocionesWong();

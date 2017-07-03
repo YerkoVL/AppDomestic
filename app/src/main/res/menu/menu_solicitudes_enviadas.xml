@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menu_HistorialVerDetalle"
-        android:title="@string/verDetalle" />
+        android:id="@+id/menu_SolicitudesEnviadasCerrar"
+        android:title="@string/cerrar" />
 
 </menu>

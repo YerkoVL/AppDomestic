@@ -25,7 +25,7 @@
     <string name="fechaSolicitud">Fecha de Solicitud</string>
     <string name="fechaInicio">Fecha de Inicio</string>
     <string name="fechaFin">Fecha de Fin</string>
-    <string name="promociones">PROMOCIONES </string>
+    <string name="promociones">Promociones </string>
     <string name="estado">Estado</string>
     <string name="descripcion">Descripción</string>
     <string name="pendiente">Pendiente</string>
@@ -46,7 +46,9 @@
     <string name="verUbicacion">Ver Ubicacion</string>
     <string name="verHistorialTrabajos">Ver Historial de Trabajos</string>
     <string name="enviarSolicitud">Enviar Solicitud</string>
+    <string name="contactar">Contactar</string>
     <string name="cancelar">Cancelar</string>
+    <string name="cerrar">Cerrar</string>
     <!--FIN MENUS-->
 
     <!--INICIO PANTALLA LOGIN-->

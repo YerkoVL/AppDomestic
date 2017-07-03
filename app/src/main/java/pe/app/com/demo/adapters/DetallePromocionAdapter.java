@@ -1,10 +1,8 @@
 package pe.app.com.demo.adapters;
 
 import android.content.Context;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -42,23 +40,6 @@ public class DetallePromocionAdapter extends RecyclerView.Adapter<DetallePromoci
         holder.textViewNombreOferta.setText(detalleOferta.getNombreOferta());
         holder.textViewDescripcionOferta.setText(detalleOferta.getDescripcionOferta());
         holder.textViewCodigoOferta.setText(detalleOferta.getCodigoOferta());
-        holder.buttonViewmOption.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PopupMenu popupMenu = new PopupMenu(mCtx,holder.buttonViewmOption);
-                popupMenu.inflate(R.menu.menu_solicitudes);
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()){
-                        }
-                        return false;
-                    }
-                });
-
-                popupMenu.show();
-            }
-        });
     }
 
     @Override
@@ -72,7 +53,6 @@ public class DetallePromocionAdapter extends RecyclerView.Adapter<DetallePromoci
         public TextView textViewNombreOferta;
         public TextView textViewDescripcionOferta;
         public TextView textViewCodigoOferta;
-        public TextView buttonViewmOption;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -81,7 +61,6 @@ public class DetallePromocionAdapter extends RecyclerView.Adapter<DetallePromoci
             textViewNombreOferta = (TextView) itemView.findViewById(R.id.txxNombreOferta);
             textViewDescripcionOferta = (TextView) itemView.findViewById(R.id.txtDescripcionOferta);
             textViewCodigoOferta = (TextView) itemView.findViewById(R.id.txtCodigoOferta);
-            buttonViewmOption = (TextView) itemView.findViewById(R.id.txtOptionPulse);
         }
     }
 }
