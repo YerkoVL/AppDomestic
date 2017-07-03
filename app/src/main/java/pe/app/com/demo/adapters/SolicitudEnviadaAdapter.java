@@ -49,6 +49,9 @@ public class SolicitudEnviadaAdapter extends RecyclerView.Adapter<SolicitudEnvia
         if(Integer.valueOf(solicitudesEnviadas.getIdEstado())!=11){
             holder.buttonViewOption.setVisibility(View.GONE);
         }
+        if(Integer.valueOf(solicitudesEnviadas.getIdEstado())==11){
+            holder.buttonViewOption.setVisibility(View.VISIBLE);
+        }
         holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
