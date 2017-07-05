@@ -63,9 +63,10 @@ public class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.View
                         switch (item.getItemId()){
                             case R.id.menu_HistorialFinalizar:
                                 //listaHistorial.remove(position);
-                                notifyDataSetChanged();
                                 comunicadorCalificacion.comunicarHistorial(historial.getSocio(),Integer.valueOf(historial.getIdSocio()),Integer.valueOf(historial.getId()));
-                                holder.textViewEstadoAtencion.setText("Terminado");
+                                historial.setDesc_Estado("Cerrado");
+                                historial.setIdEstado("7");
+                                notifyDataSetChanged();
                                 break;
                             case R.id.menu_HistorialVerDetalle:
                                 comunicador.comunicarHistorial(

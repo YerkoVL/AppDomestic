@@ -2,7 +2,8 @@ package pe.app.com.demo.tools;
 
 public class GenericTools {
     final public static String KEY_APP = "APP_DOMESTIC";
-    final public static String URL_APP = "http://dsystem-001-site1.btempurl.com";
+    final public static String URL_APP = "http://200.48.137.21";
+    //final public static String URL_APP = "http://dsystem-001-site1.btempurl.com";
     final public static String GET_INICIO = "?";
     final public static String GET_CONTINUO = "&";
     final public static String GET_ESPACIO = "%20";
@@ -20,8 +21,11 @@ public class GenericTools {
     final public static String GET_VALOR = "Valor=";
     final public static String GET_COMENTARIO = "Comentario=";
     final public static String GET_LISTA_RUBROS = "listRubro=";
-    final public static String GET_ESTADO_PARA_SOLICITUDES = "3";
-    final public static String GET_ESTADO_PARA_HISTORIAL = "7";
+    final public static String GET_ESTADO_PARA_SOLICITUDES_1 = "3";
+    final public static String GET_ESTADO_PARA_SOLICITUDES_2 = "4";
+    final public static String GET_ESTADO_PARA_SOLICITUDES_3 = "8";
+    final public static String GET_ESTADO_PARA_HISTORIAL_1 = "7";
+    final public static String GET_ESTADO_PARA_HISTORIAL_2 = "11";
 
     final public static String GET_NOMBRES = "Nombres=";
     final public static String GET_APELLIDOS = "Apellidos=";

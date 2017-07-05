@@ -55,7 +55,7 @@ public class ContenidoPromociones extends Fragment{
         Promocion promocion2 = new Promocion(
                 "1",
                 "SODIMAC HOME CENTER",
-                "2",
+                "3",
                 R.drawable.ic_promotor_homecenter);
         Promocion promocion3 = new Promocion(
                 "1",

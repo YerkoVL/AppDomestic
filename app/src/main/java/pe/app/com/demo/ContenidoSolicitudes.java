@@ -49,7 +49,9 @@ import static pe.app.com.demo.tools.GenericEstructure.OBJETO_SERVICIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_ID_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_NOMBRE_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_USUARIO;
-import static pe.app.com.demo.tools.GenericTools.GET_ESTADO_PARA_SOLICITUDES;
+import static pe.app.com.demo.tools.GenericTools.GET_ESTADO_PARA_SOLICITUDES_1;
+import static pe.app.com.demo.tools.GenericTools.GET_ESTADO_PARA_SOLICITUDES_2;
+import static pe.app.com.demo.tools.GenericTools.GET_ESTADO_PARA_SOLICITUDES_3;
 import static pe.app.com.demo.tools.GenericTools.GET_INICIO;
 import static pe.app.com.demo.tools.GenericTools.GET_USER;
 import static pe.app.com.demo.tools.GenericTools.URL_APP;
@@ -144,7 +146,7 @@ public class ContenidoSolicitudes extends Fragment {
                                     solicitud.setRubro(descripcionRubrosTotales);
                                 }
 
-                                if(solicitud.getIdEstado().equals(GET_ESTADO_PARA_SOLICITUDES)) {
+                                if(solicitud.getIdEstado().equals(GET_ESTADO_PARA_SOLICITUDES_1) || solicitud.getIdEstado().equals(GET_ESTADO_PARA_SOLICITUDES_2) || solicitud.getIdEstado().equals(GET_ESTADO_PARA_SOLICITUDES_3)) {
                                     solicitudList.add(solicitud);
                                 }
                             }

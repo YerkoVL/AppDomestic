@@ -55,7 +55,8 @@ import static pe.app.com.demo.tools.GenericEstructure.OBJETO_SOCIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_ID_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_NOMBRE_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_USUARIO;
-import static pe.app.com.demo.tools.GenericTools.GET_ESTADO_PARA_HISTORIAL;
+import static pe.app.com.demo.tools.GenericTools.GET_ESTADO_PARA_HISTORIAL_1;
+import static pe.app.com.demo.tools.GenericTools.GET_ESTADO_PARA_HISTORIAL_2;
 import static pe.app.com.demo.tools.GenericTools.GET_INICIO;
 import static pe.app.com.demo.tools.GenericTools.GET_USER;
 import static pe.app.com.demo.tools.GenericTools.URL_APP;
@@ -138,7 +139,7 @@ public class ContenidoHistorial extends Fragment {
 
                                     JSONArray objetoRubro = object.getJSONArray(OBJETO_RUBRO);
 
-                                    if (historial.getIdEstado().equals(GET_ESTADO_PARA_HISTORIAL) && objetoRubro != null || objetoRubro.length() > 0) {
+                                    if (objetoRubro != null || objetoRubro.length() > 0) {
                                         String descripcionRubrosTotales= "";
                                         for(int x = 0 ;x < objetoRubro.length();x++) {
                                             JSONObject rubro = objetoRubro.getJSONObject(x);
@@ -155,7 +156,7 @@ public class ContenidoHistorial extends Fragment {
                                     e.printStackTrace();
                                 }
 
-                                if(Integer.valueOf(historial.getIdEstado())>4){
+                                if(historial.getIdEstado().equals(GET_ESTADO_PARA_HISTORIAL_1) ||historial.getIdEstado().equals(GET_ESTADO_PARA_HISTORIAL_2)){
                                     historialList.add(historial);
                                 }
                             }
