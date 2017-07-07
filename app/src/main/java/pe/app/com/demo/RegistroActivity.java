@@ -148,7 +148,9 @@ public class RegistroActivity extends AppCompatActivity {
         departamento.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                adapterView.setSelection(14);
                 idDpto = adapterView.getItemIdAtPosition(i);
+                departamento.setEnabled(false);
                 llenarSpinnerProvincias(idDpto);
             }
 
@@ -208,6 +210,7 @@ public class RegistroActivity extends AppCompatActivity {
             SimpleCursorAdapter adaptador = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, c, new String[]{"Descripcion"}, new int[]{android.R.id.text1});
             adaptador.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             departamento.setAdapter(adaptador);
+            departamento.setEnabled(false);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -223,6 +226,7 @@ public class RegistroActivity extends AppCompatActivity {
             SimpleCursorAdapter adaptador = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, c, new String[]{"Descripcion"}, new int[]{android.R.id.text1});
             adaptador.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             provincia.setAdapter(adaptador);
+            provincia.setEnabled(false);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -388,8 +392,6 @@ public class RegistroActivity extends AppCompatActivity {
         }
         mlocManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, (LocationListener) Local);
         mlocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) Local);
-
-        alertas.mensajeInfo("","Localización agregada",ctx);
     }
 
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {

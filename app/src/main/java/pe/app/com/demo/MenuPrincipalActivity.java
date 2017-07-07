@@ -371,7 +371,7 @@ public class MenuPrincipalActivity extends AppCompatActivity
         } else if (id == R.id.ic_ayuda) {
 
         } else if (id == R.id.ic_informacion) {
-
+            alerts.mensajeInfo(getResources().getString(R.string.app_name),"Version " + getResources().getString(R.string.version_app) +"\nwww.appdomestic.com", mCtx);
         }
         return true;
     }

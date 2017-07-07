@@ -26,7 +26,6 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
-import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,11 +61,11 @@ import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_IMAGEN_USUARIO
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_LATITUD_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_LONGITUD_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_NEGACION;
-import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_RATING_USUARIO;
-import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_NOMBRE_COMPLETO_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_NOMBRE_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_PASS_USUARIO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_RATING_USUARIO;
+import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_USUARIO;
 import static pe.app.com.demo.tools.GenericEstructure.PREFERENCIA_VALOR_BUSQUEDA_SERVICIO;
 import static pe.app.com.demo.tools.GenericTools.GET_CONTINUO;
 import static pe.app.com.demo.tools.GenericTools.GET_INICIO;
@@ -123,8 +122,6 @@ public class LoginActivity extends AppCompatActivity {
         eliminarData();
 
         obtenerDepartamentos();
-        obtenerProvincias();
-        obtenerDistritos();
 
         try{
             String mensaje = getIntent().getStringExtra("MENSAJE");
@@ -329,7 +326,8 @@ public class LoginActivity extends AppCompatActivity {
                                 departamentoArrayList.add(resultadoDepartamento);
                             }
                             insertarDatosDepartamentos(departamentoArrayList);
-                            progressDialog.dismiss();
+                            obtenerProvincias();
+                            //progressDialog.dismiss();
 
                         }catch (JSONException e) {
                             progressDialog.dismiss();
@@ -370,7 +368,8 @@ public class LoginActivity extends AppCompatActivity {
                                     provinciaArrayList.add(resultadoProvincia);
                                 }
                             insertarDatosProvincias(provinciaArrayList);
-                            progressDialog.dismiss();
+                            obtenerDistritos();
+                            //progressDialog.dismiss();
 
                         }catch (JSONException e) {
                             progressDialog.dismiss();
@@ -413,7 +412,7 @@ public class LoginActivity extends AppCompatActivity {
                                 distritoArrayList.add(resultadoDistrito);
                             }
                             insertarDatosDistritos(distritoArrayList);
-                            progressDialog.dismiss();
+                            //progressDialog.dismiss();
 
                         }catch (JSONException e) {
                             progressDialog.dismiss();
@@ -447,8 +446,8 @@ public class LoginActivity extends AppCompatActivity {
             nuevoRegistro.put(OBJETO_ID_PAIS, nuevoDpto.getIdPais());
             db.insert("Departamentos", null, nuevoRegistro);
         }
-
         db.close();
+        progressDialog.dismiss();
     }
 
     public void insertarDatosProvincias(ArrayList<Provincia> provincia){
@@ -467,8 +466,8 @@ public class LoginActivity extends AppCompatActivity {
             nuevoRegistro.put(OBJETO_ID_DEPARTAMENTO, nuevaProvincia.getIdDpto());
             db.insert("Provincias", null, nuevoRegistro);
         }
-
         db.close();
+        progressDialog.dismiss();
     }
 
     public void insertarDatosDistritos(ArrayList<Distrito> distrito){
@@ -487,8 +486,8 @@ public class LoginActivity extends AppCompatActivity {
             nuevoRegistro.put(OBJETO_ID_PROVINCIA, nuevaDistrito.getIdProvincia());
             db.insert("Distritos", null, nuevoRegistro);
         }
-
         db.close();
+        progressDialog.dismiss();
     }
 
     public void eliminarData(){

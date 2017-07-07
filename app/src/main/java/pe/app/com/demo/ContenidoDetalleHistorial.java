@@ -21,7 +21,7 @@ public class ContenidoDetalleHistorial extends Fragment {
     Context mCtx;
 
     ImageView ImagenPersona;
-    String imagen, nombreUsuario, rubros, fechaInicio, fechaFin, servicios, comentarios, calificacion;
+    String imagen, nombreUsuario, rubros, fechaInicio, fechaFin, servicios, comentarios, calificacion = "0";
     TextView NombreUsuario, Rubros, FechaInicio, FechaFin, Servicios, Comentarios;
     RatingBar Calificacion;
 

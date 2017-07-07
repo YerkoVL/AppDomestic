@@ -41,6 +41,7 @@
             <EditText
                 android:layout_marginStart="20dp"
                 android:id="@+id/txtNombreUsuario"
+                android:inputType="text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
@@ -58,6 +59,7 @@
 
             <EditText
                 android:layout_marginStart="20dp"
+                android:inputType="text"
                 android:id="@+id/txtApellidoUsuario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -77,6 +79,7 @@
             <EditText
                 android:layout_marginStart="20dp"
                 android:id="@+id/txtNroDocumento"
+                android:inputType="number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
